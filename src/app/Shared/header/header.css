@@ -1,0 +1,140 @@
+/* Add smooth scrolling to the whole document */
+html {
+    scroll-behavior: smooth;
+}
+
+header{
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+}
+
+/* Offset for fixed header - adjust based on your header height */
+div[id] {
+    scroll-margin-top: 150px; /* Increased to account for both info bar and nav */
+}
+
+/* Alternative method using padding-top */
+div[id]::before {
+    content: "";
+    display: block;
+    height: 150px;
+    margin-top: -150px;
+    visibility: hidden;
+}
+
+/*------------------ info ------------------ */
+.info{
+    background-color: rgb(35, 35, 65);
+    color:white;
+    padding: 15px;
+}
+
+.lang-btn{
+    background-color: rgb(35, 35, 65);
+    color:white;
+    border:none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.dropdown-menu{
+    background-color: rgb(35, 35, 65);
+    border:none;
+    margin-top: 5px;
+}
+
+.dropdown-item{
+    background-color: rgb(35, 35, 65);
+    color:white;
+    border:none;
+    cursor: pointer;
+    font-size: 16px;
+    padding-left: 20px;
+}
+.dropdown-item:hover{
+    background-color: rgb(55, 55, 85);
+}
+
+
+/*------------------ nav ------------------ */
+.logo{
+    display: flex;
+    height: fit-content;
+    div{
+        h5{
+            color: rgb(55, 55, 85);
+            font-weight: bold;
+            margin-bottom: 0px;
+        };
+    };
+}
+
+.nav-item {
+    list-style: none;
+}
+
+.nav-link {
+    color: rgb(55, 55, 85);
+    font-weight: 600;
+    font-size: 17px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 0px 15px !important;
+    text-decoration: none;
+    display: block;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.nav-link::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.4s ease;
+    z-index: -1;
+}
+
+.nav-link::after {
+    position: absolute;
+    width: 0;
+    height: 3px;
+    bottom: 0;
+    left: 50%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(-50%);
+}
+
+.nav-link:hover {
+    color: rgb(168, 11, 11);
+    background-color: transparent;
+    transform: translateY(-3px);
+}
+
+.nav-link:hover::before {
+    opacity: 1;
+}
+
+.nav-link:hover::after {
+    width: 80%;
+    background: white;
+}
+
+
+.nav-link.active {
+    color: rgb(168, 11, 11);
+    font-weight: 700;
+    border-bottom: 3px solid rgb(168, 11, 11);
+    margin: 0px 10px;
+}
+
+.nav-link.active::after {
+    width: 80%;
+    background: rgb(168, 11, 11);
+}

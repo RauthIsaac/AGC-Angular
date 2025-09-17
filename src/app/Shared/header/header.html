@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGC</title>
+</head>
+<body>
+    <header>
+        <div class="info">
+            <div class=" container d-flex justify-content-between align-items-center"> 
+
+                <div class="d-flex">
+                    <div class="d-flex me-4">
+                        <i class="bi bi-telephone me-2"></i>
+                        <span> Tel +1 (555) 123-4567</span>
+                    </div>
+                    <div class="d-flex">
+                        <i class="bi bi-envelope me-2"></i>
+                        <span> Email info@agc.com</span>
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <span class="me-4">Powering industries with premium Mobil lubricants since 2000</span>
+                    
+                    <div class="btn-group">
+                        <button type="button" class="lang-btn"><i class="bi bi-globe2 me-1"></i> English</button>
+                        <button type="button" class="lang-btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">English</a></li>
+                            <li><a class="dropdown-item" href="#">العربية</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <nav>
+            <div class="container d-flex justify-content-between align-items-center">
+                <div class="logo pt-2">
+                    <img src="./Images/logo.jpeg" alt="AGC Logo" style="height: 50px; ">
+                    <div class="d-flex flex-column ms-3">
+                        <h5>AGC Lubricants</h5>
+                        <p class="text-muted">ExxonMobil Authorized Distributor</p>
+                    </div>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" 
+                           [class.active]="isActive('home')"
+                           (click)="navigateToSection('home')" 
+                           style="cursor: pointer;">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" 
+                           [class.active]="isActive('news')"
+                           (click)="navigateToSection('news')" 
+                           style="cursor: pointer;">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" 
+                           [class.active]="isActive('products')"
+                           (click)="navigateToSection('products')" 
+                           style="cursor: pointer;">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" 
+                           [class.active]="isActive('about')"
+                           (click)="navigateToSection('about')" 
+                           style="cursor: pointer;">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" 
+                           [class.active]="isActive('contact')"
+                           (click)="navigateToSection('contact')" 
+                           style="cursor: pointer;">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+    </header>
+</body>
+</html>

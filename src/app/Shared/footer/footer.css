@@ -1,0 +1,176 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    padding: 0;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.azzab-footer {
+    background: linear-gradient(135deg, var(--dark-color) 0%, var(--primary-color) 100%);
+    color: var(--light-color);
+    padding: 3rem 0 1rem;
+    margin-top: auto;
+}
+
+.footer-title {
+    color: white;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.footer-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--secondary-color);
+}
+
+.footer-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.footer-desc {
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.footer-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    border-left: 3px solid var(--secondary-color);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+    color: var(--light-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    opacity: 0.9;
+    display: inline-block;
+}
+
+.footer-links a:hover {
+    color: var(--secondary-color);
+    transform: translateX(5px);
+    opacity: 1;
+}
+
+.contact-info {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info li {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+}
+
+.contact-info i {
+    margin-right: 10px;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    margin-top: 3px;
+}
+
+.contact-info li span {
+    font-size: 1.2rem;
+
+}
+
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 1.5rem;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.social-icon:hover {
+    background: var(--secondary-color);
+    transform: translateY(-5px);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.exxonmobil-logo {
+    max-width: 180px;
+    margin-bottom: 1rem;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+}
+
+.demo-notice {
+    background: var(--secondary-color);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .footer-col {
+        margin-bottom: 2rem;
+    }
+    
+    .footer-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .footer-title {
+        text-align: center;
+    }
+    
+    .footer-desc, .footer-badge {
+        text-align: center;
+    }
+    
+    .social-icons {
+        justify-content: center;
+    }
+}
