@@ -81,9 +81,12 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
+              "src/favicon.ico",
+              "src/assets",
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "src/assets/i18n",
+                "output": "/assets/i18n"
               }
             ],
             "styles": [
