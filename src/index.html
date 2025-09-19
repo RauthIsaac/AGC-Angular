@@ -6,7 +6,13 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
+   
+  <meta http-equiv="Content-Security-Policy" 
+        content="default-src 'self'; 
+                 connect-src 'self' https://localhost:7162 ws: wss:;
+                 script-src 'self' 'unsafe-eval' 'unsafe-inline';
+                 style-src 'self' 'unsafe-inline' https:;
+                 img-src 'self' data: https:;">
 </head>
 <body>
   <app-root></app-root>

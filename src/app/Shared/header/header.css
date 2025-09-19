@@ -128,7 +128,7 @@ div[id]::before {
 
 
 .nav-link.active {
-    color: rgb(168, 11, 11);
+    color: rgb(168, 11, 11) !important;
     font-weight: 700;
     border-bottom: 3px solid rgb(168, 11, 11);
     margin: 0px 10px;

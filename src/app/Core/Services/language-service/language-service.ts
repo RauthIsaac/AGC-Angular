@@ -1,8 +1,7 @@
-// Core/Services/language-service/language-service.ts
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 
 export interface Language {
@@ -10,6 +9,21 @@ export interface Language {
   name: string;
   direction: 'ltr' | 'rtl';
   flag: string;
+  langCode: number; // Add langCode to match your API
+}
+
+export interface SiteData {
+  id: number;
+  langCode: number;
+  companyName: string;
+  ceO_Name: string;
+  ceO_JobTitle: string;
+  ceO_IntroMessage: string;
+  ceO_EndMessage: string;
+  logoUrl: string;
+  coverImgUrl: string;
+  news: any[];
+  products: any[];
 }
 
 @Injectable({
@@ -20,25 +34,29 @@ export class LanguageService {
   private platformId = inject(PLATFORM_ID);
   
   private currentLanguageSubject = new BehaviorSubject<string>('en');
-  private translationsSubject = new BehaviorSubject<any>({});
+  private currentSiteDataSubject = new BehaviorSubject<SiteData | null>(null);
+  private allSiteDataSubject = new BehaviorSubject<SiteData[]>([]);
   
   public readonly availableLanguages: Language[] = [
     {
       code: 'en',
       name: 'English',
       direction: 'ltr',
-      flag: '🇺🇸'
+      flag: '🇺🇸',
+      langCode: 0
     },
     {
       code: 'ar',
       name: 'العربية',
       direction: 'rtl',
-      flag: '🇸🇦'
+      flag: '🇸🇦',
+      langCode: 1
     }
   ];
   
   public currentLanguage$ = this.currentLanguageSubject.asObservable();
-  public translations$ = this.translationsSubject.asObservable();
+  public currentSiteData$ = this.currentSiteDataSubject.asObservable();
+  public allSiteData$ = this.allSiteDataSubject.asObservable();
   
   constructor() {
     this.initializeLanguage();
@@ -54,97 +72,121 @@ export class LanguageService {
       }
     }
     
-    this.setLanguage(defaultLanguage).subscribe();
+    this.setLanguage(defaultLanguage);
   }
   
-  public setLanguage(languageCode: string): Observable<any> {
+  /**
+   * Load site data from your existing API service
+   */
+  public loadSiteDataFromService(siteIdentityService: any): Observable<SiteData[]> {
+    return siteIdentityService.getSiteIdentity().pipe(
+      tap((data: SiteData[]) => {
+        this.allSiteDataSubject.next(data);
+        // Set current site data based on current language
+        const currentLang = this.getCurrentLanguage();
+        this.updateCurrentSiteData(currentLang);
+      }),
+      catchError((error: any) => {
+        console.error('Error loading site data:', error);
+        return of([]);
+      })
+    );
+  }
+  
+  /**
+   * Set language and update site data accordingly
+   */
+  public setLanguage(languageCode: string): void {
     if (!this.isLanguageSupported(languageCode)) {
       console.error(`Language '${languageCode}' is not supported`);
-      return of(null);
+      return;
     }
     
-    return this.loadTranslations(languageCode).pipe(
-      tap(translations => {
-        if (translations) {
-          this.currentLanguageSubject.next(languageCode);
-          this.translationsSubject.next(translations);
-          
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('selectedLanguage', languageCode);
-            this.updateDocumentLanguage(languageCode);
-          }
-        }
-      }),
-      catchError(error => {
-        console.warn(`Failed to load language ${languageCode}, using fallback`, error);
-        if (languageCode !== 'en') {
-          return this.setLanguage('en');
-        }
-        return of(null);
-      })
-    );
+    this.currentLanguageSubject.next(languageCode);
+    
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('selectedLanguage', languageCode);
+      this.updateDocumentLanguage(languageCode);
+    }
+    
+    // Update current site data for the new language
+    this.updateCurrentSiteData(languageCode);
   }
   
-  private loadTranslations(languageCode: string): Observable<any> {
-    const translationPath = `Assets/i18n/${languageCode}.json`;
+  /**
+   * Update current site data based on language
+   */
+  private updateCurrentSiteData(languageCode: string): void {
+    const allData = this.allSiteDataSubject.value;
+    const language = this.availableLanguages.find(lang => lang.code === languageCode);
     
-    return this.http.get(translationPath).pipe(
-      catchError(error => {
-        console.error(`Error loading translations for language '${languageCode}':`, error);
-        return of(null);
-      })
-    );
+    if (allData.length > 0 && language) {
+      const siteData = allData.find(data => data.langCode === language.langCode);
+      if (siteData) {
+        this.currentSiteDataSubject.next(siteData);
+      }
+    }
   }
   
-  
-  public getText(key: string, params?: { [key: string]: any }): string {
-    const translations = this.translationsSubject.value;
+  /**
+   * Get text/data based on current language
+   */
+  public getText(key: string, fallback?: string): string {
+    const currentData = this.currentSiteDataSubject.value;
     
-    if (!translations || Object.keys(translations).length === 0) {
-      console.warn(`No translations loaded, returning key: ${key}`);
-      return key;
+    if (!currentData) {
+      console.warn(`No site data loaded, returning fallback or key: ${key}`);
+      return fallback || key;
     }
     
-    let translation = translations[key];
+    // Handle nested properties using dot notation
+    const value = this.getNestedProperty(currentData, key);
     
-    if (!translation) {
-      translation = this.getNestedTranslation(translations, key);
+    if (value === undefined || value === null) {
+      console.warn(`Property '${key}' not found in current site data`);
+      return fallback || key;
     }
     
-    if (!translation) {
-      console.warn(`Translation not found for key: '${key}'`);
-      return key;
-    }
-  
-    if (Array.isArray(translation)) {
-      return translation.join(', ');
-    }
-    
-    if (typeof translation === 'object' && translation !== null) {
-      if (translation.name) return translation.name;
-      if (translation.title) return translation.title;
-      if (translation.description) return translation.description;
-      return JSON.stringify(translation);
-    }
-    
-    if (params && typeof translation === 'string') {
-      return this.interpolateParams(translation, params);
-    }
-    
-    return String(translation);
+    return String(value);
   }
   
-  private getNestedTranslation(obj: any, key: string): any {
+  /**
+   * Get nested property from object using dot notation
+   */
+  private getNestedProperty(obj: any, key: string): any {
     return key.split('.').reduce((current, keyPart) => {
-      return current && current[keyPart] ? current[keyPart] : null;
+      return current && current[keyPart] !== undefined ? current[keyPart] : undefined;
     }, obj);
   }
   
-  private interpolateParams(text: string, params: { [key: string]: any }): string {
-    return Object.keys(params).reduce((result, key) => {
-      const placeholder = `{${key}}`;
-      return result.replace(new RegExp(placeholder, 'g'), params[key]);
-    }, text);
+  /**
+   * Get array data (like news or products)
+   */
+  public getArrayData(key: string): any[] {
+    const currentData = this.currentSiteDataSubject.value;
+    
+    if (!currentData || !currentData[key as keyof SiteData]) {
+      return [];
+    }
+    
+    const data = currentData[key as keyof SiteData];
+    return Array.isArray(data) ? data : [];
+  }
+  
+  /**
+   * Get specific array item by index
+   */
+  public getArrayItem(key: string, index: number): any {
+    const arrayData = this.getArrayData(key);
+    return arrayData[index] || null;
+  }
+  
+  /**
+   * Filter array data by property
+   */
+  public filterArrayData(key: string, filterFn: (item: any) => boolean): any[] {
+    const arrayData = this.getArrayData(key);
+    return arrayData.filter(filterFn);
   }
   
   private isLanguageSupported(languageCode: string): boolean {
@@ -160,10 +202,23 @@ export class LanguageService {
     const htmlElement = document.documentElement;
     const bodyElement = document.body;
     
+    // Set language and direction attributes
     htmlElement.setAttribute('lang', languageCode);
     htmlElement.setAttribute('dir', language.direction);
     
+    // Add/remove RTL class on body
     bodyElement.classList.toggle('rtl', language.direction === 'rtl');
+    bodyElement.classList.toggle('ltr', language.direction === 'ltr');
+    
+    // Trigger a custom event for other components to listen to
+    if (isPlatformBrowser(this.platformId)) {
+      window.dispatchEvent(new CustomEvent('languageChanged', { 
+        detail: { 
+          language: languageCode, 
+          direction: language.direction 
+        } 
+      }));
+    }
   }
   
   public getCurrentLanguage(): string {
@@ -180,38 +235,48 @@ export class LanguageService {
     return currentLangInfo?.direction === 'rtl' || false;
   }
   
-  public toggleLanguage(): Observable<any> {
+  public toggleLanguage(): void {
     const currentLang = this.getCurrentLanguage();
     const newLang = currentLang === 'ar' ? 'en' : 'ar';
-    return this.setLanguage(newLang);
+    this.setLanguage(newLang);
   }
   
-  public getAllTranslations(): any {
-    return this.translationsSubject.value;
+  /**
+   * Get current site data
+   */
+  public getCurrentSiteData(): SiteData | null {
+    return this.currentSiteDataSubject.value;
   }
   
-  public getArrayItem(key: string, index: number): string {
-    const data = this.getAllTranslations()[key];
-    if (Array.isArray(data) && data[index]) {
-      return data[index];
-    }
-    return '';
+  /**
+   * Get all site data for all languages
+   */
+  public getAllSiteData(): SiteData[] {
+    return this.allSiteDataSubject.value;
   }
   
-  public getObjectProperty(key: string, property: string): string {
-    const data = this.getAllTranslations()[key];
-    if (typeof data === 'object' && data !== null && data[property]) {
-      return data[property];
-    }
-    return '';
+  /**
+   * Initialize with site data (call this after loading data from API)
+   */
+  public initializeWithSiteData(siteData: SiteData[]): void {
+    this.allSiteDataSubject.next(siteData);
+    const currentLang = this.getCurrentLanguage();
+    this.updateCurrentSiteData(currentLang);
   }
   
-  public getObjectArray(key: string): any[] {
-    const data = this.getAllTranslations()[key];
-    return Array.isArray(data) ? data : [];
+  /**
+   * Get language-specific flag emoji
+   */
+  public getCurrentLanguageFlag(): string {
+    const currentLangInfo = this.getCurrentLanguageInfo();
+    return currentLangInfo?.flag || '🌐';
   }
   
-  public updateTranslations(translations: any): void {
-    this.translationsSubject.next({ ...this.translationsSubject.value, ...translations });
+  /**
+   * Get language name for display
+   */
+  public getCurrentLanguageName(): string {
+    const currentLangInfo = this.getCurrentLanguageInfo();
+    return currentLangInfo?.name || 'Unknown';
   }
 }
