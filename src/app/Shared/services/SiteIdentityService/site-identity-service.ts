@@ -11,8 +11,7 @@ export class SiteIdentityService {
   
   API_URL: string = 'https://localhost:7162/api/SiteIdentity';
   
-  // private languageService = inject(LanguageService);
-  
+
   // Signals for reactive data
   siteData = signal<SiteData[]>([]);
   currentSiteData = signal<SiteData | null>(null);

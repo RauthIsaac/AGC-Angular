@@ -1,61 +1,41 @@
-import { Component, signal } from '@angular/core';
-import { SiteIdentityService } from '../../../../Shared/services/SiteIdentityService/site-identity-service';
-import { Subscription } from 'rxjs';
-import { LanguageService } from '../../../../Core/Services/language-service/language-service';
-import { SiteData } from '../../../../Shared/models/site-data';
+// ceo.ts - Simplified CEO Component
+import { CommonModule } from '@angular/common';
+import { Component, Input, computed } from '@angular/core';
 
 @Component({
   selector: 'app-ceo',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './ceo.html',
   styleUrl: './ceo.css'
 })
 export class Ceo {
+  // Input properties - receive data from parent
+  @Input() siteData: any = null;
+  @Input() currentLanguage: string = 'en';
+  @Input() isRTL: boolean = false;
+  @Input() isLoading: boolean = false;
 
-  siteIdentityData = signal<any>(null);
-  currentLanguage = signal<string>('en');
-  isRTLSignal = signal<boolean>(false);
-  currentLanguageName = signal<string>('English');
-  currentLanguageFlag = signal<string>('🇺🇸');
+  constructor() { }
 
-  private subscription: Subscription = new Subscription();
-
-  constructor(
-    private siteIdentityService: SiteIdentityService,
-    private languageService: LanguageService) { }
-
-  ngOnInit(): void {
-    // Subscribe to language changes
-    this.subscription.add(
-      this.languageService.currentLanguage$.subscribe(lang => {
-        this.currentLanguage.set(lang);
-        this.isRTLSignal.set(this.languageService.isRTL());
-        this.currentLanguageName.set(this.languageService.getCurrentLanguageName());
-        this.currentLanguageFlag.set(this.languageService.getCurrentLanguageFlag());
-      })
-    );
-
-    // Subscribe to site data changes
-    this.subscription.add(
-      this.languageService.currentSiteData$.subscribe(data => {
-        this.siteIdentityData.set(data);
-        console.log('Current site data updated:', this.siteIdentityData());
-      })
-    );
+  
+  // Helper methods for template
+  getCeoName(): string {
+    return this.siteData?.ceO_Name || '';
   }
 
-
-  private loadSiteIdentityData() {
-    this.subscription.add(
-      this.siteIdentityService.getSiteIdentity().subscribe({
-        next: (data) => {
-          console.log('Site data loaded successfully:', data);
-        },
-        error: (error) => {
-          console.error('Error loading site data:', error);
-        }
-      })
-    );
+  getCeoTitle(): string {
+    return this.siteData?.ceO_JobTitle || '';
   }
 
+  getIntroMessage(): string {
+    return this.siteData?.ceO_IntroMessage || '';
+  }
+
+  getEndMessage(): string {
+    return this.siteData?.ceO_EndMessage || '';
+  }
+
+  hasData(): boolean {
+    return this.siteData !== null && !this.isLoading;
+  }
 }

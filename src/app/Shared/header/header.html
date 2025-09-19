@@ -1,124 +1,134 @@
+<!-- header.html - Updated Template -->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ getText('companyName', 'AGC') }}</title>   
+    <title>{{ getCompanyName() }}</title>   
 </head>
-<body [class.rtl]="isRTL()" [class.ltr]="!isRTL()">
+<body [class.rtl]="isRTL" [class.ltr]="!isRTL">
     <header>
-        <div class="info">
-            <div class="container d-flex justify-content-between align-items-center"> 
-
-                <div class="d-flex" [style.flex-direction]="isRTL() ? 'row-reverse' : 'row'">
-                    <div class="d-flex" [ngClass]="isRTL() ? 'ms-4' : 'me-4'">
-                        <i class="bi bi-telephone mx-2" ></i>
-                        <span>{{ isRTL() ? '+1 (555) 123-4567' : '+1 (555) 123-4567' }}</span>
-                    </div>
-                    <div class="d-flex">
-                        <i class="bi bi-envelope mx-2"></i>
-                        <span>{{ isRTL() ? 'info@agc.com' : 'info@agc.com' }}</span>
-                    </div>
-                </div>
-
-                <div class="d-flex align-items-center" [style.flex-direction]="isRTL() ? 'row-reverse' : 'row'">
-                    <span [ngClass]="isRTL() ? 'ms-4' : 'me-4'">
-                        {{ isRTL() ? 'نقدم زيوت موبيل المتميزة للصناعات منذ عام 2000' : 'Powering industries with premium Mobil lubricants since 2000' }}
-                    </span>
-                    
-                    <div class="btn-group">
-                        <button type="button" class="lang-btn">
-                            <i class="bi bi-globe2 me-1"></i> 
-                            {{ currentLanguageFlag() }} {{ currentLanguageName() }}
-                        </button>
-                        <button type="button" class="lang-btn dropdown-toggle dropdown-toggle-split" 
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu" [class.dropdown-menu-end]="isRTL()">
-                            <li>
-                                <a class="dropdown-item" 
-                                   [class.active]="currentLanguage() === 'en'"
-                                   (click)="switchToLanguage('en')"
-                                   style="cursor: pointer;">
-                                   🇺🇸 English
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" 
-                                   [class.active]="currentLanguage() === 'ar'"
-                                   (click)="switchToLanguage('ar')"
-                                   style="cursor: pointer;">
-                                   🇸🇦 العربية
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+        <!-- Loading state for header -->
+        <div *ngIf="isLoading" class="text-center p-3">
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
         </div>
 
-        <nav>
-            <div class="container d-flex justify-content-between align-items-center"
-                 [style.flex-direction]="isRTL() ? 'row-reverse' : 'row'">
-                
-                <div class="logo pt-2" [style.flex-direction]="isRTL() ? 'row-reverse' : 'row'">
-                    <img [src]="'./Images/logo.jpeg'" 
-                         style="height: 50px;" >
-                         
-                     
-                    <div class="d-flex flex-column" [ngClass]="isRTL() ? 'me-3' : 'ms-3'">
-                        <h5>{{ siteIdentityData().companyName}}</h5>
-                        <p class="text-muted">
-                            {{ isRTL() ? 'الموزع المعتمد لشركة إكسون موبيل' : 'ExxonMobil Authorized Distributor' }}
-                        </p>
+        <!-- Header content when data is available -->
+        <div *ngIf="hasSiteData() || !isLoading">
+            <div class="info">
+                <div class="container d-flex justify-content-between align-items-center"> 
+                    <div class="d-flex" [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
+                        <div class="d-flex" [ngClass]="isRTL ? 'ms-4' : 'me-4'">
+                            <i class="bi bi-telephone mx-2"></i>
+                            <span>{{ getPhoneNumber() }}</span>
+                        </div>
+                        <div class="d-flex">
+                            <i class="bi bi-envelope mx-2"></i>
+                            <span>{{ getEmail() }}</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center" [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
+                        <span [ngClass]="isRTL ? 'ms-4' : 'me-4'">
+                            {{ getTagline() }}
+                        </span>
+                        
+                        <div class="btn-group">
+                            <button type="button" class="lang-btn">
+                                <i class="bi bi-globe2 me-1"></i> 
+                                {{ currentLanguageFlag }} {{ currentLanguageName }}
+                            </button>
+                            <button type="button" class="lang-btn dropdown-toggle dropdown-toggle-split" 
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" [class.dropdown-menu-end]="isRTL">
+                                <li>
+                                    <a class="dropdown-item" 
+                                       [class.active]="currentLanguage === 'en'"
+                                       (click)="switchToLanguage('en')"
+                                       style="cursor: pointer;">
+                                       🇺🇸 English
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" 
+                                       [class.active]="currentLanguage === 'ar'"
+                                       (click)="switchToLanguage('ar')"
+                                       style="cursor: pointer;">
+                                       🇸🇦 العربية
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
-                <ul class="nav" [style.flex-direction]="isRTL() ? 'row-reverse' : 'row'">
-                    <li class="nav-item">
-                        <a class="nav-link" 
-                           [class.active]="isActive('home')"
-                           (click)="navigateToSection('home')" 
-                           style="cursor: pointer;">
-                           {{ isRTL() ? 'الرئيسية' : 'Home' }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" 
-                           [class.active]="isActive('news')"
-                           (click)="navigateToSection('news')" 
-                           style="cursor: pointer;">
-                           {{ isRTL() ? 'الأخبار' : 'News' }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" 
-                           [class.active]="isActive('products')"
-                           (click)="navigateToSection('products')" 
-                           style="cursor: pointer;">
-                           {{ isRTL() ? 'المنتجات' : 'Products' }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" 
-                           [class.active]="isActive('about')"
-                           (click)="navigateToSection('about')" 
-                           style="cursor: pointer;">
-                           {{ isRTL() ? 'حول الشركة' : 'About Us' }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" 
-                           [class.active]="isActive('contact')"
-                           (click)="navigateToSection('contact')" 
-                           style="cursor: pointer;">
-                           {{ isRTL() ? 'تواصل معنا' : 'Contact Us' }}
-                        </a>
-                    </li>
-                </ul>
             </div>
-        </nav>
+
+            <nav>
+                <div class="container d-flex justify-content-between align-items-center"
+                     [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
+                    
+                    <div class="logo pt-2 d-flex align-items-center" [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
+                        <img [src]="'./Images/logo.jpeg'" 
+                             style="height: 50px; margin-bottom: 10px;" 
+                             alt="Company Logo">
+                             
+                        <div class="d-flex flex-column" [ngClass]="isRTL ? 'me-3' : 'ms-3'">
+                            <h5 class="mb-1">{{ getCompanyName() }}</h5>
+                            <p class="text-muted mb-0 small">
+                                {{ getDistributorText() }}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <ul class="nav" [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('home')"
+                               (click)="navigateToSection('home')" 
+                               style="cursor: pointer;">
+                               {{ isRTL ? 'الرئيسية' : 'Home' }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('news')"
+                               (click)="navigateToSection('news')" 
+                               style="cursor: pointer;">
+                               {{ isRTL ? 'الأخبار' : 'News' }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('products')"
+                               (click)="navigateToSection('products')" 
+                               style="cursor: pointer;">
+                               {{ isRTL ? 'المنتجات' : 'Products' }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('about')"
+                               (click)="navigateToSection('about')" 
+                               style="cursor: pointer;">
+                               {{ isRTL ? 'حول الشركة' : 'About Us' }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('contact')"
+                               (click)="navigateToSection('contact')" 
+                               style="cursor: pointer;">
+                               {{ isRTL ? 'تواصل معنا' : 'Contact Us' }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </header>
 </body>
 </html>

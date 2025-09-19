@@ -1,0 +1,32 @@
+.news-section {
+    margin-top: 3rem;
+}
+
+.news-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #1a3c5e;
+}
+
+.news-subtitle {
+    color: #1a3c5e;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+
+.view-all-div{
+    display: flex;
+    justify-content: center;
+    margin: 2rem;
+}
+
+.view-all-btn{
+    background: var(--basic-gradient);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+

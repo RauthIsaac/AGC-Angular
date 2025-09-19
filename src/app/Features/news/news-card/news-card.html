@@ -1,0 +1,12 @@
+<div class="card" >
+  <img src="./Images/hero.jpeg" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p>
+        <i class="bi bi-calendar2 mx-2"></i> <span class="news-date">August 20, 2023</span>
+    </p>
+    <h5 class="card-title">{{news.title}}</h5>
+    <p class="subtitle">{{news.subTitle}}</p>
+    <p class="card-text">{{news.description}}</p>
+    <a [routerLink]="['/newsDtl', news?.id]" class="read-more-btn">Read More <i class="bi bi-arrow-right mx-1"></i> </a>
+  </div>
+</div>

@@ -1,26 +1,61 @@
-<app-header></app-header>
+<app-header 
+  [siteData]="siteIdentityData()"
+  [currentLanguage]="currentLanguage()"
+  [isRTL]="isRTL()"
+  [isLoading]="isLoading()"
+  [currentLanguageName]="currentLanguageName()"
+  [currentLanguageFlag]="currentLanguageFlag()"
+  [activeSection]="activeSection">
+</app-header>
 
 <app-hero-section></app-hero-section>
 
-<div id="news" style="background-color: rgb(203, 140, 23); width: 50vh; height: 50vh;">
-    <!-- <app-news></app-news> -->
+<div id="news">
+  <app-news 
+    [siteData]="siteIdentityData()"
+    [currentLanguage]="currentLanguage()"
+    [isRTL]="isRTL()"
+    [isLoading]="isLoading()">
+  </app-news>
 </div>
 
 <div id="products" style="background-color: rgb(162, 248, 133); width: 50vh; height: 50vh;">
-    <!-- <app-products></app-products> -->
+  <!-- <app-products 
+    [siteData]="siteIdentityData()"
+    [currentLanguage]="currentLanguage()"
+    [isRTL]="isRTL()"
+    [isLoading]="isLoading()">
+  </app-products> -->
 </div>
 
 <div id="about" style="background-color: rgb(193, 60, 155); width: 50vh; height: 50vh;">
-    <app-about></app-about>
+  <!-- <app-about 
+    [siteData]="siteIdentityData()"
+    [currentLanguage]="currentLanguage()"
+    [isRTL]="isRTL()"
+    [isLoading]="isLoading()">
+  </app-about> -->
 </div>
 
 <div id="ceo">
-    <app-ceo></app-ceo>
+  <app-ceo 
+    [siteData]="siteIdentityData()"
+    [currentLanguage]="currentLanguage()"
+    [isRTL]="isRTL()"
+    [isLoading]="isLoading()">
+  </app-ceo>
 </div>
 
 <div id="contact" style="background-color: rgb(45, 20, 135); width: 50vh; height: 50vh;">
-    <app-contact></app-contact>
+  <!-- <app-contact 
+    [siteData]="siteIdentityData()"
+    [currentLanguage]="currentLanguage()"
+    [isRTL]="isRTL()"
+    [isLoading]="isLoading()">
+  </app-contact> -->
 </div>
 
-
 <app-footer></app-footer>
+
+
+
