@@ -1,54 +1,64 @@
-import { Component, input, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { NewsCard } from '../../../news/news-card/news-card';
+import { LanguageService } from '../../../../Core/Services/language-service/language-service';
+import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-news',
-  imports: [NewsCard],
+  imports: [NewsCard, CommonModule],
   templateUrl: './news.html',
   styleUrls: ['./news.css']
 })
-export class News implements OnChanges{
-
-  // Input properties - receive data from parent
-  @Input() siteData: any = null;
-  @Input() currentLanguage: string = 'en';
-  @Input() isRTL: boolean = false;
-  @Input() isLoading: boolean = false;
+export class News implements OnInit, OnDestroy {
+  // Inject services using modern Angular inject function
+  private languageService = inject(LanguageService);
+  private subscription = new Subscription();
 
   newsList: any[] = [];
 
   constructor() { }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['siteData'] && changes['siteData'].currentValue) {
-      console.log("Site Data changed:", changes['siteData'].currentValue);
-      this.getNewsList();
+  ngOnInit() {
+    // Subscribe to site data changes
+    this.subscription.add(
+      this.languageService.currentSiteData$.subscribe(siteData => {
+        console.log("Site Data changed in News component:", siteData);
+        this.getNewsList(siteData);
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  private getNewsList(siteData: any) {
+    console.log('Raw siteData:', siteData); 
+    
+    if (siteData && siteData.news) {
+      this.newsList = Array.isArray(siteData.news) ? siteData.news : [];
+      console.log('Final News List:', this.newsList);
+    } else {
+      this.newsList = [];
+      console.log('No news data available.');
     }
   }
 
-  getNewsList(){
-    console.log('Raw siteData:', this.siteData); 
-    
-    if(this.siteData){
-        if(Array.isArray(this.siteData)) {
-            const newsData = this.siteData.find(item => item.news);
-            this.newsList = newsData ? newsData.news : [];
-        } 
-        else if(this.siteData.news) {
-            this.newsList = this.siteData.news;
-        }
-        else if(Array.isArray(this.siteData) && this.siteData[0]?.title) {
-            this.newsList = this.siteData;
-        }
-        else {
-            this.newsList = [];
-        }
-        
-        console.log('Final News List:', this.newsList);
-    } else {
-        this.newsList = [];
-        console.log('No news data available.');
-    }
-}
+  // Helper methods for template
+  isLoading(): boolean {
+    return this.languageService.isLoading();
+  }
 
+  isRTL(): boolean {
+    return this.languageService.isRTL();
+  }
+
+  getCurrentLanguage(): string {
+    return this.languageService.getCurrentLanguage();
+  }
+
+  hasNews(): boolean {
+    return this.newsList.length > 0;
+  }
 }

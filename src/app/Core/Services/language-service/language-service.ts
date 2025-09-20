@@ -3,28 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
+import { SiteData } from '../../../Shared/models/site-data';
 
 export interface Language {
   code: string;
   name: string;
   direction: 'ltr' | 'rtl';
   flag: string;
-  langCode: number; // Add langCode to match your API
+  langCode: number;
 }
 
-export interface SiteData {
-  id: number;
-  langCode: number;
-  companyName: string;
-  ceO_Name: string;
-  ceO_JobTitle: string;
-  ceO_IntroMessage: string;
-  ceO_EndMessage: string;
-  logoUrl: string;
-  coverImgUrl: string;
-  news: any[];
-  products: any[];
-}
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +23,10 @@ export class LanguageService {
   
   private currentLanguageSubject = new BehaviorSubject<string>('en');
   private currentSiteDataSubject = new BehaviorSubject<SiteData | null>(null);
-  private allSiteDataSubject = new BehaviorSubject<SiteData[]>([]);
-  
+  private isLoadingSubject = new BehaviorSubject<boolean>(false);
+
+  API_URL = 'https://localhost:7162/api/SiteIdentity';
+
   public readonly availableLanguages: Language[] = [
     {
       code: 'en',
@@ -56,7 +46,7 @@ export class LanguageService {
   
   public currentLanguage$ = this.currentLanguageSubject.asObservable();
   public currentSiteData$ = this.currentSiteDataSubject.asObservable();
-  public allSiteData$ = this.allSiteDataSubject.asObservable();
+  public isLoading$ = this.isLoadingSubject.asObservable();
   
   constructor() {
     this.initializeLanguage();
@@ -76,25 +66,7 @@ export class LanguageService {
   }
   
   /**
-   * Load site data from your existing API service
-   */
-  public loadSiteDataFromService(siteIdentityService: any): Observable<SiteData[]> {
-    return siteIdentityService.getSiteIdentity().pipe(
-      tap((data: SiteData[]) => {
-        this.allSiteDataSubject.next(data);
-        // Set current site data based on current language
-        const currentLang = this.getCurrentLanguage();
-        this.updateCurrentSiteData(currentLang);
-      }),
-      catchError((error: any) => {
-        console.error('Error loading site data:', error);
-        return of([]);
-      })
-    );
-  }
-  
-  /**
-   * Set language and update site data accordingly
+   * Set language and load corresponding site data
    */
   public setLanguage(languageCode: string): void {
     if (!this.isLanguageSupported(languageCode)) {
@@ -102,6 +74,9 @@ export class LanguageService {
       return;
     }
     
+    const language = this.availableLanguages.find(lang => lang.code === languageCode);
+    if (!language) return;
+
     this.currentLanguageSubject.next(languageCode);
     
     if (isPlatformBrowser(this.platformId)) {
@@ -109,27 +84,32 @@ export class LanguageService {
       this.updateDocumentLanguage(languageCode);
     }
     
-    // Update current site data for the new language
-    this.updateCurrentSiteData(languageCode);
+    // Load site data for the selected language
+    this.loadSiteDataByLangCode(language.langCode);
   }
-  
+
   /**
-   * Update current site data based on language
+   * Load site data by language code from API
    */
-  private updateCurrentSiteData(languageCode: string): void {
-    const allData = this.allSiteDataSubject.value;
-    const language = this.availableLanguages.find(lang => lang.code === languageCode);
-    
-    if (allData.length > 0 && language) {
-      const siteData = allData.find(data => data.langCode === language.langCode);
-      if (siteData) {
-        this.currentSiteDataSubject.next(siteData);
-      }
-    }
+  private loadSiteDataByLangCode(langCode: number): void {
+    this.isLoadingSubject.next(true);
+        
+    this.http.get<SiteData>(`${this.API_URL}/${langCode}`).pipe(
+      tap((data: SiteData) => {
+        this.currentSiteDataSubject.next(data);
+        console.log('Site Data with Language Code', langCode, 'loaded:', data);
+        this.isLoadingSubject.next(false);
+      }),
+      catchError((error: any) => {
+        console.error('Error loading site data:', error);
+        this.isLoadingSubject.next(false);
+        return of(null);
+      })
+    ).subscribe();
   }
   
   /**
-   * Get text/data based on current language
+   * Get text/data based on current site data
    */
   public getText(key: string, fallback?: string): string {
     const currentData = this.currentSiteDataSubject.value;
@@ -249,19 +229,10 @@ export class LanguageService {
   }
   
   /**
-   * Get all site data for all languages
+   * Check if data is loading
    */
-  public getAllSiteData(): SiteData[] {
-    return this.allSiteDataSubject.value;
-  }
-  
-  /**
-   * Initialize with site data (call this after loading data from API)
-   */
-  public initializeWithSiteData(siteData: SiteData[]): void {
-    this.allSiteDataSubject.next(siteData);
-    const currentLang = this.getCurrentLanguage();
-    this.updateCurrentSiteData(currentLang);
+  public isLoading(): boolean {
+    return this.isLoadingSubject.value;
   }
   
   /**
@@ -278,5 +249,15 @@ export class LanguageService {
   public getCurrentLanguageName(): string {
     const currentLangInfo = this.getCurrentLanguageInfo();
     return currentLangInfo?.name || 'Unknown';
+  }
+
+  /**
+   * Refresh current language data
+   */
+  public refreshCurrentLanguageData(): void {
+    const currentLangInfo = this.getCurrentLanguageInfo();
+    if (currentLangInfo) {
+      this.loadSiteDataByLangCode(currentLangInfo.langCode);
+    }
   }
 }

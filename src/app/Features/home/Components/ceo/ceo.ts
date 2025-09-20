@@ -1,6 +1,6 @@
-// ceo.ts - Simplified CEO Component
 import { CommonModule } from '@angular/common';
-import { Component, Input, computed } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { LanguageService } from '../../../../Core/Services/language-service/language-service';
 
 @Component({
   selector: 'app-ceo',
@@ -9,33 +9,42 @@ import { Component, Input, computed } from '@angular/core';
   styleUrl: './ceo.css'
 })
 export class Ceo {
-  // Input properties - receive data from parent
-  @Input() siteData: any = null;
-  @Input() currentLanguage: string = 'en';
-  @Input() isRTL: boolean = false;
-  @Input() isLoading: boolean = false;
+  // Inject services using modern Angular inject function
+  private languageService = inject(LanguageService);
 
   constructor() { }
 
-  
-  // Helper methods for template
+  // Helper methods for template - now using LanguageService directly
   getCeoName(): string {
-    return this.siteData?.ceO_Name || '';
+    return this.languageService.getText('ceO_Name', '');
   }
 
   getCeoTitle(): string {
-    return this.siteData?.ceO_JobTitle || '';
+    return this.languageService.getText('ceO_JobTitle', '');
   }
 
   getIntroMessage(): string {
-    return this.siteData?.ceO_IntroMessage || '';
+    return this.languageService.getText('ceO_IntroMessage', '');
   }
 
   getEndMessage(): string {
-    return this.siteData?.ceO_EndMessage || '';
+    return this.languageService.getText('ceO_EndMessage', '');
   }
 
   hasData(): boolean {
-    return this.siteData !== null && !this.isLoading;
+    return this.languageService.getCurrentSiteData() !== null && !this.isLoading();
+  }
+
+  isLoading(): boolean {
+    return this.languageService.isLoading();
+  }
+
+  // Additional helper methods
+  isRTL(): boolean {
+    return this.languageService.isRTL();
+  }
+
+  getCurrentLanguage(): string {
+    return this.languageService.getCurrentLanguage();
   }
 }

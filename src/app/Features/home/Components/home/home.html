@@ -1,61 +1,29 @@
 <app-header 
-  [siteData]="siteIdentityData()"
-  [currentLanguage]="currentLanguage()"
-  [isRTL]="isRTL()"
-  [isLoading]="isLoading()"
-  [currentLanguageName]="currentLanguageName()"
-  [currentLanguageFlag]="currentLanguageFlag()"
   [activeSection]="activeSection">
 </app-header>
 
 <app-hero-section></app-hero-section>
 
+<app-values></app-values>
+
 <div id="news">
-  <app-news 
-    [siteData]="siteIdentityData()"
-    [currentLanguage]="currentLanguage()"
-    [isRTL]="isRTL()"
-    [isLoading]="isLoading()">
-  </app-news>
+  <app-news></app-news>
 </div>
 
 <div id="products" style="background-color: rgb(162, 248, 133); width: 50vh; height: 50vh;">
-  <!-- <app-products 
-    [siteData]="siteIdentityData()"
-    [currentLanguage]="currentLanguage()"
-    [isRTL]="isRTL()"
-    [isLoading]="isLoading()">
-  </app-products> -->
+  <!-- <app-products></app-products> -->
 </div>
 
-<div id="about" style="background-color: rgb(193, 60, 155); width: 50vh; height: 50vh;">
-  <!-- <app-about 
-    [siteData]="siteIdentityData()"
-    [currentLanguage]="currentLanguage()"
-    [isRTL]="isRTL()"
-    [isLoading]="isLoading()">
-  </app-about> -->
+<div id="about">
+  <app-about></app-about>
 </div>
 
 <div id="ceo">
-  <app-ceo 
-    [siteData]="siteIdentityData()"
-    [currentLanguage]="currentLanguage()"
-    [isRTL]="isRTL()"
-    [isLoading]="isLoading()">
-  </app-ceo>
+  <app-ceo></app-ceo>
 </div>
 
 <div id="contact" style="background-color: rgb(45, 20, 135); width: 50vh; height: 50vh;">
-  <!-- <app-contact 
-    [siteData]="siteIdentityData()"
-    [currentLanguage]="currentLanguage()"
-    [isRTL]="isRTL()"
-    [isLoading]="isLoading()">
-  </app-contact> -->
+  <!-- <app-contact></app-contact> -->
 </div>
 
 <app-footer></app-footer>
-
-
-

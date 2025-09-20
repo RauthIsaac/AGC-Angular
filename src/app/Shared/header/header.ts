@@ -1,5 +1,4 @@
-// header.ts - Updated Header Component
-import { Component, Input, computed } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationService } from '../services/NavigationService/navigation-service';
 import { LanguageService } from '../../Core/Services/language-service/language-service';
@@ -12,19 +11,14 @@ import { LanguageService } from '../../Core/Services/language-service/language-s
   styleUrls: ['./header.css']
 })
 export class Header {
-  // Input properties - receive data from parent
-  @Input() siteData: any = null;
-  @Input() currentLanguage: string = 'en';
-  @Input() isRTL: boolean = false;
-  @Input() isLoading: boolean = false;
-  @Input() currentLanguageName: string = 'English';
-  @Input() currentLanguageFlag: string = '🇺🇸';
+  // Inject services using modern Angular inject function
+  private navigationService = inject(NavigationService);
+  private languageService = inject(LanguageService);
+
+  // Keep only the activeSection input as it's navigation-specific
   @Input() activeSection: string = 'home';
 
-  constructor(
-    private navigationService: NavigationService,
-    private languageService: LanguageService
-  ) {}
+  constructor() {}
 
   /*====================================================================*/
   //#region Navigation Methods
@@ -48,11 +42,26 @@ export class Header {
   }
 
   /**
-   * Get text using fallback for missing data
+   * Get current language info
    */
-  getText(key: string, fallback?: string): string {
-    if (!this.siteData) return fallback || key;
-    return this.siteData[key] || fallback || key;
+  get currentLanguage(): string {
+    return this.languageService.getCurrentLanguage();
+  }
+
+  get currentLanguageName(): string {
+    return this.languageService.getCurrentLanguageName();
+  }
+
+  get currentLanguageFlag(): string {
+    return this.languageService.getCurrentLanguageFlag();
+  }
+
+  get isRTL(): boolean {
+    return this.languageService.isRTL();
+  }
+
+  get isLoading(): boolean {
+    return this.languageService.isLoading();
   }
 
   //#endregion
@@ -64,57 +73,79 @@ export class Header {
    * Get company name with fallback
    */
   getCompanyName(): string {
-    return this.siteData?.companyName || 'AGC Lubricants';
+    return this.languageService.getText('companyName', 'AGC Lubricants');
   }
 
   /**
    * Get company logo URL with fallback
    */
   getLogoUrl(): string {
-    return this.siteData?.logoUrl;
+    return './Images/logo.jpeg';
   }
 
   /**
    * Check if site data is available
    */
   hasSiteData(): boolean {
-    return this.siteData !== null && !this.isLoading;
+    return this.languageService.getCurrentSiteData() !== null && !this.isLoading;
   }
 
   /**
    * Get phone number based on language
    */
   getPhoneNumber(): string {
-    return this.siteData?.phoneNumber || '+1 (555) 123-4567';
+    return '+1 (555) 123-4567';
+
   }
 
   /**
    * Get email based on language
    */
   getEmail(): string {
-    return this.siteData?.email || 'info@agc.com';
+    return'info@agc.com';
   }
 
   /**
    * Get company tagline based on language
    */
   getTagline(): string {
+    const fallbackEn = 'Powering industries with premium Mobil lubricants since 2000';
+    const fallbackAr = 'نقدم زيوت موبيل المتميزة للصناعات منذ عام 2000';
+    
     if (this.isRTL) {
-      return this.siteData?.taglineAr || 'نقدم زيوت موبيل المتميزة للصناعات منذ عام 2000';
+      return fallbackAr;
     }
-    return this.siteData?.taglineEn || 'Powering industries with premium Mobil lubricants since 2000';
+    return fallbackEn;
   }
 
   /**
    * Get distributor text based on language
    */
   getDistributorText(): string {
+    const fallbackEn = 'ExxonMobil Authorized Distributor';
+    const fallbackAr = 'الموزع المعتمد لشركة إكسون موبيل';
+    
     if (this.isRTL) {
-      return this.siteData?.distributorTextAr || 'الموزع المعتمد لشركة إكسون موبيل';
+      return fallbackAr;
     }
-    return this.siteData?.distributorTextEn || 'ExxonMobil Authorized Distributor';
+    return fallbackEn;
+  }
+
+  /**
+   * Get navigation text based on language
+   */
+  getNavText(key: string): string {
+    const navTexts: { [key: string]: { en: string, ar: string } } = {
+      home: { en: 'Home', ar: 'الرئيسية' },
+      news: { en: 'News', ar: 'الأخبار' },
+      products: { en: 'Products', ar: 'المنتجات' },
+      about: { en: 'About Us', ar: 'حول الشركة' },
+      contact: { en: 'Contact Us', ar: 'تواصل معنا' }
+    };
+
+    const lang = this.isRTL ? 'ar' : 'en';
+    return navTexts[key]?.[lang] || key;
   }
 
   //#endregion
-
 }

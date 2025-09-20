@@ -1,24 +1,32 @@
 <div class="container news-section">
-    <h1 class="news-title text-center">Latest News</h1>
-    <p class="news-subtitle text-center">Stay updated with the latest developments and news from Azzab El Khaleej</p>
-    <div class="row">
-        
-        <!-- cards -->
-        <div class="row">
-            @for(newsItem of newsList; track newsItem.id){
-                <app-news-card [news]="newsItem" class="col-6 my-3 mx-auto"></app-news-card>
-            }
-            @empty {
-                <div class="col-12 text-center">
-                    <p>No news available at the moment.</p>
-                </div>
-            }
+    <!-- Loading State -->
+    <div *ngIf="isLoading()" class="text-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
         </div>
+    </div>
 
+    <!-- Content when data is available -->
+    <div *ngIf="!isLoading()">
+        <h1 class="news-title text-center">Latest News</h1>
+        <p class="news-subtitle text-center">Stay updated with the latest developments and news from Azzab El Khaleej</p>
+        <div class="row">
+            
+            <!-- Cards -->
+            <div class="row">
+                @for(newsItem of newsList; track newsItem.id){
+                    <app-news-card [news]="newsItem" class="col-6 my-3 mx-auto"></app-news-card>
+                }
+                @empty {
+                    <div class="col-12 text-center">
+                        <p>No news available at the moment.</p>
+                    </div>
+                }
+            </div>
+
+        </div>
+        <div class="view-all-div" *ngIf="hasNews()">
+             <button class="view-all-btn">View All News <i class="bi bi-arrow-right mx-2"></i></button>
+        </div>
     </div>
-    <div class="view-all-div">
-         <button class="view-all-btn">View All News <i class="bi bi-arrow-right mx-2"></i></button>
-    </div>
-   
 </div>
-

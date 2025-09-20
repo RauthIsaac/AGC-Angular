@@ -1,12 +1,20 @@
-<div class="card" >
-  <img src="./Images/hero.jpeg" class="card-img-top" alt="...">
-  <div class="card-body">
+<div class="card" [class.rtl]="isRTL()">
+  <img [src]="getNewsImage()" class="card-img-top" [alt]="news.title">
+  <div class="card-body" [class.text-end]="isRTL()">
     <p>
-        <i class="bi bi-calendar2 mx-2"></i> <span class="news-date">August 20, 2023</span>
+        <i class="bi bi-calendar2" [class.mx-2]="!isRTL()" [class.ms-2]="isRTL()"></i> 
+        <span class="news-date">{{ getFormattedDate() }}</span>
     </p>
-    <h5 class="card-title">{{news.title}}</h5>
-    <p class="subtitle">{{news.subTitle}}</p>
-    <p class="card-text">{{news.description}}</p>
-    <a [routerLink]="['/newsDtl', news?.id]" class="read-more-btn">Read More <i class="bi bi-arrow-right mx-1"></i> </a>
+    <h5 class="card-title">{{ news.title }}</h5>
+    <p class="subtitle">{{ news.subTitle }}</p>
+    <p class="card-text">{{ news.description }}</p>
+    <a [routerLink]="['/newsDtl', news?.id]" class="read-more-btn">
+      {{ getReadMoreText() }} 
+      <i class="bi" 
+         [class.bi-arrow-right]="!isRTL()" 
+         [class.bi-arrow-left]="isRTL()"
+         [class.mx-1]="!isRTL()"
+         [class.ms-1]="isRTL()"></i>
+    </a>
   </div>
 </div>

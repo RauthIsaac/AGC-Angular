@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject, OnInit, OnDestroy } from '@angular/core';
 import { Header } from '../../../../Shared/header/header';
 import { HeroSection } from '../hero-section/hero-section';
 import { Footer } from '../../../../Shared/footer/footer';
@@ -9,15 +9,19 @@ import { News } from "../news/news";
 import { Subscription } from 'rxjs';
 import { NavigationService } from '../../../../Shared/services/NavigationService/navigation-service';
 import { LanguageService } from '../../../../Core/Services/language-service/language-service';
-import { SiteIdentityService } from '../../../../Shared/services/SiteIdentityService/site-identity-service';
+import { Values } from "../values/values";
 
 @Component({
   selector: 'app-home',
-  imports: [Header, Footer, HeroSection, About, Contact, Ceo, News],
+  imports: [Header, Footer, HeroSection, Ceo, News, About, Values],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
-export class Home {
+export class Home implements OnInit, OnDestroy {
+  // Inject services using modern Angular inject function
+  private navigationService = inject(NavigationService);
+  private languageService = inject(LanguageService);
+
 
   activeSection: string = 'home';
   private subscription: Subscription = new Subscription();
@@ -29,12 +33,6 @@ export class Home {
   currentLanguageName = signal<string>('English');
   currentLanguageFlag = signal<string>('🇺🇸');
   isLoadingSignal = signal<boolean>(false);
-
-  constructor(
-    private navigationService: NavigationService,
-    private languageService: LanguageService,
-    private siteIdentityService: SiteIdentityService
-  ) {}
 
   ngOnInit() {
     // Subscribe to active section changes
@@ -54,17 +52,24 @@ export class Home {
       })
     );
 
-    // Subscribe to site data changes
+    // Subscribe to site data changes from LanguageService
     this.subscription.add(
       this.languageService.currentSiteData$.subscribe(data => {
         this.siteIdentityData.set(data);
         console.log('Current site data updated:', data);
-        this.isLoadingSignal.set(false);
       })
     );
 
-    // Load site data from API - ONLY ONCE HERE
-    this.loadSiteIdentityData();
+    // Subscribe to loading state from LanguageService
+    this.subscription.add(
+      this.languageService.isLoading$.subscribe(loading => {
+        this.isLoadingSignal.set(loading);
+      })
+    );
+
+    // Initialize with current language (this will trigger data loading)
+    const currentLang = this.languageService.getCurrentLanguage();
+    this.languageService.setLanguage(currentLang);
   }
 
   ngOnDestroy() {
@@ -97,28 +102,9 @@ export class Home {
     return this.languageService.getText(key, fallback);
   }
 
-  // Data Loading - CENTRALIZED HERE
-  private loadSiteIdentityData() {
-    this.isLoadingSignal.set(true);
-    
-    this.subscription.add(
-      this.siteIdentityService.getSiteIdentity().subscribe({
-        next: (data) => {
-          console.log('Site data loaded successfully:', data);
-          this.siteIdentityData.set(data);
-          this.isLoadingSignal.set(false);
-        },
-        error: (error) => {
-          console.error('Error loading site data:', error);
-          this.isLoadingSignal.set(false);
-        }
-      })
-    );
-  }
-
   // Utility Methods
   isLoading(): boolean {
-    return this.isLoadingSignal() || this.siteIdentityService.isDataLoading?.() || false;
+    return this.isLoadingSignal();
   }
 
   getLogoUrl(): string {
@@ -145,5 +131,18 @@ export class Home {
   getProductById(id: number) {
     const data = this.siteIdentityData();
     return data?.products?.find((product: any) => product.id === id);
+  }
+
+  // Additional helper methods for child components
+  getCurrentLanguageName(): string {
+    return this.currentLanguageName();
+  }
+
+  getCurrentLanguageFlag(): string {
+    return this.currentLanguageFlag();
+  }
+
+  getCurrentLanguage(): string {
+    return this.currentLanguage();
   }
 }
