@@ -4,6 +4,8 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { SiteData } from '../../../Shared/models/site-data';
+import { API_ENDPOINTS, API_URL} from '../../../Constants/api-endpoints'; 
+
 
 export interface Language {
   code: string;
@@ -25,7 +27,6 @@ export class LanguageService {
   private currentSiteDataSubject = new BehaviorSubject<SiteData | null>(null);
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
 
-  API_URL = 'https://localhost:7162/api/SiteIdentity';
 
   public readonly availableLanguages: Language[] = [
     {
@@ -94,7 +95,9 @@ export class LanguageService {
   private loadSiteDataByLangCode(langCode: number): void {
     this.isLoadingSubject.next(true);
         
-    this.http.get<SiteData>(`${this.API_URL}/${langCode}`).pipe(
+    const apiUrl = API_URL + API_ENDPOINTS.SITE_IDENDITY.GET;
+
+    this.http.get<SiteData>(`${apiUrl}/${langCode}`).pipe(
       tap((data: SiteData) => {
         this.currentSiteDataSubject.next(data);
         console.log('Site Data with Language Code', langCode, 'loaded:', data);

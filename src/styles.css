@@ -8,6 +8,12 @@
         rgba(200, 40, 0, 0.7)  
     );
 
+     --basic-gradient-hover: linear-gradient(
+        to right,
+        rgba(1, 13, 43, 0.8),   
+        rgba(162, 35, 3, 0.7)  
+    );
+
 
     --primary-color: #2c3e50;
     --secondary-color: #e74c3c;

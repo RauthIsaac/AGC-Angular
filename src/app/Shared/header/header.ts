@@ -2,6 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationService } from '../services/NavigationService/navigation-service';
 import { LanguageService } from '../../Core/Services/language-service/language-service';
+import { API_URL } from '../../Constants/api-endpoints';
 
 @Component({
   selector: 'app-header',
@@ -80,7 +81,7 @@ export class Header {
    * Get company logo URL with fallback
    */
   getLogoUrl(): string {
-    return './Images/logo.jpeg';
+    return API_URL + this.languageService.getText('logoUrl', 'AGC Lubricants');;
   }
 
   /**

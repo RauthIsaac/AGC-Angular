@@ -10,10 +10,11 @@ import { Subscription } from 'rxjs';
 import { NavigationService } from '../../../../Shared/services/NavigationService/navigation-service';
 import { LanguageService } from '../../../../Core/Services/language-service/language-service';
 import { Values } from "../values/values";
+import { ServingSectors } from "../serving-sectors/serving-sectors";
 
 @Component({
   selector: 'app-home',
-  imports: [Header, Footer, HeroSection, Ceo, News, About, Values],
+  imports: [Header, Footer, HeroSection, Ceo, News, About, Values, Contact, ServingSectors],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
