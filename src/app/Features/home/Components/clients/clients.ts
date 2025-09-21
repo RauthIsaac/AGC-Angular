@@ -1,5 +1,6 @@
 import { CommonModule, NgClass } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { LanguageService } from '../../../../Core/Services/language-service/language-service';
 
 @Component({
   selector: 'app-clients',
@@ -33,6 +34,13 @@ export class Clients {
     '/Images/Clients/21.jpeg',
   ];
 
+
+  // Inject services using modern Angular inject function
+  private languageService = inject(LanguageService);
+
+  constructor() { }
+
+  /*------- To Select Images Number --------*/
   getGroupedClients(): string[][] {
     const grouped: string[][] = [];
     for (let i = 0; i < this.clientsList.length; i += 6) {
@@ -40,5 +48,19 @@ export class Clients {
     }
     return grouped;
   }
+
+
+  // Helper methods for template - now using LanguageService directly
+  getClientsTitle(): string {
+    return this.languageService.getText('clients_title', '');
+  }
+
+  getClientsDescription(): string {
+    return this.languageService.getText('clients_description', '');
+  }
+
+  getClientsMessage(): string {
+    return this.languageService.getText('clients_message', '');
+  }   
 
 }

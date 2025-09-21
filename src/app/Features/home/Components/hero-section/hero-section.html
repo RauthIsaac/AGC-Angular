@@ -1,13 +1,11 @@
 <div class="hero-section">
   <div class="hero-content">
-    <h1> <span>Power</span> <br> <span class="text-danger">in Every Drop</span></h1>
-    <p>
-      Authorized distributor of Mobil lubricants, and greases in Saudi Arabia since 2000.
-      Delivering world-class lubrication solutions with 25+ years of expertise.
-    </p>
+    <h1 class="text-danger"> {{getHeroMainTitle()}}</h1>
+    <p > {{getHeroSubtitle()}} </p>
+    <span>{{getHeroMission()}}</span>
     <div class="hero-buttons">
-      <a class="btn"> <i class="bi bi-grid-fill me-2"></i>Explore Products</a>
-      <a class="btn"> <i class="bi bi-chat-dots me-2 fs-5"></i>Contact Us Today</a>
+      <a class="btn"> <i class="bi bi-grid-fill me-2"></i>{{getHeroProductFilterLabel()}}</a>
+      <a class="btn"> <i class="bi bi-chat-dots me-2"></i>{{getHeroKeepInTouch()}}</a>
     </div>
   </div>
 </div>

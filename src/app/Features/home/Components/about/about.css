@@ -15,8 +15,7 @@ h1 {
     margin-bottom: 10px;
 }
 p.subtitle {
-    color: #4a90e2;
-    font-size: 1rem;
+    font-size: 1.3rem;
     margin-bottom: 30px;
 }
 
@@ -32,9 +31,9 @@ p.subtitle {
     box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
-.about-card-status h3 {
+.about-card-status h4 {
     color: #1a3c5e;
-    font-size: 1.6em;
+    font-size: 1.4em;
     font-weight: bold;
     margin-bottom: 10px;
 }
@@ -59,12 +58,6 @@ p.subtitle {
     font-weight: bold;
     margin-bottom: 10px;
 }
-.about-card p {
-    color: #1a3c5e;
-    font-size: 0.9em;
-    line-height: 1.5;
-}
-
 
 .text-section {
     padding: 0 1rem;
@@ -72,7 +65,7 @@ p.subtitle {
 }
 .text-section p {
     color: #1a3c5e;
-    font-size: 1em;
+    font-size: 1.1em;
 }
 
 .svg-div{

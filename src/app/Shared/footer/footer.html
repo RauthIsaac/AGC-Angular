@@ -3,57 +3,56 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-6 footer-col">
-                    <div class="footer-logo">Azzab El Khaleej</div>
-                    <p class="footer-desc">Exclusive authorized distributor for ExxonMobil in the Kingdom of Saudi Arabia. We provide the highest quality oils and lubricants for industrial and commercial sectors.</p>
+                    <div class="footer-logo">{{getFooterCompanyName()}}</div>
+                    <p class="footer-desc">{{getFooterCompanyDescription()}}</p>
                     
-                    <div class="footer-badge">Authorized Partner of ExxonMobil Official Distributor</div>
+                    <div class="footer-badge">{{getFooterAuthorizedDistributor()}}</div>
                 </div>
                 
                 <div class="col-lg-2 col-md-6 footer-col">
-                    <h4 class="footer-title">Quick Links</h4>
+                    <h4 class="footer-title">{{getFooterQuickLinks()}}</h4>
                     <ul class="footer-links">
-                        <li><a href="#"> <i class="bi bi-house-door me-2"></i> Home</a></li>
-                        <li><a href="#"> <i class="bi bi-info-circle me-2"></i> About</a></li>
-                        <li><a href="#"> <i class="bi bi-box me-2"></i> Products</a></li>
-                        <li><a href="#"> <i class="bi bi-person me-2"></i> Clients</a></li>
-                        <li><a href="#"> <i class="bi bi-newspaper me-2"></i> News</a></li>
-                        <li><a href="#"> <i class="bi bi-envelope me-2"></i> Contact</a></li>
+                        <li><a href="#"> <i class="bi bi-house-door me-2"></i> {{getHome()}}</a></li>
+                        <li><a href="#"> <i class="bi bi-info-circle me-2"></i> {{getAbout()}}</a></li>
+                        <li><a href="#"> <i class="bi bi-box me-2"></i> {{getProducts()}}</a></li>
+                        <li><a href="#"> <i class="bi bi-person me-2"></i> {{getClients()}}</a></li>
+                        <li><a href="#"> <i class="bi bi-newspaper me-2"></i> {{getNews()}}</a></li>
+                        <li><a href="#"> <i class="bi bi-envelope me-2"></i> {{getContact()}}</a></li>
                     </ul>
                 </div>
                 
                 <div class="col-lg-3 col-md-6 footer-col">
-                    <h4 class="footer-title">Contact Information</h4>
+                    <h4 class="footer-title">{{getFooterContactInfo()}}</h4>
                     <ul class="contact-info">
                         <li>
-                            <i class="bi bi-telephone"></i>
-                            <span>+966 11 XXX XXXX</span>
+                            <i class="bi bi-telephone mx-1"></i>
+                            <span>{{getFooterPhone()}}</span>
                         </li>
                         <li>
-                            <i class="bi bi-envelope"></i>
-                            <span>info@azzabelkhaleej.com</span>
+                            <i class="bi bi-envelope mx-1"></i>
+                            <span>{{getFooterEmail()}}</span>
                         </li>
                         <li>
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Riyadh, Saudi Arabia</span>
+                            <i class="bi bi-geo-alt mx-1"></i>
+                            <span>{{getFooterAddress()}}</span>
                         </li>
                     </ul>
                 </div>
                 
                 <div class="col-lg-3 col-md-6 footer-col">
-                    <h4 class="footer-title">Follow Us</h4>
-                    <p>Stay connected with us on social media</p>
+                    <h4 class="footer-title">{{getFooterSocialMediaLinks()}}</h4>
                     
                     <div class="social-icons">
-                        <a href="#" class="social-icon">
+                        <a href="{{getFooterSocialMediaFacebookUrl()}}" class="social-icon" target="_blank">
                             <i class="bi bi-facebook"></i>
                         </a>
-                        <a href="#" class="social-icon">
-                            <i class="bi bi-twitter"></i>
+                        <a href="{{getFooterSocialMediaTiktokUrl()}}" class="social-icon" target="_blank">
+                            <i class="bi bi-tiktok"></i>
                         </a>
-                        <a href="#" class="social-icon">
+                        <a href="{{getFooterSocialMediaLinkedinUrl()}}" class="social-icon" target="_blank">
                             <i class="bi bi-linkedin"></i>
                         </a>
-                        <a href="#" class="social-icon">
+                        <a href="{{getFooterSocialMediaInstagramUrl()}}" class="social-icon" target="_blank">
                             <i class="bi bi-instagram"></i>
                         </a>
                     </div>
@@ -61,7 +60,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 Azzab El Khaleej. All rights reserved.</p>
+                <p>{{getFooterCopyright()}}</p>
             </div>
         </div>
     </footer> 

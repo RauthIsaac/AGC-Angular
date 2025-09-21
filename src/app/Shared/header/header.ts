@@ -91,24 +91,17 @@ export class Header {
     return this.languageService.getCurrentSiteData() !== null && !this.isLoading;
   }
 
-  /**
-   * Get phone number based on language
-   */
+  /*------------- Get phone number based on language -------------*/
   getPhoneNumber(): string {
-    return '+1 (555) 123-4567';
-
+    return this.languageService.getText('header_phone');
   }
 
-  /**
-   * Get email based on language
-   */
+  /*------------- Get email based on language -------------*/
   getEmail(): string {
-    return'info@agc.com';
+    return this.languageService.getText('header_email', 'info@agc.com');
   }
 
-  /**
-   * Get company tagline based on language
-   */
+  /*------------- Get company tagline based on language -------------*/
   getTagline(): string {
     const fallbackEn = 'Powering industries with premium Mobil lubricants since 2000';
     const fallbackAr = 'نقدم زيوت موبيل المتميزة للصناعات منذ عام 2000';
@@ -119,9 +112,7 @@ export class Header {
     return fallbackEn;
   }
 
-  /**
-   * Get distributor text based on language
-   */
+  /*------------- Get distributor text based on language -------------*/
   getDistributorText(): string {
     const fallbackEn = 'ExxonMobil Authorized Distributor';
     const fallbackAr = 'الموزع المعتمد لشركة إكسون موبيل';
@@ -132,20 +123,34 @@ export class Header {
     return fallbackEn;
   }
 
-  /**
-   * Get navigation text based on language
-   */
-  getNavText(key: string): string {
-    const navTexts: { [key: string]: { en: string, ar: string } } = {
-      home: { en: 'Home', ar: 'الرئيسية' },
-      news: { en: 'News', ar: 'الأخبار' },
-      products: { en: 'Products', ar: 'المنتجات' },
-      about: { en: 'About Us', ar: 'حول الشركة' },
-      contact: { en: 'Contact Us', ar: 'تواصل معنا' }
-    };
+  /*------------- Get Home based on language -------------*/
+  getHome(): string {
+    return this.languageService.getText('header_navigation_home');
+  }
 
-    const lang = this.isRTL ? 'ar' : 'en';
-    return navTexts[key]?.[lang] || key;
+  /*------------- Get About based on language -------------*/
+  getAbout(): string {
+    return this.languageService.getText('header_navigation_about');
+  }
+
+  /*------------- Get Products based on language -------------*/
+  getProducts(): string {
+    return this.languageService.getText('header_navigation_products');
+  }
+
+  /*------------- Get Clients based on language -------------*/
+  getClients(): string {
+    return this.languageService.getText('header_navigation_clients');
+  }
+
+  /*------------- Get News based on language -------------*/
+  getNews(): string {
+    return this.languageService.getText('header_navigation_news');
+  }
+
+  /*------------- Get Contact based on language -------------*/
+  getContact(): string {
+    return this.languageService.getText('header_navigation_contact');
   }
 
   //#endregion

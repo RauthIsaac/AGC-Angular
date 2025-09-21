@@ -82,7 +82,7 @@
                            [class.active]="isActive('home')"
                            (click)="navigateToSection('home')" 
                            style="cursor: pointer;">
-                           {{ getNavText('home') }}
+                           {{ getHome() }}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -90,7 +90,7 @@
                            [class.active]="isActive('news')"
                            (click)="navigateToSection('news')" 
                            style="cursor: pointer;">
-                           {{ getNavText('news') }}
+                           {{ getNews() }}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -98,7 +98,15 @@
                            [class.active]="isActive('products')"
                            (click)="navigateToSection('products')" 
                            style="cursor: pointer;">
-                           {{ getNavText('products') }}
+                           {{ getProducts() }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" 
+                           [class.active]="isActive('clients')"
+                           (click)="navigateToSection('clients')" 
+                           style="cursor: pointer;">
+                           {{ getClients() }}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -106,7 +114,7 @@
                            [class.active]="isActive('about')"
                            (click)="navigateToSection('about')" 
                            style="cursor: pointer;">
-                           {{ getNavText('about') }}
+                           {{ getAbout() }}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -114,10 +122,11 @@
                            [class.active]="isActive('contact')"
                            (click)="navigateToSection('contact')" 
                            style="cursor: pointer;">
-                           {{ getNavText('contact') }}
+                           {{ getContact() }}
                         </a>
                     </li>
                 </ul>
+
             </div>
         </nav>
     </div>
