@@ -2,10 +2,12 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../../Core/Services/language-service/language-service';
 import { CommonModule } from '@angular/common';
+import { API_URL } from '../../../Constants/api-endpoints';
+import { TruncatePipe } from "../../../Shared/Pipes/TruncatePipe";
 
 @Component({
   selector: 'app-news-card',
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, TruncatePipe],
   templateUrl: './news-card.html',
   styleUrls: ['./news-card.css']
 })
@@ -56,7 +58,8 @@ export class NewsCard implements OnInit {
 
   // Get news image with fallback
   getNewsImage(): string {
-    return this.news?.imageUrl || './Images/hero.jpeg';
+    const newsImageURL = API_URL + this.news?.newsImgUrl;
+    return newsImageURL;
   }
 
   // Get read more text based on language

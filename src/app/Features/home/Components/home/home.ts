@@ -12,10 +12,11 @@ import { LanguageService } from '../../../../Core/Services/language-service/lang
 import { Values } from "../values/values";
 import { ServingSectors } from "../serving-sectors/serving-sectors";
 import { Clients } from "../clients/clients";
+import { Products } from "../products/products";
 
 @Component({
   selector: 'app-home',
-  imports: [Header, Footer, HeroSection, Ceo, News, About, Values, Contact, ServingSectors, Clients],
+  imports: [Header, Footer, HeroSection, Ceo, News, About, Values, Contact, ServingSectors, Clients, Products],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })

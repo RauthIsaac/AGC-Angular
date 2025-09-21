@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageService } from '../../../Core/Services/language-service/language-service';
+import { API_URL } from '../../../Constants/api-endpoints';
 
 @Component({
   selector: 'app-news-details',
@@ -137,6 +138,7 @@ export class NewsDetails implements OnInit, OnDestroy {
 
   // Get news image with fallback
   getNewsImage(): string {
-    return this.newsItem?.imageUrl || './Images/hero.jpeg';
+    const imageUrl = API_URL + this.newsItem?.newsImgUrl;
+    return imageUrl;
   }
 }

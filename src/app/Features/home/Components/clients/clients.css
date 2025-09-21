@@ -23,7 +23,10 @@ p{
 }
 
 .carousel-inner {
-    padding: 5px 50px;
+    padding: 20px 50px;
+    border-top: 3px solid #285d92;
+    border-bottom: 3px solid #285d92;
+    border-radius: 10px;
 }
 
 .client-img {
@@ -32,6 +35,8 @@ p{
   object-fit: contain;
   margin: 5px 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 3px solid #285d92;
+  border-radius: 15PX;
 }
 .client-img:hover {
   transform: scale(1.1);
@@ -42,8 +47,6 @@ p{
 .carousel-control-prev,
 .carousel-control-next {
   width: 5%;
-  padding: 25px;
-  transition: transform 0.3s ease;
 }
 
 .carousel-control-prev-icon,
@@ -52,13 +55,11 @@ p{
 }
 
 .carousel-control-prev:hover{
-    background-color: rgba(0, 0, 0, 0.01);
     border-radius: 10px;
-    transform: translateX(-5px) scale(1.2);
+    transform: translateX(-5px) scale(1.3);
 }
 
 .carousel-control-next:hover{
-    background-color: rgba(0, 0, 0, 0.01);
     border-radius: 10px;
-    transform: translateX(5px) scale(1.2);
+    transform: translateX(5px) scale(1.3);
 }

@@ -7,7 +7,7 @@
     </p>
     <h5 class="card-title">{{ news.title }}</h5>
     <p class="subtitle">{{ news.subTitle }}</p>
-    <p class="card-text">{{ news.description }}</p>
+    <p class="card-text">{{ news.description | truncate:300 }}</p>
     <a [routerLink]="['/newsDtl', news?.id]" class="read-more-btn">
       {{ getReadMoreText() }} 
       <i class="bi" 
