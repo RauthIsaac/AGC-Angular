@@ -1,1 +1,27 @@
-<p>clients works!</p>
+<div class="container my-5">
+  <h2 class="text-center mb-4">Our Clients</h2>
+  <p>We are proud of the trust of our clients from various sectors in the Kingdom of Saudi Arabia</p>
+  <div class="more-div">
+    <span>More than 500 clients trust us throughout the Kingdom</span>
+  </div>
+  <div id="clientsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+    <div class="carousel-inner mx-auto">
+      <div *ngFor="let clientGroup of getGroupedClients(); let i = index" 
+           class="carousel-item" [ngClass]="{'active': i === 0}">
+        <div class="row">
+          <div class="col-2" *ngFor="let client of clientGroup">
+            <img [src]="client" class=" client-img" alt="Client Image">
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#clientsCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#clientsCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
