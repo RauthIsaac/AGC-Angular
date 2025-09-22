@@ -3,11 +3,10 @@ import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../../Core/Services/language-service/language-service';
 import { CommonModule } from '@angular/common';
 import { API_URL } from '../../../Constants/api-endpoints';
-import { TruncatePipe } from "../../../Shared/Pipes/TruncatePipe";
 
 @Component({
   selector: 'app-news-card',
-  imports: [RouterLink, CommonModule, TruncatePipe],
+  imports: [RouterLink, CommonModule],
   templateUrl: './news-card.html',
   styleUrls: ['./news-card.css']
 })
