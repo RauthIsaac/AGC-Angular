@@ -1,7 +1,5 @@
 import { Component, signal, inject, OnInit, OnDestroy } from '@angular/core';
-import { Header } from '../../../../Shared/header/header';
 import { HeroSection } from '../hero-section/hero-section';
-import { Footer } from '../../../../Shared/footer/footer';
 import { About } from '../about/about';
 import { Contact } from '../contact/contact';
 import { Ceo } from "../ceo/ceo";
@@ -16,7 +14,7 @@ import { Products } from "../products/products";
 
 @Component({
   selector: 'app-home',
-  imports: [Header, Footer, HeroSection, Ceo, News, About, Values, Contact, ServingSectors, Clients, Products],
+  imports: [HeroSection, Ceo, News, About, Values, Contact, ServingSectors, Clients, Products],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
@@ -124,16 +122,6 @@ export class Home implements OnInit, OnDestroy {
 
   hasSiteData(): boolean {
     return this.siteIdentityData() !== null;
-  }
-
-  getNewsById(id: number) {
-    const data = this.siteIdentityData();
-    return data?.news?.find((news: any) => news.id === id);
-  }
-
-  getProductById(id: number) {
-    const data = this.siteIdentityData();
-    return data?.products?.find((product: any) => product.id === id);
   }
 
   // Additional helper methods for child components

@@ -1,12 +1,13 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LanguageService } from '../../../Core/Services/language-service/language-service';
 import { Subscription } from 'rxjs';
 import { API_URL } from '../../../Constants/api-endpoints';
+import { Products } from "../../home/Components/products/products";
 
 @Component({
   selector: 'app-product-details',
-  imports: [],
+  imports: [ Products],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css'
 })
@@ -104,6 +105,22 @@ export class ProductDetails implements OnInit, OnDestroy {
   getProductImage(): string {
     const imageUrl = API_URL + this.productItem?.imageUrl;
     return imageUrl;
+  }
+
+  getProductName(): string {
+    return this.productItem?.name || 'product_name';
+  }
+
+  getProductTitle(): string {
+    return this.productItem?.title || 'product_title';
+  }
+
+  getProductSubtitle(): string {
+    return this.productItem?.subTitle || 'product_subtitle';
+  }
+
+  getProductDescription(): string {
+    return this.productItem?.description || 'product_description';
   }
 
 }

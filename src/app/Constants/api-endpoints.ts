@@ -6,5 +6,9 @@ export const API_ENDPOINTS = {
     SITE_IDENDITY : {
         GET : 'api/SiteIdentity'
     }
+
+    , MESSAGE_GUEST : {
+        POST : 'api/Message_Guest'
+    }
 }
 

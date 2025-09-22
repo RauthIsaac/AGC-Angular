@@ -1,4 +1,4 @@
-<div class="hero-section">
+<div class="hero-section" [style.background-image]="'url('  + getHeroBackgroundImage() + ')'">
   <div class="hero-content">
     <h1 [ngStyle]="{'color': isRTL() ? '#001f4d' : 'red'}">
       {{ getHeroMainTitle() }}

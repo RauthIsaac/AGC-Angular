@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { LanguageService } from '../../../../Core/Services/language-service/language-service';
 import { NgStyle } from '@angular/common';
+import { API_URL } from '../../../../Constants/api-endpoints';
 
 @Component({
   selector: 'app-hero-section',
@@ -44,4 +45,11 @@ export class HeroSection {
   isRTL(): boolean {
     return this.languageService.isRTL();
   }
+
+  getHeroBackgroundImage(): string {
+    const coverURL = API_URL + this.languageService.getText('coverImgUrl', 'coverImgUrl');
+    return coverURL;
+  }
+
+
 }

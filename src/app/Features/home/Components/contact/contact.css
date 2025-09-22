@@ -94,6 +94,11 @@
   background: var(--basic-gradient-hover);
 }
 
+.submit-btn:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
 .info-section {
   display: flex;
   flex-direction: column;
@@ -144,9 +149,18 @@
   margin: 0;
 }
 
+.error-message {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
 
-svg{
-    width: 1.5rem;
+.error-message.rtl {
+  text-align: right;
+}
+
+svg {
+  width: 1.5rem;
 }
 
 @media (max-width: 768px) {

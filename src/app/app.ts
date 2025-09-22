@@ -1,12 +1,59 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { Footer } from "./Shared/footer/footer";
+import { Header } from './Shared/header/header';
+import { NavigationService } from './Shared/services/NavigationService/navigation-service';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Header, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('AGC');
+export class App implements OnInit, OnDestroy {
+
+  // Inject services using modern Angular inject function
+  private navigationService = inject(NavigationService);
+  private router = inject(Router);
+
+  activeSection: string = 'home';
+  private subscription: Subscription = new Subscription();
+
+  constructor() {}
+  
+  ngOnInit() {
+    // Subscribe to active section changes
+    this.subscription.add(
+      this.navigationService.activeSection$.subscribe(section => {
+        this.activeSection = section;
+      })
+    );
+
+    // Listen for route changes to handle URL fragments
+    this.subscription.add(
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe((event: NavigationEnd) => {
+        // Handle URL fragments when navigation ends
+        setTimeout(() => {
+          this.navigationService.handleUrlFragment();
+        }, 100);
+      })
+    );
+
+    // Handle initial URL fragment if present
+    setTimeout(() => {
+      this.navigationService.handleUrlFragment();
+    }, 100);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  isActive(section: string): boolean {
+    return this.navigationService.isActive(section);
+  }
 }
