@@ -160,7 +160,7 @@ export class Header {
 
   /*------------- Get phone number based on language -------------*/
   getPhoneNumber(): string {
-    return this.languageService.getText('header_phone');
+    return this.languageService.getText('header_phone', 'header_phone');
   }
 
   /*------------- Get email based on language -------------*/
@@ -192,32 +192,32 @@ export class Header {
 
   /*------------- Get Home based on language -------------*/
   getHome(): string {
-    return this.languageService.getText('header_navigation_home');
+    return this.languageService.getText('header_navigation_home', 'header_navigation_home');
   }
 
   /*------------- Get About based on language -------------*/
   getAbout(): string {
-    return this.languageService.getText('header_navigation_about');
+    return this.languageService.getText('header_navigation_about', 'header_navigation_about');
   }
 
   /*------------- Get Products based on language -------------*/
   getProducts(): string {
-    return this.languageService.getText('header_navigation_products');
+    return this.languageService.getText('header_navigation_products', 'header_navigation_products');
   }
 
   /*------------- Get Clients based on language -------------*/
   getClients(): string {
-    return this.languageService.getText('header_navigation_clients');
+    return this.languageService.getText('header_navigation_clients', 'header_navigation_clients');
   }
 
   /*------------- Get News based on language -------------*/
   getNews(): string {
-    return this.languageService.getText('header_navigation_news');
+    return this.languageService.getText('header_navigation_news', 'header_navigation_news');
   }
 
   /*------------- Get Contact based on language -------------*/
   getContact(): string {
-    return this.languageService.getText('header_navigation_contact');
+    return this.languageService.getText('header_navigation_contact', 'header_navigation_contact');
   }
 
   //#endregion

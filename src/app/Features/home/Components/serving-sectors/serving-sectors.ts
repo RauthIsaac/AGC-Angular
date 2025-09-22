@@ -16,60 +16,60 @@ export class ServingSectors {
 
   // Helper methods for template - now using LanguageService directly
   getClientsSectorsTitle(): string {
-    return this.languageService.getText('clients_sectorsTitle', '');
+    return this.languageService.getText('clients_sectorsTitle', 'clients_sectorsTitle');
   }
 
   getClientsSectorsName1(): string {
-    return this.languageService.getText('clients_sectors_name_1', '');
+    return this.languageService.getText('clients_sectors_name_1', 'clients_sectors_name_1');
   }
   getClientsSectorsDescription1(): string {
-    return this.languageService.getText('clients_sectors_description_1', '');
+    return this.languageService.getText('clients_sectors_description_1', 'clients_sectors_description_1');
   }
 
   getClientsSectorsName2(): string {
-    return this.languageService.getText('clients_sectors_name_2', '');
+    return this.languageService.getText('clients_sectors_name_2', 'clients_sectors_name_2');
   }
   getClientsSectorsDescription2(): string {
-    return this.languageService.getText('clients_sectors_description_2', '');
+    return this.languageService.getText('clients_sectors_description_2', 'clients_sectors_description_2');
   }
 
   getClientsSectorsName3(): string {
-    return this.languageService.getText('clients_sectors_name_3', '');
+    return this.languageService.getText('clients_sectors_name_3', 'clients_sectors_name_3');
   }
   getClientsSectorsDescription3(): string {
-    return this.languageService.getText('clients_sectors_description_3', '');
+    return this.languageService.getText('clients_sectors_description_3', 'clients_sectors_description_3');
   }
 
 
   getClientsSectorsName4(): string {
-    return this.languageService.getText('clients_sectors_name_4', '');
+    return this.languageService.getText('clients_sectors_name_4', 'clients_sectors_name_4');
   }
   getClientsSectorsDescription4(): string {
-    return this.languageService.getText('clients_sectors_description_4', '');
+    return this.languageService.getText('clients_sectors_description_4', 'clients_sectors_description_4');
   }
 
   getClientsSectorsName5(): string {
-    return this.languageService.getText('clients_sectors_name_5', '');
+    return this.languageService.getText('clients_sectors_name_5', 'clients_sectors_name_5');
   }
   getClientsSectorsDescription5(): string {
-    return this.languageService.getText('clients_sectors_description_5', '');
+    return this.languageService.getText('clients_sectors_description_5', 'clients_sectors_description_5');
   }
 
   getClientsSectorsName6(): string {
-    return this.languageService.getText('clients_sectors_name_6', '');
+    return this.languageService.getText('clients_sectors_name_6', 'clients_sectors_name_6');
   }
   getClientsSectorsDescription6(): string {
-    return this.languageService.getText('clients_sectors_description_6', '');
+    return this.languageService.getText('clients_sectors_description_6', 'clients_sectors_description_6');
   }
 
   getClientFamilyTitle(): string {
-    return this.languageService.getText('clientFamily_title', '');
+    return this.languageService.getText('clientFamily_title', 'clientFamily_title');
   }
   getClientFamilyDescription(): string {
-    return this.languageService.getText('clientFamily_description', '');
+    return this.languageService.getText('clientFamily_description', 'clientFamily_description');
   }
   getClientFamilyButton(): string {
-    return this.languageService.getText('clientFamily_button', '');
+    return this.languageService.getText('clientFamily_button', 'clientFamily_button');
   }
   
 }

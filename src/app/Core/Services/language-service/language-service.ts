@@ -118,7 +118,7 @@ export class LanguageService {
     const currentData = this.currentSiteDataSubject.value;
     
     if (!currentData) {
-      console.warn(`No site data loaded, returning fallback or key: ${key}`);
+      // console.warn(`No site data loaded, returning fallback or key: ${key}`);
       return fallback || key;
     }
     

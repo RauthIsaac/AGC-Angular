@@ -15,22 +15,30 @@ export class Ceo {
   constructor() { }
 
   // Helper methods for template - now using LanguageService directly
+  getCeoMessageTitle(): string {
+    return this.languageService.getText('ceoMessage_title', 'ceoMessage_title');
+  }
+
+  getCeoMessageVisionStatement(): string {
+    return this.languageService.getText('ceoMessage_visionStatement', 'ceoMessage_visionStatement');
+  }
+
   getCeoName(): string {
-    return this.languageService.getText('ceO_Name', '');
+    return this.languageService.getText('ceO_Name', 'ceO_Name');
   }
 
   getCeoTitle(): string {
-    return this.languageService.getText('ceO_JobTitle', '');
+    return this.languageService.getText('ceO_JobTitle', 'ceO_JobTitle');
   }
 
   getIntroMessage(): string {
-    return this.languageService.getText('ceO_IntroMessage', '');
+    return this.languageService.getText('ceO_IntroMessage', 'ceO_IntroMessage');
   }
 
   getEndMessage(): string {
-    return this.languageService.getText('ceO_EndMessage', '');
+    return this.languageService.getText('ceO_EndMessage', 'ceO_EndMessage');
   }
-
+ 
   hasData(): boolean {
     return this.languageService.getCurrentSiteData() !== null && !this.isLoading();
   }

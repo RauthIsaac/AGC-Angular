@@ -9,8 +9,8 @@
 
   <!-- Content when data is available -->
   <div *ngIf="hasData()">
-    <h1 class="text-center mb-3">CEO Message</h1>
-    <p class="text-center text-muted mb-5">Our vision for the future of oil and lubricant industry in the Kingdom</p>
+    <h1 class="text-center mb-3">{{getCeoMessageTitle()}}</h1>
+    <p class="text-center text-muted mb-5">{{getCeoMessageVisionStatement()}}</p>
     
     <div class="row">
       <div class="col-md-6 mb-2">

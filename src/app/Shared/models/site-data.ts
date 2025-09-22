@@ -2,10 +2,6 @@ export interface SiteData {
     id: number,
     langCode: number,
     companyName: string,
-    ceO_Name: string,
-    ceO_JobTitle: string,
-    ceO_IntroMessage: string,
-    ceO_EndMessage: string,
     logoUrl: string,
     coverImgUrl: string,
 
@@ -64,11 +60,16 @@ export interface SiteData {
     about_stats_authorizedCompany: string,
     about_stats_authorizedDistributor: string,
 
+    ceO_Name: string,
+    ceO_JobTitle: string,
+    ceO_IntroMessage: string,
+    ceO_EndMessage: string,
     ceoMessage_title: string,
     ceoMessage_visionStatement: string,
     ceoMessage_ceoName: string,
     ceoMessage_position: string,
     ceoMessage_message: string,
+
 
     clients_title: string,
     clients_description: string,

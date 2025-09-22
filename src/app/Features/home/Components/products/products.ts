@@ -66,15 +66,15 @@ export class Products implements OnInit, OnDestroy {
 
 
   getProductTitle():string{
-    return this.languageService.getText('products_title');
+    return this.languageService.getText('products_title', 'products_title');
   }
 
   getProductDescription():string{
-    return this.languageService.getText('products_description');
+    return this.languageService.getText('products_description', 'products_description');
   }
 
   getProductButton():string{
-    return this.languageService.getText('products_button');
+    return this.languageService.getText('products_button', 'products_button');
   }
 
   getNoProductsText(): string {

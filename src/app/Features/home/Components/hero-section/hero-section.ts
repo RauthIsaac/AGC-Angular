@@ -17,28 +17,28 @@ export class HeroSection {
 
   // Helper methods for template - now using LanguageService directly
   getHeroCompanyName(): string {
-    return this.languageService.getText('companyName', '');
+    return this.languageService.getText('companyName', 'companyName');
   }
   getHeroMainTitle(): string {
-    return this.languageService.getText('hero_mainTitle', '');
+    return this.languageService.getText('hero_mainTitle', 'hero_mainTitle');
   }
 
   getHeroSubtitle(): string {
-    return this.languageService.getText('hero_subtitle', '');
+    return this.languageService.getText('hero_subtitle', 'hero_subtitle');
   }
 
   getHeroArabicBadge(): string {
-    return this.languageService.getText('hero_arabicBadge', '');
+    return this.languageService.getText('hero_arabicBadge', 'hero_arabicBadge');
   }
   getHeroProductFilterLabel(): string {
-    return this.languageService.getText('hero_productFilter_label', '');
+    return this.languageService.getText('hero_productFilter_label', 'hero_productFilter_label');
   }
   getHeroMission(): string {
-    return this.languageService.getText('hero_mission', '');
+    return this.languageService.getText('hero_mission', 'hero_mission');
   }
 
   getHeroKeepInTouch(): string {
-    return this.languageService.getText('clientFamily_button', '');
+    return this.languageService.getText('clientFamily_button', 'clientFamily_button');
   }
   
   isRTL(): boolean {

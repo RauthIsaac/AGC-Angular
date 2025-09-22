@@ -64,15 +64,15 @@ export class News implements OnInit, OnDestroy {
 
 
   getNewsTitle():string{
-    return this.languageService.getText('news_title');
+    return this.languageService.getText('news_title', 'news_title');
   }
 
   getNewsDescription():string{
-    return this.languageService.getText('news_description');
+    return this.languageService.getText('news_description', 'news_description');
   }
 
   getNewsButton():string{
-    return this.languageService.getText('news_button');
+    return this.languageService.getText('news_button', 'news_button');
   }
 
 

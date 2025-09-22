@@ -16,55 +16,55 @@ export class About {
 
   // Helper methods for template - now using LanguageService directly
   getAboutTitle(): string {
-    return this.languageService.getText('about_title', '');
+    return this.languageService.getText('about_title', 'about_title');
   }
 
   getAboutSubtitle(): string {
-    return this.languageService.getText('about_subtitle', '');
+    return this.languageService.getText('about_subtitle', 'about_subtitle');
   }
 
   getAboutDescription(): string {
-    return this.languageService.getText('about_description', '');
+    return this.languageService.getText('about_description', 'about_description');
   }
 
   getAboutOurMission(): string {
-    return this.languageService.getText('about_ourMission', '');
+    return this.languageService.getText('about_ourMission', 'about_ourMission');
   }
 
   getAboutMissionStatement(): string {
-    return this.languageService.getText('about_missionStatement', '');
+    return this.languageService.getText('about_missionStatement', 'about_missionStatement');
   }
 
   getAboutOurVision(): string {
-    return this.languageService.getText('about_ourVision', '');
+    return this.languageService.getText('about_ourVision', 'about_ourVision');
   }
 
   getAboutVisionStatement(): string {
-    return this.languageService.getText('about_visionStatement', '');
+    return this.languageService.getText('about_visionStatement', 'about_visionStatement');
   }
 
   getAboutStatsYearsExperience(): string {
-    return this.languageService.getText('about_stats_yearsExperience', '');
+    return this.languageService.getText('about_stats_yearsExperience', 'about_stats_yearsExperience');
   }
 
   getAboutStatsSpecialists(): string {
-    return this.languageService.getText('about_stats_specialists', '');
+    return this.languageService.getText('about_stats_specialists', 'about_stats_specialists');
   }
 
   getAboutStatsSpecializedProducts(): string {
-    return this.languageService.getText('about_stats_specializedProducts', '');
+    return this.languageService.getText('about_stats_specializedProducts', 'about_stats_specializedProducts');
   }
 
   getAboutStatsTechnicalSupport(): string {
-    return this.languageService.getText('about_stats_technicalSupport', '');
+    return this.languageService.getText('about_stats_technicalSupport', 'about_stats_technicalSupport');
   }
 
   getAboutAuthorizedCompany(): string {
-    return this.languageService.getText('about_stats_authorizedCompany', '');
+    return this.languageService.getText('about_stats_authorizedCompany', 'about_stats_authorizedCompany');
   }
 
   getAboutStatsAuthorizedDistributor(): string {
-    return this.languageService.getText('about_stats_authorizedDistributor', '');
+    return this.languageService.getText('about_stats_authorizedDistributor', 'about_stats_authorizedDistributor');
   }  
 
 }
