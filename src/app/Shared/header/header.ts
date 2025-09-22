@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { NavigationService } from '../services/NavigationService/navigation-service';
 import { LanguageService } from '../../Core/Services/language-service/language-service';
 import { API_URL } from '../../Constants/api-endpoints';
+import { Loading } from "../loading/loading";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Loading],
   templateUrl: './header.html',
   styleUrls: ['./header.css']
 })
@@ -27,7 +28,6 @@ export class Header {
   /*====================================================================*/
   //#region Navigation Methods
   navigateToSection(sectionId: string) {
-    // فورس تحديث الـ active section قبل النافيجيشن
     this.navigationService.forceUpdateActiveSection(sectionId);
     this.navigationService.navigateToSection(sectionId);
   }
@@ -160,7 +160,7 @@ export class Header {
 
   /*------------- Get phone number based on language -------------*/
   getPhoneNumber(): string {
-    return this.languageService.getText('header_phone', 'header_phone');
+    return this.languageService.getText('header_phone', '+202 2261 4580');
   }
 
   /*------------- Get email based on language -------------*/
