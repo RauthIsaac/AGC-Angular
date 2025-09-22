@@ -19,17 +19,84 @@ export class Header {
   // Keep only the activeSection input as it's navigation-specific
   @Input() activeSection: string = 'home';
 
+  // Navbar collapse state
+  isNavbarOpen: boolean = false;
+
   constructor() {}
 
   /*====================================================================*/
   //#region Navigation Methods
   navigateToSection(sectionId: string) {
+    // فورس تحديث الـ active section قبل النافيجيشن
+    this.navigationService.forceUpdateActiveSection(sectionId);
     this.navigationService.navigateToSection(sectionId);
   }
 
   isActive(section: string): boolean {
     return this.navigationService.isActive(section);
   }
+  //#endregion
+
+  /*====================================================================*/
+  //#region Navbar Collapse Methods
+
+  /**
+   * Toggle navbar collapse state
+   */
+  toggleNavbar() {
+    this.isNavbarOpen = !this.isNavbarOpen;
+    
+    // Add/remove collapsed class for animation
+    const toggleBtn = document.querySelector('.navbar-toggler');
+    if (toggleBtn) {
+      if (this.isNavbarOpen) {
+        toggleBtn.classList.add('collapsed');
+      } else {
+        toggleBtn.classList.remove('collapsed');
+      }
+    }
+
+    // Prevent body scroll when menu is open on mobile
+    if (this.isNavbarOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  /**
+   * Close navbar (called when navigation item is clicked)
+   */
+  closeNavbar() {
+    this.isNavbarOpen = false;
+    
+    // Remove collapsed class
+    const toggleBtn = document.querySelector('.navbar-toggler');
+    if (toggleBtn) {
+      toggleBtn.classList.remove('collapsed');
+    }
+
+    // Restore body scroll
+    document.body.style.overflow = 'auto';
+  }
+
+  /**
+   * Close navbar when clicking outside (can be called from template)
+   */
+  onOutsideClick(event: Event) {
+    const target = event.target as HTMLElement;
+    const navbar = document.getElementById('navbarNav');
+    const toggleBtn = document.querySelector('.navbar-toggler');
+    
+    if (this.isNavbarOpen && 
+        navbar && 
+        toggleBtn && 
+        !navbar.contains(target) && 
+        !toggleBtn.contains(target)) {
+      this.closeNavbar();
+    }
+  }
+
   //#endregion
 
   /*====================================================================*/
@@ -151,6 +218,16 @@ export class Header {
   /*------------- Get Contact based on language -------------*/
   getContact(): string {
     return this.languageService.getText('header_navigation_contact');
+  }
+
+  //#endregion
+
+  /*====================================================================*/
+  //#region Lifecycle Hooks
+
+  ngOnDestroy() {
+    // Cleanup: restore body scroll when component is destroyed
+    document.body.style.overflow = 'auto';
   }
 
   //#endregion

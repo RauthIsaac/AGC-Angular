@@ -1,29 +1,23 @@
 <body>
-    <!-- Loading State -->
-    <div *ngIf="isLoading()" class="text-center">
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-
-    <div class="container mt-5" *ngIf="!isLoading()">
-        <h1>ExxonMobil Product Range</h1>
-        <p class="text-center text-muted">Authorized distributor of premium ExxonMobil lubricants and oils for oil & gas, marine, construction, logistics, and manufacturing sectors.</p>
+    <div class="container mt-3" *ngIf="!isLoading()">
+        <h1>{{getProductTitle()}}</h1>
+        <p class="text-center text-muted">{{getProductDescription()}}</p>
         
         <!-- Cards -->
         <div class="row">
             @for(productItem of productsList; track productItem.id){
-                <app-product-card [product]="productItem" class="col-4 my-3 mx-auto"></app-product-card>
+                <app-product-card [product]="productItem" class="col-lg-4 col-md-12 col-sm-12 my-3 mx-auto"></app-product-card>
             }
             @empty {
                 <div class="col-12 text-center">
-                    <p>No products available at the moment.</p>
+                    <p>{{ getNoProductsText() }}</p>
                 </div>
             }
         </div>
 
-        <div class="view-all-div" *ngIf="hasProducts()">
-             <button class="view-all-btn">View All Products <i class="bi bi-arrow-right mx-2"></i></button>
-        </div>
+            <button class="view-all-btn">
+                {{ getProductButton() }}
+                <i [ngClass]="isRTL() ? 'bi bi-arrow-left ms-2' : 'bi bi-arrow-right mx-2'"></i>
+            </button>
     </div>
 </body>

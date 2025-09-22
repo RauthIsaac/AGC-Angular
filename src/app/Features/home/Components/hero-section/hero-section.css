@@ -9,8 +9,10 @@
     padding: 50px;
     overflow: hidden;
     margin-top: 50px;
+    font-family: "Cairo", "Tajawal", "Segoe UI", Arial, sans-serif;
+    font-size: clamp(14px, 1.5vw, 18px);
+    line-height: 1.6;
 }
-
 
 .hero-section::before {
     content: "";
@@ -21,6 +23,11 @@
     height: 100%;
     background: var(--basic-gradient);
     z-index: 1;
+}
+
+.subtitle{
+    color: aliceblue;
+    font-style: italic;
 }
 
 .hero-content {
@@ -41,8 +48,7 @@
 
 .hero-content p {
     font-size: 1.2rem;
-    margin: 20px 0;
-    line-height: 1.6;
+    margin: 10px 0 30px;
 }
 .hero-buttons {
     margin-top: 20px;

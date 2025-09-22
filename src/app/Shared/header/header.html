@@ -1,4 +1,4 @@
-<!-- header.html - Updated Template -->
+<!-- header.html - Complete Updated Template with Navbar Collapse -->
 <header [class.rtl]="isRTL" [class.ltr]="!isRTL">
     <!-- Loading state for header -->
     <div *ngIf="isLoading" class="text-center p-3">
@@ -60,73 +60,149 @@
         </div>
 
         <nav>
-            <div class="container d-flex justify-content-between align-items-center"
-                 [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
-                
-                <div class="logo pt-2 d-flex align-items-center" [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
-                    <img [src]="getLogoUrl()" 
-                         style="height: 50px; margin-bottom: 10px;" 
-                         alt="Company Logo">
-                         
-                    <div class="d-flex flex-column" [ngClass]="isRTL ? 'me-3' : 'ms-3'">
-                        <h5 class="mb-1">{{ getCompanyName() }}</h5>
-                        <p class="text-muted mb-0 small">
-                            {{ getDistributorText() }}
-                        </p>
+            <div class="container">
+                <!-- Logo and hamburger menu container -->
+                <div class="d-flex w-100 justify-content-between align-items-center"
+                     [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
+                    
+                    <!-- Logo section -->
+                    <div class="logo d-flex align-items-center" [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
+                        <img [src]="getLogoUrl()" 
+                             style="height: 50px; margin-bottom: 10px;" 
+                             alt="Company Logo">
+                             
+                        <div class="d-flex flex-column" [ngClass]="isRTL ? 'me-3' : 'ms-3'">
+                            <h5 class="mb-1">{{ getCompanyName() }}</h5>
+                            <p class="text-muted mb-0 small">
+                                {{ getDistributorText() }}
+                            </p>
+                        </div>
                     </div>
+                    
+                    <!-- Navbar toggler button (visible on medium and small screens) -->
+                    <button class="navbar-toggler" 
+                            type="button" 
+                            data-bs-toggle="collapse" 
+                            data-bs-target="#navbarNav" 
+                            aria-controls="navbarNav" 
+                            aria-expanded="false" 
+                            aria-label="Toggle navigation"
+                            (click)="toggleNavbar()">
+                        <span class="navbar-toggler-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
+                    
+                    <!-- Desktop navigation (visible on large screens) -->
+                    <ul class="nav d-none d-xl-flex" [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('home')"
+                               (click)="navigateToSection('home')" 
+                               style="cursor: pointer;">
+                               {{ getHome() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('news')"
+                               (click)="navigateToSection('news')" 
+                               style="cursor: pointer;">
+                               {{ getNews() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('products')"
+                               (click)="navigateToSection('products')" 
+                               style="cursor: pointer;">
+                               {{ getProducts() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('clients')"
+                               (click)="navigateToSection('clients')" 
+                               style="cursor: pointer;">
+                               {{ getClients() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('about')"
+                               (click)="navigateToSection('about')" 
+                               style="cursor: pointer;">
+                               {{ getAbout() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('contact')"
+                               (click)="navigateToSection('contact')" 
+                               style="cursor: pointer;">
+                               {{ getContact() }}
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                
-                <ul class="nav" [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
-                    <li class="nav-item">
-                        <a class="nav-link" 
-                           [class.active]="isActive('home')"
-                           (click)="navigateToSection('home')" 
-                           style="cursor: pointer;">
-                           {{ getHome() }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" 
-                           [class.active]="isActive('news')"
-                           (click)="navigateToSection('news')" 
-                           style="cursor: pointer;">
-                           {{ getNews() }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" 
-                           [class.active]="isActive('products')"
-                           (click)="navigateToSection('products')" 
-                           style="cursor: pointer;">
-                           {{ getProducts() }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" 
-                           [class.active]="isActive('clients')"
-                           (click)="navigateToSection('clients')" 
-                           style="cursor: pointer;">
-                           {{ getClients() }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" 
-                           [class.active]="isActive('about')"
-                           (click)="navigateToSection('about')" 
-                           style="cursor: pointer;">
-                           {{ getAbout() }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" 
-                           [class.active]="isActive('contact')"
-                           (click)="navigateToSection('contact')" 
-                           style="cursor: pointer;">
-                           {{ getContact() }}
-                        </a>
-                    </li>
-                </ul>
 
+                <!-- Collapsible navigation (visible on medium and small screens) -->
+                <div class="navbar-collapse collapse d-xl-none" 
+                     id="navbarNav" 
+                     [class.show]="isNavbarOpen">
+                    <ul class="nav" [style.flex-direction]="isRTL ? 'column-reverse' : 'column'">
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('home')"
+                               (click)="navigateToSection('home'); closeNavbar()" 
+                               style="cursor: pointer;">
+                               {{ getHome() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('news')"
+                               (click)="navigateToSection('news'); closeNavbar()" 
+                               style="cursor: pointer;">
+                               {{ getNews() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('products')"
+                               (click)="navigateToSection('products'); closeNavbar()" 
+                               style="cursor: pointer;">
+                               {{ getProducts() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('clients')"
+                               (click)="navigateToSection('clients'); closeNavbar()" 
+                               style="cursor: pointer;">
+                               {{ getClients() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('about')"
+                               (click)="navigateToSection('about'); closeNavbar()" 
+                               style="cursor: pointer;">
+                               {{ getAbout() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isActive('contact')"
+                               (click)="navigateToSection('contact'); closeNavbar()" 
+                               style="cursor: pointer;">
+                               {{ getContact() }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </div>

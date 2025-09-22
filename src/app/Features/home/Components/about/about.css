@@ -1,6 +1,7 @@
-
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Cairo", "Tajawal", "Segoe UI", Arial, sans-serif;
+    font-size: clamp(14px, 1.5vw, 18px);
+    line-height: 1.6;
     display: flex;
     flex-direction: column;
     align-items: center;

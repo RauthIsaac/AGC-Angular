@@ -1,9 +1,16 @@
-
 .card {
     border: none;
     border-radius: 10px;
+    font-family: "Cairo", "Tajawal", "Segoe UI", Arial, sans-serif;
+    font-size: clamp(14px, 1.5vw, 18px);
+    line-height: 1.6;
+    transition: all 0.3s ease;
+    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
 }
-
+.card:hover{
+    transform: translateY(-5px) scale(1.02);
+    cursor: pointer;
+}
 .card-img-top {
     height: 300px;
     object-fit: cover;
@@ -33,6 +40,8 @@ a{
     text-decoration: none;
     color:#d74242;
     font-weight: bold;
+    border: none !important;
+    outline: none !important;
 }
 a:hover{
     color:#a12a2a;

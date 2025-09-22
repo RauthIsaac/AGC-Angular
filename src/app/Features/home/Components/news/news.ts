@@ -61,4 +61,26 @@ export class News implements OnInit, OnDestroy {
   hasNews(): boolean {
     return this.newsList.length > 0;
   }
+
+
+  getNewsTitle():string{
+    return this.languageService.getText('news_title');
+  }
+
+  getNewsDescription():string{
+    return this.languageService.getText('news_description');
+  }
+
+  getNewsButton():string{
+    return this.languageService.getText('news_button');
+  }
+
+
+  getNoProductsText(): string {
+  return this.languageService.getText(
+    'no_products', 
+    this.isRTL() ? 'لا توجد أخبار متاحة حالياً.' : 'No news available at the moment.'
+  );
+}
+
 }

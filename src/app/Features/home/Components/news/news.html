@@ -1,21 +1,14 @@
 <div class="container news-section">
-    <!-- Loading State -->
-    <div *ngIf="isLoading()" class="text-center">
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-
     <!-- Content when data is available -->
     <div *ngIf="!isLoading()">
-        <h1 class="news-title text-center">Latest News</h1>
-        <p class="news-subtitle text-center">Stay updated with the latest developments and news from Azzab El Khaleej</p>
+        <h1 class="news-title text-center">{{getNewsTitle()}}</h1>
+        <p class="news-subtitle text-center">{{getNewsDescription()}}</p>
         <div class="row">
             
             <!-- Cards -->
             <div class="row">
                 @for(newsItem of newsList; track newsItem.id){
-                    <app-news-card [news]="newsItem" class="col-6 my-3 mx-auto"></app-news-card>
+                    <app-news-card [news]="newsItem" class="col-lg-6 col-md-12 col-sm-12 my-3 mx-auto"></app-news-card>
                 }
                 @empty {
                     <div class="col-12 text-center">
@@ -26,7 +19,10 @@
 
         </div>
         <div class="view-all-div" *ngIf="hasNews()">
-             <button class="view-all-btn">View All News <i class="bi bi-arrow-right mx-2"></i></button>
+            <button class="view-all-btn">
+                {{ getNewsButton() }}
+                <i [ngClass]="isRTL() ? 'bi bi-arrow-left ms-2' : 'bi bi-arrow-right mx-2'"></i>
+            </button>
         </div>
     </div>
 </div>

@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { LanguageService } from '../../../../Core/Services/language-service/language-service';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-hero-section',
-  imports: [],
+  imports: [NgStyle],
   templateUrl: './hero-section.html',
   styleUrl: './hero-section.css'
 })
@@ -40,4 +41,7 @@ export class HeroSection {
     return this.languageService.getText('clientFamily_button', '');
   }
   
+  isRTL(): boolean {
+    return this.languageService.isRTL();
+  }
 }

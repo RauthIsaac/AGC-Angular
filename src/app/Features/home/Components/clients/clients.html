@@ -1,27 +1,67 @@
-<div class="container my-5">
-  <h2 class="text-center mb-4">{{getClientsTitle()}}</h2>
-  <p>{{getClientsDescription()}}</p>
+<div id="clients" class="container my-5">
+  <h2 class="text-center mb-4">{{ getClientsTitle() }}</h2>
+  <p>{{ getClientsDescription() }}</p>
   <div class="more-div">
-    <span>{{getClientsMessage()}}</span>
+    <span>{{ getClientsMessage() }}</span>
   </div>
-  <div id="clientsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+  
+  <div id="clientsCarousel" 
+       class="carousel slide" 
+       data-bs-ride="carousel" 
+       [attr.data-bs-interval]="getCarouselInterval()">
+    
     <div class="carousel-inner mx-auto">
       <div *ngFor="let clientGroup of getGroupedClients(); let i = index" 
-           class="carousel-item" [ngClass]="{'active': i === 0}">
-        <div class="row">
-          <div class="col-2" *ngFor="let client of clientGroup">
-            <img [src]="client" class=" client-img" alt="Client Image">
+           class="carousel-item" 
+           [ngClass]="{'active': i === 0}">
+        
+        <div class="row justify-content-center align-items-center">
+          <div [ngClass]="getColumnClass()" 
+               *ngFor="let client of clientGroup; let j = index"
+               class="mb-3">
+            <div class="client-wrapper">
+              <img [src]="client" 
+                   [ngClass]="getImageClasses()" 
+                   [alt]="'Client ' + (i * imagesPerSlide + j + 1)"
+                   loading="lazy">
+            </div>
           </div>
         </div>
+        
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#clientsCarousel" data-bs-slide="prev">
+    
+    <!-- Carousel Controls -->
+    <button class="carousel-control-prev" 
+            type="button" 
+            data-bs-target="#clientsCarousel" 
+            data-bs-slide="prev"
+            [attr.aria-label]="'Previous clients'">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#clientsCarousel" data-bs-slide="next">
+    
+    <button class="carousel-control-next" 
+            type="button" 
+            data-bs-target="#clientsCarousel" 
+            data-bs-slide="next"
+            [attr.aria-label]="'Next clients'">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
     </button>
+    
+    <!-- Carousel Indicators (optional) -->
+    <div class="carousel-indicators d-none d-md-flex">
+      <button *ngFor="let group of getGroupedClients(); let i = index"
+              type="button"
+              data-bs-target="#clientsCarousel"
+              [attr.data-bs-slide-to]="i"
+              [ngClass]="{'active': i === 0}"
+              [attr.aria-label]="'Slide ' + (i + 1)">
+      </button>
+    </div>
+    
   </div>
+  
+  
 </div>

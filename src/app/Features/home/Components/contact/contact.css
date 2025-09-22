@@ -1,6 +1,9 @@
 .contact-container {
   background-color: #e6f3ff;
   padding: 3rem 7rem;
+  font-family: "Cairo", "Tajawal", "Segoe UI", Arial, sans-serif;
+  font-size: clamp(14px, 1.5vw, 18px);
+  line-height: 1.6;
 }
 
 .contact-title {
@@ -60,6 +63,9 @@
   background: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
   transition: border-color 0.3s;
+  font-family: "Cairo", "Tajawal", "Segoe UI", Arial, sans-serif;
+  font-size: clamp(14px, 1.5vw, 18px);
+  line-height: 1.6;
 }
 
 .form-control:focus {

@@ -1,6 +1,9 @@
 body{
     background-color: #f9f9f9;
     padding: 2rem;
+    font-family: "Cairo", "Tajawal", "Segoe UI", Arial, sans-serif;
+    font-size: clamp(14px, 1.5vw, 18px);
+    line-height: 1.6;
 }
 h1 {
     color: #1a3c5e;

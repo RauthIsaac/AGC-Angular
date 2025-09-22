@@ -64,4 +64,24 @@ export class Products implements OnInit, OnDestroy {
     return this.productsList.length > 0;
   }
 
+
+  getProductTitle():string{
+    return this.languageService.getText('products_title');
+  }
+
+  getProductDescription():string{
+    return this.languageService.getText('products_description');
+  }
+
+  getProductButton():string{
+    return this.languageService.getText('products_button');
+  }
+
+  getNoProductsText(): string {
+    return this.languageService.getText(
+      'no_products', 
+      this.isRTL() ? 'لا توجد منتجات متاحة حالياً.' : 'No products available at the moment.'
+    );
+  }
+
 }
