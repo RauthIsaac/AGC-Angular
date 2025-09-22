@@ -46,7 +46,7 @@
 }
 
 .news-main-image {
-  max-width: 100%;
+  width: 100%;
   height: auto;
   max-height: 500px;
   object-fit: cover;
@@ -152,4 +152,17 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.news-header, .news-content, .back-to-news-btn, .alert {
+  /* Remove fixed text-align, use Angular classes instead */
+  text-align: unset;
+}
+
+.text-end {
+  text-align: right !important;
+}
+
+.text-start {
+  text-align: left !important;
 }

@@ -11,12 +11,12 @@
   <div *ngIf="!isLoading && newsItem" class="row">
     <!-- Back Button -->
     <div class="col-12 mb-4">
-      <button class="back-to-news-btn" routerLink="/allNews" 
-              [class.text-end]="isRTL()">
-        <i class="bi" 
-           [class.bi-arrow-left]="!isRTL()" 
+      <button class="back-to-news-btn" routerLink="/allNews"
+              [class.text-end]="isRTL()" [class.text-start]="!isRTL()">
+        <i class="bi"
+           [class.bi-arrow-left]="!isRTL()"
            [class.bi-arrow-right]="isRTL()"
-           [class.me-2]="!isRTL()" 
+           [class.me-2]="!isRTL()"
            [class.ms-2]="isRTL()"></i>
         {{ getBackToNewsText() }}
       </button>
@@ -24,33 +24,34 @@
 
     <div class="col-lg-8 mx-auto">
       <!-- News Header -->
-      <div class="news-header mb-4" [class.text-end]="isRTL()">
-        
+      <div class="news-header mb-4"
+           [class.text-end]="isRTL()" [class.text-start]="!isRTL()">
         <!-- Date -->
         <div class="news-meta mb-3" *ngIf="getFormattedDate()">
-          <i class="bi bi-calendar2" 
-             [class.me-2]="!isRTL()" 
+          <i class="bi bi-calendar2"
+             [class.me-2]="!isRTL()"
              [class.ms-2]="isRTL()"></i>
           <span class="text-muted">{{ getFormattedDate() }}</span>
         </div>
-        
+
         <!-- Title -->
         <h1 class="news-title mb-3">{{ newsItem.title }}</h1>
-        
+
         <!-- Subtitle -->
         <h4 class="news-subtitle text-muted mb-4">{{ newsItem.subTitle }}</h4>
       </div>
 
       <!-- News Image -->
       <div class="news-image-container mb-5">
-        <img 
-          [src]="getNewsImage()" 
-          [alt]="newsItem.title" 
-          class="img-fluid rounded shadow-sm news-main-image">
+        <img
+          [src]="getNewsImage()"
+          [alt]="newsItem.title"
+          class="img-fluid rounded shadow-sm news-main-image w-100">
       </div>
 
       <!-- News Content -->
-      <div class="news-content" [class.text-end]="isRTL()">
+      <div class="news-content"
+           [class.text-end]="isRTL()" [class.text-start]="!isRTL()">
         <!-- Short Description -->
         <div class="lead mb-4 p-4 bg-light rounded">
           {{ newsItem.description }}
@@ -66,15 +67,15 @@
 
   <!-- Error State -->
   <div *ngIf="!isLoading && !newsItem" class="text-center py-5">
-    <div class="alert alert-warning" role="alert" [class.text-end]="isRTL()">
+    <div class="alert alert-warning" role="alert" [class.text-end]="isRTL()" [class.text-start]="!isRTL()">
       <h4 class="alert-heading">{{ getNewsNotFoundText() }}</h4>
       <p>{{ getNewsNotFoundMessage() }}</p>
       <hr>
       <button class="back-to-news-btn" routerLink="/allNews">
-        <i class="bi" 
-           [class.bi-arrow-left]="!isRTL()" 
+        <i class="bi"
+           [class.bi-arrow-left]="!isRTL()"
            [class.bi-arrow-right]="isRTL()"
-           [class.me-2]="!isRTL()" 
+           [class.me-2]="!isRTL()"
            [class.ms-2]="isRTL()"></i>
         {{ getBackToNewsText() }}
       </button>
