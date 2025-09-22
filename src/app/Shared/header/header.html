@@ -1,11 +1,6 @@
 <!-- header.html - Complete Updated Template with Navbar Collapse -->
 <header [class.rtl]="isRTL" [class.ltr]="!isRTL">
-    <!-- Loading state for header -->
-    <div *ngIf="isLoading" class="text-center p-3">
-        <div class="spinner-border spinner-border-sm" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
+    <app-loading *ngIf="isLoading"></app-loading>
 
     <!-- Header content when data is available -->
     <div *ngIf="hasSiteData() || !isLoading">

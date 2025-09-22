@@ -105,7 +105,7 @@ export class LanguageService {
       }),
       catchError((error: any) => {
         console.error('Error loading site data:', error);
-        this.isLoadingSubject.next(false);
+        this.isLoadingSubject.next(true);
         return of(null);
       })
     ).subscribe();
