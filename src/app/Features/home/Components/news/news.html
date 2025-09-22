@@ -1,23 +1,71 @@
-<div class="container news-section">
+<div class="container news-section my-5">
     <!-- Content when data is available -->
     <div *ngIf="!isLoading()">
         <h1 class="news-title text-center">{{getNewsTitle()}}</h1>
         <p class="news-subtitle text-center">{{getNewsDescription()}}</p>
-        <div class="row">
-            
-            <!-- Cards -->
-            <div class="row">
-                @for(newsItem of newsList; track newsItem.id){
-                    <app-news-card [news]="newsItem" class="col-lg-6 col-md-12 col-sm-12 my-3 mx-auto"></app-news-card>
-                }
-                @empty {
-                    <div class="col-12 text-center">
-                        <p>No news available at the moment.</p>
-                    </div>
-                }
-            </div>
 
+        <!-- News Cards Section -->
+        <div *ngIf="hasNews(); else noNewsTemplate">
+            <div id="newsCarousel" 
+                class="carousel slide" 
+                data-bs-ride="carousel" 
+                [attr.data-bs-interval]="getCarouselInterval()">
+                
+                <div class="carousel-inner news-carousel-inner mx-auto">
+                    <div *ngFor="let newsGroup of getGroupedNews(); let i = index" 
+                        class="carousel-item" 
+                        [ngClass]="{'active': i === 0}">
+                        
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div *ngFor="let newsItem of newsGroup; let j = index" class="mb-3">
+                                <div class="news-wrapper">
+                                    <app-news-card [news]="newsItem" class="col-lg-6 col-md-12 col-sm-12 my-3 mx-auto"></app-news-card>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Carousel Controls (only show if more than one slide) -->
+                <div *ngIf="getGroupedNews().length > 1">
+                    <button class="carousel-control-prev news-carousel-control-prev" 
+                            type="button" 
+                            data-bs-target="#newsCarousel" 
+                            data-bs-slide="prev"
+                            [attr.aria-label]="'Previous news'">
+                        <span class="carousel-control-prev-icon news-carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    
+                    <button class="carousel-control-next news-carousel-control-next" 
+                            type="button" 
+                            data-bs-target="#newsCarousel" 
+                            data-bs-slide="next"
+                            [attr.aria-label]="'Next news'">
+                        <span class="carousel-control-next-icon news-carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                    
+                    <!-- Carousel Indicators -->
+                    <div class="carousel-indicators news-carousel-indicators d-none d-md-flex">
+                        <button *ngFor="let group of getGroupedNews(); let i = index"
+                                type="button"
+                                data-bs-target="#newsCarousel"
+                                [attr.data-bs-slide-to]="i"
+                                [ngClass]="{'active': i === 0}"
+                                [attr.aria-label]="'Slide ' + (i + 1)">
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- No News Template -->
+        <ng-template #noNewsTemplate>
+            <div class="col-12 text-center">
+                <p class="text-muted">{{getNoNewsText()}}</p>
+            </div>
+        </ng-template>
     </div>
+
 </div>
