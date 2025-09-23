@@ -1,23 +1,50 @@
-<div class="container news-section">
-    <!-- Content when data is available -->
-    <div *ngIf="!isLoading()">
-        <h1 class="news-title text-center">{{getNewsTitle()}}</h1>
+<section class="news-section mb-5">
+    <div class="container">
+        <h2 class="news-title text-center">{{getNewsTitle()}}</h2>
         <p class="news-subtitle text-center">{{getNewsDescription()}}</p>
-        <div class="row">
-            
-            <!-- Cards -->
-            <div class="row">
-                @for(newsItem of newsList; track newsItem.id){
-                    <app-news-card [news]="newsItem" class="col-lg-6 col-md-12 col-sm-12 my-3 mx-auto"></app-news-card>
-                }
-                @empty {
-                    <div class="col-12 text-center">
-                        <p>No news available at the moment.</p>
-                    </div>
-                }
-            </div>
 
+        <div *ngIf="hasNews(); else noNews" id="newsCarousel" class="carousel slide" data-bs-ride="carousel" [attr.data-bs-interval]="getCarouselInterval()">
+            <div class="news-carousel-inner">
+                <div class="carousel-inner">
+                    <div *ngFor="let newsGroup of getGroupedNews(); let i = index" class="carousel-item" [ngClass]="{'active': i === 0}">
+                        <div class="news-wrapper row">
+                            <app-news-card 
+                                class="col-md-5"
+                                *ngFor="let news of newsGroup" 
+                                [news]="news" 
+                                [lang]="getCurrentLanguage()" 
+                                (click)="onNewsClick(news)">
+                            </app-news-card>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="shouldShowControls()">
+                    <button class="news-carousel-control-prev carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+                        <span class="news-carousel-control-prev-icon carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="news-carousel-control-next carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+                        <span class="news-carousel-control-next-icon carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+                <div class="news-carousel-indicators carousel-indicators" *ngIf="shouldShowControls()">
+                    <button *ngFor="let slide of getGroupedNews(); let i = index" 
+                            type="button" 
+                            data-bs-target="#newsCarousel" 
+                            [attr.data-bs-slide-to]="i" 
+                            [ngClass]="{'active': i === 0}" 
+                            aria-current="true" 
+                            [attr.aria-label]="'Slide ' + (i + 1)">
+                    </button>
+                </div>
+            </div>
         </div>
 
+        <ng-template #noNews>
+            <div class="text-center">{{getNoNewsText()}}</div>
+        </ng-template>
     </div>
-</div>
+</section>

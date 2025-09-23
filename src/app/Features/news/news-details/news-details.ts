@@ -4,10 +4,11 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageService } from '../../../Core/Services/language-service/language-service';
 import { API_URL } from '../../../Constants/api-endpoints';
+import { Loading } from "../../../Shared/loading/loading";
 
 @Component({
   selector: 'app-news-details',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, Loading],
   templateUrl: './news-details.html',
   styleUrl: './news-details.css'
 })

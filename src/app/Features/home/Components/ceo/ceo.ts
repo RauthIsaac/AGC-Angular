@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { LanguageService } from '../../../../Core/Services/language-service/language-service';
+import { API_URL } from '../../../../Constants/api-endpoints';
+import { Loading } from "../../../../Shared/loading/loading";
 
 @Component({
   selector: 'app-ceo',
-  imports: [CommonModule],
+  imports: [CommonModule, Loading],
   templateUrl: './ceo.html',
   styleUrl: './ceo.css'
 })
@@ -12,6 +14,9 @@ export class Ceo {
   // Inject services using modern Angular inject function
   private languageService = inject(LanguageService);
 
+  // API_Url
+  API_URL = API_URL;
+  
   constructor() { }
 
   // Helper methods for template - now using LanguageService directly
@@ -24,12 +29,16 @@ export class Ceo {
   }
 
   getCeoName(): string {
-    return this.languageService.getText('ceO_Name', 'ceO_Name');
+    return this.languageService.getText('ceoMessage_ceoName', 'ceoMessage_ceoName');
   }
 
   getCeoTitle(): string {
-    return this.languageService.getText('ceO_JobTitle', 'ceO_JobTitle');
+    return this.languageService.getText('ceoMessage_position', 'ceoMessage_position');
   }
+
+  getCeoImageUrl(): string {
+    return API_URL +this.languageService.getText('ceoMessage_ceoImageUrl', 'ceoMessage_ceoImageUrl');
+  } 
 
   getIntroMessage(): string {
     return this.languageService.getText('ceO_IntroMessage', 'ceO_IntroMessage');

@@ -14,6 +14,12 @@ export interface SiteData {
     products_title: string,
     products_description: string,
     products_button: string,
+    
+    product_applications: string,
+    product_applications_statement: string,
+    product_keyBenefits: string,
+    product_keyBenefits_statement: string,
+    product_why_choose: string,
 
     header_phone: string,
     header_email: string,
@@ -33,6 +39,7 @@ export interface SiteData {
     hero_mission: string,
 
     values_title: string,
+    values_subtitle: string,
     values_principles_title_1: string,
     values_principles_description_1: string,
     values_principles_title_2: string,
@@ -45,6 +52,13 @@ export interface SiteData {
     values_principles_description_5: string,
     values_principles_title_6: string,
     values_principles_description_6: string,
+    values_principles_title_7: string,
+    values_principles_description_7: string,
+    values_principles_title_8: string,
+    values_principles_description_8: string,
+    values_principles_title_9: string,
+    values_principles_description_9: string,
+
 
     about_title: string,
     about_subtitle: string,
@@ -69,12 +83,14 @@ export interface SiteData {
     ceoMessage_ceoName: string,
     ceoMessage_position: string,
     ceoMessage_message: string,
+    ceoMessage_ceoImageUrl: string,
 
 
     clients_title: string,
     clients_description: string,
     clients_message: string,
-    
+    client_Images: string[],
+
     clients_sectorsTitle: string,
     clients_sectors_name_1: string,
     clients_sectors_description_1: string,
@@ -138,11 +154,25 @@ export interface News {
 export interface Product {
   id: number;
   langCode: number;
+  si: SiteData | null;
   siteIdentityId: number;
   name: string;
   title: string;
   subTitle: string;
   description: string;
   imageUrl: string;
-  si: SiteData | null; 
+  benefit_Title_1: string;
+  benefit_Description_1: string;
+  benefit_Title_2: string;
+  benefit_Description_2: string;
+  benefit_Title_3: string;
+  benefit_Description_3: string;
+  benefit_Title_4: string;
+  benefit_Description_4: string;
+  applicationsList: string;
+  why_Choose_Statement: string;
+  why_Choose_List: string;
 }
+
+
+

@@ -19,6 +19,10 @@ export class Values {
     return this.languageService.getText('values_title', 'values_title');
   }
 
+  getValuesSubtitle(): string {
+    return this.languageService.getText('values_subtitle', 'values_subtitle');
+  }
+
   getValuesPrincipleTitle1(): string {
     return this.languageService.getText('values_principles_title_1', 'values_principles_title_1');
   }
@@ -43,6 +47,19 @@ export class Values {
     return this.languageService.getText('values_principles_title_6', 'values_principles_title_6');
   }
 
+  getValuesPrincipleTitle7(): string {
+    return this.languageService.getText('values_principles_title_7', 'values_principles_title_7');
+  }
+
+  getValuesPrincipleTitle8(): string {
+    return this.languageService.getText('values_principles_title_8', 'values_principles_title_8');
+  }
+
+  getValuesPrincipleTitle9(): string {
+    return this.languageService.getText('values_principles_title_9', 'values_principles_title_9');
+  }
+
+
   getValuesPrincipleDescription1(): string {
     return this.languageService.getText('values_principles_description_1', 'values_principles_description_1');
   }
@@ -65,5 +82,17 @@ export class Values {
 
   getValuesPrincipleDescription6(): string {
     return this.languageService.getText('values_principles_description_6', 'values_principles_description_6');
+  }
+
+  getValuesPrincipleDescription7(): string {
+    return this.languageService.getText('values_principles_description_7', 'values_principles_description_7');
+  }
+
+  getValuesPrincipleDescription8(): string {
+    return this.languageService.getText('values_principles_description_8', 'values_principles_description_8');
+  }
+
+  getValuesPrincipleDescription9(): string {
+    return this.languageService.getText('values_principles_description_9', 'values_principles_description_9');
   }
 }

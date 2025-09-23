@@ -20,7 +20,7 @@
                *ngFor="let client of clientGroup; let j = index"
                class="mb-3">
             <div class="client-wrapper">
-              <img [src]="client" 
+              <img [src]="API_URL + client" 
                    [ngClass]="getImageClasses()" 
                    [alt]="'Client ' + (i * imagesPerSlide + j + 1)"
                    loading="lazy">
