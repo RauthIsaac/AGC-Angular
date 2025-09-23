@@ -47,6 +47,11 @@ div[id]::before {
     gap: 0.5rem;
 }
 
+.cont-div{
+    text-decoration: none;
+    color: white;
+}
+
 /* Language button styles */
 .lang-btn {
     background-color: rgb(35, 35, 65);

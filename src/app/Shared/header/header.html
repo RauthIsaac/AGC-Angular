@@ -7,14 +7,14 @@
         <div class="info">
             <div class="container d-flex justify-content-between align-items-center"> 
                 <div class="d-flex" [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">
-                    <div class="d-flex" [ngClass]="isRTL ? 'ms-4' : 'me-4'">
+                    <a class="cont-div d-flex" [ngClass]="isRTL ? 'ms-3' : 'me-3'">
                         <i class="bi bi-telephone mx-2"></i>
                         <span>{{ getPhoneNumber() }}</span>
-                    </div>
-                    <div class="d-flex">
+                    </a>
+                    <a class="cont-div d-flex" href="mailto:{{ getHeaderEmail() }}" [ngClass]="isRTL ? 'ms-3' : 'me-3'">
                         <i class="bi bi-envelope mx-2"></i>
-                        <span>{{ getEmail() }}</span>
-                    </div>
+                        <span>{{ getHeaderEmail() }}</span>
+                    </a>
                 </div>
 
                 <div class="d-flex align-items-center" [style.flex-direction]="isRTL ? 'row-reverse' : 'row'">

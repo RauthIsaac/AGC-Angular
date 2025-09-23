@@ -183,6 +183,9 @@ export class Header {
     return this.languageService.getText('header_languageSwitcher', 'Language');
   }
   
+  getHeaderEmail(): string {
+    return this.languageService.getText('footer_contactInfoList_email', 'footer_contactInfoList_email');
+  }
   /*------------- Get distributor text based on language -------------*/
   getDistributorText(): string {
     return this.languageService.getText('header_distributed', 'Authorized Distributor of Mobil Lubricants in Egypt');
