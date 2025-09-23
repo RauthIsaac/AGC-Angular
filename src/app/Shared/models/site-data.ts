@@ -14,7 +14,6 @@ export interface SiteData {
     products_title: string,
     products_description: string,
     products_button: string,
-    
     product_applications: string,
     product_applications_statement: string,
     product_keyBenefits: string,
@@ -23,6 +22,7 @@ export interface SiteData {
 
     header_phone: string,
     header_email: string,
+    header_distributed: string,
     header_companyName: string,
     header_navigation_home: string,
     header_navigation_about: string,
@@ -84,7 +84,7 @@ export interface SiteData {
     ceoMessage_position: string,
     ceoMessage_message: string,
     ceoMessage_ceoImageUrl: string,
-
+    ceoMessage_ceoQualifications: string,
 
     clients_title: string,
     clients_description: string,
@@ -120,9 +120,11 @@ export interface SiteData {
     contact_form_button: string,
     contact_info_phone: string,
     contact_info_email: string,
+    contact_title_address: string,
     contact_info_address: string,
     contact_info_workingHours: string,
-    contact_info_locationMap: string,
+    contact_info_Location: string,      // Link
+    contact_info_locationMap: string,   // Title
 
     footer_companyDescription: string,
     footer_quickLinks: string,

@@ -31,6 +31,7 @@ p {
     margin: 0px auto 60px;
     font-size: clamp(0.9rem, 2vw, 1.1rem);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
 .more-div:hover {
@@ -54,6 +55,7 @@ p {
     align-items: center;
     padding: 10px;
     height: 100%;
+    cursor: pointer;
 }
 
 /* Base client image styles */

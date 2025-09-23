@@ -166,7 +166,7 @@ export class ProductDetails implements OnInit, OnDestroy {
   } 
 
   getWhyChooseList(): string {
-    return (this.productItem?.why_Choose_List).split(/[;,]/) || ['why_choose_list'];
+    return (this.productItem?.why_Choose_List).split(/[;,،؛]/) || ['why_choose_list'];
   }
 
   getApplicationsTitle(): string {

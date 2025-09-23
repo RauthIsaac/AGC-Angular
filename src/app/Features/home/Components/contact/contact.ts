@@ -151,6 +151,9 @@ export class Contact implements OnInit {
   getContactInfoEmail(): string {
     return this.languageService.getText('contact_info_email', 'contact_info_email');
   }
+  getContactInfoAddressTitle(): string {
+    return this.languageService.getText('contact_title_address', 'contact_title_address');
+  }
   getContactInfoAddress(): string {
     return this.languageService.getText('contact_info_address', 'contact_info_address');
   }
@@ -159,6 +162,13 @@ export class Contact implements OnInit {
   }
   getContactInfoLocationMap(): string {
     return this.languageService.getText('contact_info_locationMap', 'contact_info_locationMap');
+  }
+  getContactInfoLocation(): string {
+    return this.languageService.getText('contact_info_Location', 'contact_info_Location');
+  }
+
+  getContactInfoLocationMapTitle(): string {
+    return this.languageService.getText('contact_title_address', 'contact_title_address');
   }
 
   isRTL(): boolean {

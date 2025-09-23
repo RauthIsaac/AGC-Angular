@@ -55,6 +55,7 @@ body {
     margin-bottom: 1rem;
     font-weight: 600;
     border-inline-start: 3px solid var(--secondary-color);
+    cursor: pointer;
 }
 
 .footer-links {
@@ -173,4 +174,10 @@ body {
     .social-icons {
         justify-content: center;
     }
+}
+
+
+a{
+    color: var(--light-color);
+    text-decoration: none;
 }

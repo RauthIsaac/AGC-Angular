@@ -32,6 +32,7 @@ p.subtitle {
     transition: all 0.3s ease;
     margin: 0rem 0.5rem 1.5rem;
     height: 90%;
+    cursor: pointer;
 }
 .sector-card:hover{
     transform: translateY(-10px) scale(1.02);
@@ -71,6 +72,7 @@ svg{
     transition: all 0.3s ease;
     margin: 2rem auto;
     width: 70%;
+    cursor: pointer;
 }
 .join-contact h2 {
     color: #1a3c5e;
