@@ -19,6 +19,10 @@ export class About {
     return this.languageService.getText('about_title', 'about_title');
   }
 
+  getAboutImageUrl(): string {
+    return this.languageService.getText('about_ImgUrl', 'about_ImgUrl');
+  }
+
   getAboutSubtitle(): string {
     return this.languageService.getText('about_subtitle', 'about_subtitle');
   }

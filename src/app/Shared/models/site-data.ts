@@ -61,6 +61,7 @@ export interface SiteData {
 
 
     about_title: string,
+    about_ImgUrl: string,
     about_subtitle: string,
     about_description: string,
     about_ourMission: string,
