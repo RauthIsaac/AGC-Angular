@@ -1,21 +1,9 @@
 <div class="container news-details-container" [class.rtl]="isRTL()">
   <!-- Loading State -->
-
+  <app-loading *ngIf="isLoading"></app-loading>
 
   <!-- News Details Content -->
   <div *ngIf="!isLoading && newsItem" class="row">
-    <!-- Back Button -->
-    <div class="col-12 mb-4">
-      <button class="back-to-news-btn" routerLink="/allNews"
-              [class.text-end]="isRTL()" [class.text-start]="!isRTL()">
-        <i class="bi"
-           [class.bi-arrow-left]="!isRTL()"
-           [class.bi-arrow-right]="isRTL()"
-           [class.me-2]="!isRTL()"
-           [class.ms-2]="isRTL()"></i>
-        {{ getBackToNewsText() }}
-      </button>
-    </div>
 
     <div class="col-lg-8 mx-auto">
       <!-- News Header -->

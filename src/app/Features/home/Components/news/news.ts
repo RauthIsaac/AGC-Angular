@@ -18,7 +18,7 @@ export class News implements OnInit, OnDestroy {
   private subscription = new Subscription();
 
   newsList: any[] = [];
-  newsPerSlide: number = 2; // Number of news items per slide
+  newsPerSlide: number = 1; // Changed to 1 to show one news item per slide
   loading: boolean = false;
 
   constructor() { }
@@ -140,7 +140,6 @@ export class News implements OnInit, OnDestroy {
    * Navigate to all news page
    */
   viewAllNews(): void {
-    // Navigate to news page or open modal - implement based on your routing structure
     console.log('View all news clicked');
     // Example: this.router.navigate(['/news']);
   }
@@ -150,7 +149,6 @@ export class News implements OnInit, OnDestroy {
    */
   onNewsClick(newsItem: any): void {
     console.log('News clicked:', newsItem);
-    // Navigate to news detail or handle click
     // Example: this.router.navigate(['/news', newsItem.id]);
   }
 
@@ -167,4 +165,6 @@ export class News implements OnInit, OnDestroy {
   shouldShowControls(): boolean {
     return this.getTotalSlides() > 1;
   }
+
+
 }

@@ -1,6 +1,7 @@
 import { CommonModule, NgClass, isPlatformBrowser } from '@angular/common';
 import { Component, inject, OnInit, OnDestroy, PLATFORM_ID, HostListener } from '@angular/core';
 import { LanguageService } from '../../../../Core/Services/language-service/language-service';
+import { API_URL } from '../../../../Constants/api-endpoints';
 
 @Component({
   selector: 'app-clients',
@@ -12,33 +13,12 @@ export class Clients implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private languageService = inject(LanguageService);
 
+  // API_URL
+  API_URL = API_URL;
+
   // Current screen size state
   currentScreenSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'lg';
   imagesPerSlide: number = 6;
-
-  clientsList = [
-    '/Images/Clients/1.jpeg',
-    '/Images/Clients/2.jpeg',
-    '/Images/Clients/3.jpeg',
-    '/Images/Clients/4.jpeg',
-    '/Images/Clients/5.jpeg',
-    '/Images/Clients/6.jpeg',
-    '/Images/Clients/7.jpeg',
-    '/Images/Clients/8.jpeg',
-    '/Images/Clients/9.jpeg',
-    '/Images/Clients/10.jpeg',
-    '/Images/Clients/11.jpeg',
-    '/Images/Clients/12.jpeg',
-    '/Images/Clients/13.jpeg',
-    '/Images/Clients/14.jpeg',
-    '/Images/Clients/15.jpeg',
-    '/Images/Clients/16.jpeg',
-    '/Images/Clients/17.jpeg',
-    '/Images/Clients/18.jpeg',
-    '/Images/Clients/19.jpeg',
-    '/Images/Clients/20.jpeg',
-    '/Images/Clients/21.jpeg',
-  ];
 
   constructor() {}
 
@@ -83,8 +63,8 @@ export class Clients implements OnInit, OnDestroy {
   // Group clients based on current screen size
   getGroupedClients(): string[][] {
     const grouped: string[][] = [];
-    for (let i = 0; i < this.clientsList.length; i += this.imagesPerSlide) {
-      grouped.push(this.clientsList.slice(i, i + this.imagesPerSlide));
+    for (let i = 0; i < this.getClientsImages().length; i += this.imagesPerSlide) {
+      grouped.push(this.getClientsImages().slice(i, i + this.imagesPerSlide));
     }
     return grouped;
   }
@@ -115,22 +95,23 @@ export class Clients implements OnInit, OnDestroy {
 
   // Helper methods for template
   getClientsTitle(): string {
-    return this.languageService.getText('clients_title', 'Our Clients');
+    return this.languageService.getText('clients_title', 'clinets_title');
   }
 
   getClientsDescription(): string {
-    return this.languageService.getText(
-      'clients_description', 
-      'We are proud of the trust of our clients from various sectors in the Kingdom of Saudi Arabia.'
-    );
+    return this.languageService.getText('clients_description', 'clients_description');
   }
 
   getClientsMessage(): string {
-    return this.languageService.getText(
-      'clients_message', 
-      'More than 500 clients trust us throughout the Kingdom'
-    );
+    return this.languageService.getText('clients_message', 'clients_message');
   }
+
+  getClientsImages(): string[] {
+    return this.languageService
+            .getArrayData('client_Images')
+            .map((item: any) => item.image_Url);
+  }
+
 
   // Get carousel interval based on screen size (slower for mobile)
   getCarouselInterval(): number {

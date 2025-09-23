@@ -4,10 +4,11 @@ import { LanguageService } from '../../../Core/Services/language-service/languag
 import { Subscription } from 'rxjs';
 import { API_URL } from '../../../Constants/api-endpoints';
 import { Products } from "../../home/Components/products/products";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-details',
-  imports: [ Products],
+  imports: [ Products, CommonModule],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css'
 })
@@ -121,6 +122,71 @@ export class ProductDetails implements OnInit, OnDestroy {
 
   getProductDescription(): string {
     return this.productItem?.description || 'product_description';
+  }
+
+  getProductBenefitTitle_1(): string {
+    return this.productItem?.benefit_Title_1 || 'benefit_title_1';
+  }
+
+  getProductBenefitDescription_1(): string {
+    return this.productItem?.benefit_Description_1 || 'benefit_description_1';
+  }
+
+  getProductBenefitTitle_2(): string {
+    return this.productItem?.benefit_Title_2 || 'benefit_title_2';
+  }
+
+  getProductBenefitDescription_2(): string {
+    return this.productItem?.benefit_Description_2 || 'benefit_description_2';
+  }
+
+  getProductBenefitTitle_3(): string {
+    return this.productItem?.benefit_Title_3 || 'benefit_title_3';
+  }
+
+  getProductBenefitDescription_3(): string {
+    return this.productItem?.benefit_Description_3 || 'benefit_description_3';
+  }
+
+  getProductBenefitTitle_4(): string {
+    return this.productItem?.benefit_Title_4 || 'benefit_title_4';
+  }
+
+  getProductBenefitDescription_4(): string {
+    return this.productItem?.benefit_Description_4 || 'benefit_description_4';
+  }
+
+  getProductApplicationList(): string[] {
+    const apps = this.productItem?.applicationsList; 
+    return apps ? apps.split(/[,،;؛]/).map((a: string) => a.trim()) : [];
+  }
+
+  getWhyChooseStatement(): string {
+    return this.productItem?.why_Choose_Statement || 'why_choose_statement';
+  } 
+
+  getWhyChooseList(): string {
+    return (this.productItem?.why_Choose_List).split(/[;,]/) || ['why_choose_list'];
+  }
+
+  getApplicationsTitle(): string {
+    return this.languageService.getText('product_applications', 'product_applications');
+  }
+
+  getApplicationsStatement(): string {
+    return this.languageService.getText('product_applications_statement', 'product_applications_statement');
+  }
+
+  getKeyBenefitsTitle(): string {
+    return this.languageService.getText('product_keyBenefits', 'product_keyBenefits');
+  }
+
+  getKeyBenefitsStatement(): string {
+    return this.languageService.getText('product_keyBenefits_statement', 'product_keyBenefits_statement');
+  }
+
+  getWhyChooseTitle(): string {
+    return this.languageService.getText('product_why_choose', 'product_why_choose');
   }
 
 }
