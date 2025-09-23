@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './product-card.html',
   styleUrls: ['./product-card.css']
 })
-export class ProductCard implements OnInit{
+export class ProductCard {
 
   // Keep the product input as it's specific data for this card
   @Input({ required: true }) product!: any;
@@ -21,12 +21,6 @@ export class ProductCard implements OnInit{
   private languageService = inject(LanguageService);
 
   constructor() { }
-
-  ngOnInit(): void {
-    if (this.product) {
-      console.log('Product data received in ProductCard:', this.product);
-    }
-  }
 
   // Helper methods for template
   isRTL(): boolean {

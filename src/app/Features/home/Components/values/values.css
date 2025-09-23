@@ -33,6 +33,7 @@ p.subtitle {
     margin: 0rem 0.5rem;
     margin-bottom: 1.5rem;
     height: 90%;
+    cursor: pointer;
 }
 .value-card:hover{
     transform: translateY(-10px) scale(1.1);

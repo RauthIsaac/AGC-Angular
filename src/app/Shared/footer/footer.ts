@@ -91,6 +91,11 @@ export class Footer {
 
 
   getFooterAuthorizedDistributor(): string {
-    return this.languageService.getText('about_stats_authorizedDistributor', 'about_stats_authorizedDistributor');
+    return this.languageService.getText('header_distributed', 'footer_distributed');
+  }
+
+  getCompanyLocation(): string {
+    return this.languageService.getText('contact_info_Location', 'contact_info_Location');
   }
 }
+

@@ -10,7 +10,7 @@ import { API_URL } from '../../../Constants/api-endpoints';
   templateUrl: './news-card.html',
   styleUrls: ['./news-card.css']
 })
-export class NewsCard implements OnInit {
+export class NewsCard{
   // Keep the news input as it's specific data for this card
   @Input({ required: true }) news!: any;
   
@@ -19,11 +19,6 @@ export class NewsCard implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-    if (this.news) {
-      console.log('News data received in NewsCard:', this.news);
-    }
-  }
 
   // Helper methods for template
   isRTL(): boolean {

@@ -47,6 +47,12 @@ export class Ceo {
   getEndMessage(): string {
     return this.languageService.getText('ceO_EndMessage', 'ceO_EndMessage');
   }
+
+  getCeoQualifications(): string[] {
+    const ceoQualifications = this.languageService.getText('ceoMessage_ceoQualifications', 'ceoMessage_ceoQualifications');
+    return ceoQualifications? ceoQualifications.split(/[,،;؛]/) : ['ceoMessage_ceoQualifications'];
+  }
+
  
   hasData(): boolean {
     return this.languageService.getCurrentSiteData() !== null && !this.isLoading();

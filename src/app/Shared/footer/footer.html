@@ -29,12 +29,16 @@
                             <span>{{getFooterPhone()}}</span>
                         </li>
                         <li>
-                            <i class="bi bi-envelope mx-1"></i>
-                            <span>{{getFooterEmail()}}</span>
+                            <a href="mailto:{{getFooterEmail()}}" target="_blank">
+                                <i class="bi bi-envelope mx-1"></i>
+                                <span>{{getFooterEmail()}}</span>
+                            </a>
                         </li>
                         <li>
-                            <i class="bi bi-geo-alt mx-1"></i>
-                            <span>{{getFooterAddress()}}</span>
+                            <a href="{{getCompanyLocation()}}" target="_blank">
+                                <i class="bi bi-geo-alt mx-1"></i>
+                                <span>{{getFooterAddress()}}</span>
+                            </a>
                         </li>
                     </ul>
                 </div>

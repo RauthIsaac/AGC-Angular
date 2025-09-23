@@ -179,15 +179,16 @@ export class Header {
     return fallbackEn;
   }
 
+  getHeaderLanguageSwitcher(): string {
+    return this.languageService.getText('header_languageSwitcher', 'Language');
+  }
+  
+  getHeaderEmail(): string {
+    return this.languageService.getText('footer_contactInfoList_email', 'footer_contactInfoList_email');
+  }
   /*------------- Get distributor text based on language -------------*/
   getDistributorText(): string {
-    const fallbackEn = 'ExxonMobil Authorized Distributor';
-    const fallbackAr = 'الموزع المعتمد لشركة إكسون موبيل';
-    
-    if (this.isRTL) {
-      return fallbackAr;
-    }
-    return fallbackEn;
+    return this.languageService.getText('header_distributed', 'Authorized Distributor of Mobil Lubricants in Egypt');
   }
 
   /*------------- Get Home based on language -------------*/
