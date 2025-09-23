@@ -31,8 +31,8 @@ export class HeroSection {
   getHeroArabicBadge(): string {
     return this.languageService.getText('hero_arabicBadge', 'hero_arabicBadge');
   }
-  getHeroProductFilterLabel(): string {
-    return this.languageService.getText('hero_productFilter_label', 'hero_productFilter_label');
+  getHeroProductLabel(): string {
+    return this.languageService.getText('header_navigation_products', 'header_navigation_products');
   }
   getHeroMission(): string {
     return this.languageService.getText('hero_mission', 'hero_mission');
