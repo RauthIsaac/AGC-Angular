@@ -78,6 +78,21 @@ svg{
     width: 1.5rem;
 }
 
+.about-image-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-company-image {
+  max-width: 350px;
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  object-fit: cover;
+  background: #fff;
+}
 
 .about-card:hover , .about-card-status:hover{
     transform: translateY(-10px) scale(1.02);
