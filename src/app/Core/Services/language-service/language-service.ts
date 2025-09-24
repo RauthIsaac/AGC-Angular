@@ -48,6 +48,7 @@ export class LanguageService {
   public currentLanguage$ = this.currentLanguageSubject.asObservable();
   public currentSiteData$ = this.currentSiteDataSubject.asObservable();
   public isLoading$ = this.isLoadingSubject.asObservable();
+  siteDataObservable: any;
   
   constructor() {
     this.initializeLanguage();
@@ -95,9 +96,9 @@ export class LanguageService {
   private loadSiteDataByLangCode(langCode: number): void {
     this.isLoadingSubject.next(true);
         
-    const apiUrl = API_URL + API_ENDPOINTS.SITE_IDENDITY.GET;
+    const url = `${API_ENDPOINTS.SITE_IDENTITY.GET}/${langCode}`;
 
-    this.http.get<SiteData>(`${apiUrl}/${langCode}`).pipe(
+    this.http.get<SiteData>(url).pipe(
       tap((data: SiteData) => {
         this.currentSiteDataSubject.next(data);
         console.log('Site Data with Language Code', langCode, 'loaded:', data);
