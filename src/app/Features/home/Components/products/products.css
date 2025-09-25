@@ -1,36 +1,145 @@
-body{
+body {
     background-color: #f9f9f9;
-    padding: 2rem;
+    padding: clamp(1rem, 3vw, 1.5rem);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    font-size: clamp(14px, 1.5vw, 18px);
+    font-size: clamp(12px, 2.5vw, 16px);
     line-height: 1.6;
-    margin-top: 3rem;
+    margin: 0;
     width: 100%;
     max-width: 100vw;
 }
+
 h1 {
     color: #1a3c5e;
-    font-size: 3rem;
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
     text-align: center;
 }
-p{
-    font-size: 1rem;
-    margin-bottom: 30px;
+
+p {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+    text-align: center;
 }
 
-.view-all-div{
+.products-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.view-all-div {
     display: flex;
     justify-content: center;
-    margin: 2rem;
+    margin: clamp(1rem, 3vw, 1.5rem);
 }
 
-.view-all-btn{
+.view-all-btn {
     background: var(--basic-gradient);
     color: #fff;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: clamp(0.4rem, 1.5vw, 0.6rem) clamp(0.8rem, 2vw, 1rem);
     border-radius: 5px;
     cursor: pointer;
+    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.view-all-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Media query for screens up to 1024px (tablets and smaller laptops) */
+@media (max-width: 1024px) {
+    body {
+        padding: clamp(0.75rem, 2.5vw, 1rem);
+    }
+
+    h1 {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+    }
+
+    p {
+        font-size: clamp(0.8rem, 2.3vw, 0.9rem);
+        margin-bottom: clamp(0.75rem, 2.5vw, 1rem);
+    }
+
+    .products-container {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+    }
+
+    .view-all-div {
+        margin: clamp(0.75rem, 2.5vw, 1rem);
+    }
+
+    .view-all-btn {
+        padding: clamp(0.35rem, 1.2vw, 0.5rem) clamp(0.7rem, 1.8vw, 0.9rem);
+        font-size: clamp(0.75rem, 2.3vw, 0.85rem);
+    }
+}
+
+/* Media query for screens up to 768px (tablets and larger mobiles) */
+@media (max-width: 768px) {
+    body {
+        padding: clamp(0.5rem, 2vw, 0.75rem);
+    }
+
+    h1 {
+        font-size: clamp(1.2rem, 4.5vw, 1.8rem);
+    }
+
+    p {
+        font-size: clamp(0.75rem, 2.2vw, 0.85rem);
+        margin-bottom: clamp(0.5rem, 2vw, 0.75rem);
+    }
+
+    .products-container {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .view-all-div {
+        margin: clamp(0.5rem, 2vw, 0.75rem);
+    }
+
+    .view-all-btn {
+        padding: clamp(0.3rem, 1vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.8rem);
+        font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+    }
+}
+
+/* Media query for screens up to 480px (mobile portrait) */
+@media (max-width: 480px) {
+    body {
+        padding: clamp(0.3rem, 1.5vw, 0.5rem);
+    }
+
+    h1 {
+        font-size: clamp(1rem, 4vw, 1.5rem);
+    }
+
+    p {
+        font-size: clamp(0.7rem, 2vw, 0.8rem);
+        margin-bottom: clamp(0.3rem, 1.5vw, 0.5rem);
+    }
+
+    .products-container {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .view-all-div {
+        margin: clamp(0.3rem, 1.5vw, 0.5rem);
+    }
+
+    .view-all-btn {
+        padding: clamp(0.25rem, 0.8vw, 0.35rem) clamp(0.5rem, 1.2vw, 0.7rem);
+        font-size: clamp(0.65rem, 2vw, 0.75rem);
+    }
 }

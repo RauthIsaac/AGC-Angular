@@ -5,7 +5,7 @@ import { API_URL } from '../../../../Constants/api-endpoints';
 
 @Component({
   selector: 'app-hero-section',
-  imports: [NgStyle],
+  imports: [],
   templateUrl: './hero-section.html',
   styleUrl: './hero-section.css'
 })
