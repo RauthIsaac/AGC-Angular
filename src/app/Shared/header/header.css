@@ -1242,7 +1242,6 @@ nav .container {
     .nav-link.active {
         border-color: rgb(168, 11, 11);
     }
-<<<<<<< HEAD
     
     .navbar-toggler {
         border-color: rgb(55, 55, 85);
@@ -1251,7 +1250,6 @@ nav .container {
     .navbar-toggler:hover {
         border-color: rgb(168, 11, 11);
     }
-=======
 }
 
 /* Ensure collapsible menu is fixed and overlays content on small screens */
@@ -1271,5 +1269,4 @@ nav .container {
     from { opacity: 0; transform: translateY(-20px);}
     to { opacity: 1; transform: translateY(0);}
   }
->>>>>>> origin/main
 }

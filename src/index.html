@@ -10,14 +10,14 @@
 
   <!-- Content Security Policy -->
   <meta http-equiv="Content-Security-Policy" 
-        content="
-          default-src 'self';
-          connect-src 'self' https://localhost:7162 https://azbgulfcompany.runasp.net https://*.runasp.net ws: wss:;
-          script-src 'self' 'unsafe-inline' 'unsafe-eval';
-          style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-          font-src 'self' https://fonts.gstatic.com;
-          img-src 'self' data: https:;
-        ">
+          content="
+            default-src 'self';
+            connect-src 'self' http://localhost:7162 https://azbgulfcompany.runasp.net https://*.runasp.net https://api.azbgulf.com ws: wss:;
+            script-src 'self' 'unsafe-inline' 'unsafe-eval';
+            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+            font-src 'self' https://fonts.gstatic.com;
+            img-src 'self' data: https:;
+          ">
 </head>
 <body>
   <app-root></app-root>
