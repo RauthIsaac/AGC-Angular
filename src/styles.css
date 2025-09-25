@@ -209,3 +209,14 @@
     opacity: 1;
   }
 }
+
+/* اجعل الصفحة وكل المكونات بعرض الشاشة بدون تمرير أفقي */
+html, body {
+  width: 100vw;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}

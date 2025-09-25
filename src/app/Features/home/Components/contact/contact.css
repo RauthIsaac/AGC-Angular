@@ -1,3 +1,11 @@
+body{
+    width: 100%;
+    max-width: 100vw;
+}
+
+
+
+
 .contact-container {
   background-color: #e6f3ff;
   padding: 3rem 7rem;
