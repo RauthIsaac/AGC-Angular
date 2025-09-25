@@ -6,9 +6,10 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: #f9f9f9;
-    margin: 0;
-    padding: 2rem ;
+    margin-bottom: 3rem;
+    padding: 3rem 10rem;
     width: 100%;
+  max-width: 100vw;
 }
 
 h1 {

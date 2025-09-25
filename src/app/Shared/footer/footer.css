@@ -1,4 +1,6 @@
 body {
+    width: 100%;
+    max-width: 100vw;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     font-size: clamp(14px, 1.5vw, 18px);
     line-height: 1.6;
