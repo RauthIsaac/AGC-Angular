@@ -57,7 +57,7 @@ export class Home implements OnInit, OnDestroy {
     this.subscription.add(
       this.languageService.currentSiteData$.subscribe(data => {
         this.siteIdentityData.set(data);
-        console.log('Current site data updated:', data);
+        // console.log('Current site data updated:', data);
       })
     );
 

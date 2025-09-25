@@ -30,24 +30,8 @@ export class NewsCard{
   }
 
   // Format date based on language
-  getFormattedDate(dateString?: string): string {
-    if (!dateString && this.news?.createdDate) {
-      dateString = this.news.createdDate;
-    }
-    
-    if (!dateString) {
-      // Fallback date
-      return this.isRTL() ? '20 أغسطس، 2023' : 'August 20, 2023';
-    }
-
-    const date = new Date(dateString);
-    const locale = this.isRTL() ? 'ar-SA' : 'en-US';
-    
-    return date.toLocaleDateString(locale, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+  getNewsDate(): string {
+    return this.news.createdAt;
   }
 
   // Get news image with fallback
