@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { LanguageService } from '../../../../Core/Services/language-service/language-service';
+import { API_URL } from '../../../../Constants/api-endpoints';
 
 @Component({
   selector: 'app-about',
@@ -20,7 +21,8 @@ export class About {
   }
 
   getAboutImageUrl(): string {
-    return this.languageService.getText('about_ImgUrl', 'about_ImgUrl');
+    const imageURL = API_URL + this.languageService.getText('about_ImgUrl', 'about_ImgUrl');
+    return imageURL;
   }
 
   getAboutSubtitle(): string {
