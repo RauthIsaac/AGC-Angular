@@ -10,6 +10,7 @@ body {
     padding: 3rem 10rem;
     width: 100%;
   max-width: 100vw;
+  overflow-x: hidden;
 }
 h1 {
     color: #1a3c5e;
