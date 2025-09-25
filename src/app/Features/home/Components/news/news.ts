@@ -29,7 +29,7 @@ export class News implements OnInit, OnDestroy {
     // Subscribe to site data changes
     this.subscription.add(
       this.languageService.currentSiteData$.subscribe(siteData => {
-        console.log("Site Data changed in News component:", siteData);
+        // console.log("Site Data changed in News component:", siteData);
         this.getNewsList(siteData);
         this.loading = false;
       })
@@ -44,14 +44,14 @@ export class News implements OnInit, OnDestroy {
    * Extract news list from site data
    */
   private getNewsList(siteData: any): void {
-    console.log('Raw siteData:', siteData); 
+    // console.log('Raw siteData:', siteData); 
     
     if (siteData && siteData.news) {
       this.newsList = Array.isArray(siteData.news) ? siteData.news : [];
-      console.log('Final News List:', this.newsList);
+      // console.log('Final News List:', this.newsList);
     } else {
       this.newsList = [];
-      console.log('No news data available.');
+      // console.log('No news data available.');
     }
   }
 
@@ -136,21 +136,6 @@ export class News implements OnInit, OnDestroy {
     return 4000; // 4 seconds interval
   }
 
-  /**
-   * Navigate to all news page
-   */
-  viewAllNews(): void {
-    console.log('View all news clicked');
-    // Example: this.router.navigate(['/news']);
-  }
-
-  /**
-   * Handle news card click
-   */
-  onNewsClick(newsItem: any): void {
-    console.log('News clicked:', newsItem);
-    // Example: this.router.navigate(['/news', newsItem.id]);
-  }
 
   /**
    * Get total number of news slides

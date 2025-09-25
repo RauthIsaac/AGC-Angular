@@ -29,7 +29,7 @@ export class ProductDetails implements OnInit, OnDestroy {
     this.subscription.add(
       this.route.paramMap.subscribe(params => {
         this.productId = params.get('id');
-        console.log('Product ID from route:', this.productId);
+        // console.log('Product ID from route:', this.productId);
         if (this.productId) {
           this.loadProductDetails();
         } else {
@@ -41,7 +41,7 @@ export class ProductDetails implements OnInit, OnDestroy {
     // Subscribe to site data changes from LanguageService
     this.subscription.add(
       this.languageService.currentSiteData$.subscribe(data => {
-        console.log('Site data updated in product details:', data);
+        // console.log('Site data updated in product details:', data);
         if (this.productId) {
           this.loadProductDetails();
         }
@@ -64,7 +64,7 @@ export class ProductDetails implements OnInit, OnDestroy {
 
   private loadProductDetails(): void {
     this.isLoading = true;
-    console.log('Loading product details for ID:', this.productId);
+    // console.log('Loading product details for ID:', this.productId);
 
     const siteData = this.languageService.getCurrentSiteData();
     
@@ -77,14 +77,14 @@ export class ProductDetails implements OnInit, OnDestroy {
       this.isLoading = false;
       
       if (!this.productItem) {
-        console.warn('No product item found for ID:', this.productId);
-        console.log('Available product IDs:', siteData.products.map((item: any) => item.id));
+        // console.warn('No product item found for ID:', this.productId);
+        // console.log('Available product IDs:', siteData.products.map((item: any) => item.id));
         this.router.navigate(['/products']);
       } else {
-        console.log('Product item loaded:', this.productItem);
+        // console.log('Product item loaded:', this.productItem);
       }
     } else {
-      console.warn('Site data or product array not available yet for ID:', this.productId);
+      // console.warn('Site data or product array not available yet for ID:', this.productId);
       // Check if we're still loading
       if (!this.languageService.isLoading()) {
         this.isLoading = false;

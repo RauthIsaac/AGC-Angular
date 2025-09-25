@@ -84,3 +84,169 @@
   margin-top: 0.5rem;
   text-shadow: 0 1px 4px rgba(26,60,94,0.07);
 }
+
+
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+    .gears-wrapper {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+    }
+
+    .gear1 {
+        font-size: 3rem;
+    }
+
+    .gear2 {
+        font-size: 1.8rem;
+        left: 20px;
+        top: 20px;
+    }
+
+    .loading-content{
+        padding: 0 1rem;
+        position: fixed;
+        top: 18rem;
+    }
+
+    .gear-spinner {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+
+    .loading-text {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 912px) {
+    .gears-wrapper {
+        width: 55px;
+        height: 55px;
+        margin-bottom: 18px;
+    }
+
+    .gear1 {
+        font-size: 2.8rem;
+    }
+
+    .gear2 {
+        font-size: 1.7rem;
+        left: 18px;
+        top: 18px;
+    }
+
+    .gear-spinner {
+        font-size: 2.8rem;
+        margin-bottom: 18px;
+    }
+
+    .loading-text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 820px) {
+    .gears-wrapper {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 16px;
+    }
+
+    .gear1 {
+        font-size: 2.5rem;
+    }
+
+    .gear2 {
+        font-size: 1.5rem;
+        left: 16px;
+        top: 16px;
+    }
+
+
+    .loading-content{
+        padding: 0 1rem;
+        position: fixed;
+        top: 18rem;
+    }
+
+    .gear-spinner {
+        font-size: 2.5rem;
+        margin-bottom: 16px;
+    }
+
+    .loading-text {
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+@media (max-width: 768px) {
+    .gears-wrapper {
+        width: 45px;
+        height: 45px;
+        margin-bottom: 14px;
+    }
+
+    .loading-content{
+        padding: 0 1rem;
+        position: fixed;
+        top: 18rem;
+    }
+
+    .gear1 {
+        font-size: 2.2rem;
+    }
+
+    .gear2 {
+        font-size: 1.4rem;
+        left: 14px;
+        top: 14px;
+    }
+
+    .gear-spinner {
+        font-size: 2.2rem;
+        margin-bottom: 14px;
+    }
+
+    .loading-text {
+        font-size: 0.9rem;
+        letter-spacing: 0.4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gears-wrapper {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 12px;
+    }
+
+    .loading-content{
+        padding: 0 1rem;
+        position: fixed;
+        top: 18rem;
+    }
+
+    .gear1 {
+        font-size: 2rem;
+    }
+
+    .gear2 {
+        font-size: 1.2rem;
+        left: 12px;
+        top: 12px;
+    }
+
+    .gear-spinner {
+        font-size: 2rem;
+        margin-bottom: 12px;
+    }
+
+    .loading-text {
+        font-size: 0.85rem;
+        letter-spacing: 0.3px;
+    }
+}

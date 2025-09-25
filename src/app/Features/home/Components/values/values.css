@@ -45,8 +45,7 @@ p.subtitle {
     justify-content: center;
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
-    margin-bottom: 1rem ;
-    height: auto;
+    margin: 1rem 0.5rem;
     cursor: pointer;
     height: 35vh;
 }
@@ -98,15 +97,10 @@ svg {
         font-size: clamp(1rem, 2.5vw, 1rem);
     }
 
-    .values-container {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-    }
-
     .value-card {
         padding: 12px;
         margin-bottom: 2rem;
-        height: 25vh;
+        height: fit-content;
         width: 95%;
     }
 
@@ -148,10 +142,10 @@ svg {
     }
 
     .value-card {
-        padding: 12px;
-        margin-bottom: 2rem;
-        height: 15vh;
-        width: 95%;
+        padding: 20px;
+        margin: 1rem auto;
+        height: fit-content;
+        width: 90%;
     }
 
     .value-card h3 {
@@ -192,10 +186,10 @@ svg {
     }
 
     .value-card {
-        padding: 12px;
-        margin-bottom: 2rem;
-        height: 20vh;
-        width: 95%;
+        padding: 20px;
+        margin: 1rem auto;
+        height: fit-content;
+        width: 90%;
     }
 
     .value-card h3 {
@@ -283,9 +277,9 @@ svg {
     }
 
     .value-card {
-        padding: 12px;
-        margin-bottom: 1rem;
-        height: 25vh;
+        padding: 20px;
+        margin: 1rem auto;
+        height: fit-content;
     }
 
     .value-card h3 {

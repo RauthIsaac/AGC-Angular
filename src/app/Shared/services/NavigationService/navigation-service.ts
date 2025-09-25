@@ -87,7 +87,7 @@ export class NavigationService {
             });
             this.activeSectionSubject.next(sectionId);
           } else {
-            console.warn(`Element with id '${sectionId}' not found`);
+            // console.warn(`Element with id '${sectionId}' not found`);
           }
         }, 500);
       }
