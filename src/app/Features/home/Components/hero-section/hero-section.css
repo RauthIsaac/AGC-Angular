@@ -6,12 +6,13 @@
     align-items: center;
     justify-content: flex-start;
     color: white;
-    padding: 50px;
+    padding: 20px;
     overflow: hidden;
-    margin-top: 50px;
+    margin-top: 0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    font-size: clamp(14px, 1.5vw, 18px);
+    font-size: clamp(12px, 3vw, 16px);
     line-height: 1.6;
+    width: 100%;
 }
 
 .hero-section::before {
@@ -25,22 +26,24 @@
     z-index: 1;
 }
 
-.subtitle{
+.subtitle {
     color: aliceblue;
     font-style: italic;
+    font-size: clamp(14px, 4vw, 18px);
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 600px;
-    margin-left: 70px;
+    max-width: 90%;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .hero-content h1 {
-    font-size: 5rem;
+    font-size: clamp(2rem, 10vw, 4rem);
     font-weight: bolder;
-    white-space: nowrap;
+    white-space: normal;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     color: #fff;
 }
@@ -50,27 +53,89 @@
 }
 
 .hero-content p {
-    font-size: 1.2rem;
-    margin: 10px 0 30px;
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    margin: 10px 0 20px;
 }
+
 .hero-buttons {
     margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
 }
 
 .hero-buttons .btn {
-    margin-right: 25px;
-    padding: 12px 25px;
-    border-radius: 30px;
+    padding: 10px 20px;
+    border-radius: 25px;
     font-weight: bold;
     color: white;
     border: none;
     box-shadow: 0 4px 15px rgba(218, 218, 218, 0.4);
-    transform: translateY(5px);
+    transform: translateY(0);
+    font-size: clamp(14px, 3vw, 16px);
 }
 
-.hero-buttons .btn:hover{
+.hero-buttons .btn:hover {
     background-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
-    transform: translateY(0) scale(1.05);
-    transition: all 0.3s ease ;
+    transform: translateY(-2px) scale(1.05);
+    transition: all 0.3s ease;
+}
+
+/* Media query for smaller screens (mobile devices) */
+@media (max-width: 768px) {
+    .hero-section {
+        height: auto;
+        min-height: 80vh;
+        padding: 20px 15px;
+        justify-content: center;
+    }
+
+    .hero-content {
+        margin: 0;
+        padding: 0 10px;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(1.8rem, 8vw, 3rem);
+        line-height: 1.2;
+    }
+
+    .hero-content p {
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        margin: 10px 0 15px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 300px;
+        padding: 12px 20px;
+    }
+}
+
+/* Media query for very small screens (e.g., mobile portrait) */
+@media (max-width: 480px) {
+    .hero-section {
+        padding: 15px 10px;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(1.5rem, 7vw, 2.5rem);
+    }
+
+    .hero-content p {
+        font-size: clamp(0.8rem, 2.2vw, 1rem);
+    }
+
+    .hero-buttons .btn {
+        font-size: clamp(12px, 2.8vw, 14px);
+        padding: 10px 15px;
+    }
 }
