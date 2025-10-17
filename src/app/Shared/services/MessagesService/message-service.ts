@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Message } from '../../../Shared/models/message';
-import { API_ENDPOINTS, API_URL } from '../../../Constants/api-endpoints';
+import { API_ENDPOINTS} from '../../../Constants/api-endpoints';
+
 
 
 @Injectable({
@@ -12,7 +13,8 @@ export class MessageService {
   constructor(private http: HttpClient) {}
 
   sendGuestMessage(message: Message): Observable<void> {
-    return this.http.post<void>(API_URL + API_ENDPOINTS.MESSAGE_GUEST.POST, message, {
+    const post_url =  API_ENDPOINTS.MESSAGE_GUEST.POST;
+    return this.http.post<void>(post_url, message, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })

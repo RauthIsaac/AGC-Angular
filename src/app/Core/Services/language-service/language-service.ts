@@ -96,7 +96,7 @@ export class LanguageService {
   private loadSiteDataByLangCode(langCode: number): void {
     this.isLoadingSubject.next(true);
         
-    const url = `${API_ENDPOINTS.SITE_IDENTITY.GET}/${langCode}`;
+    const url = `${API_ENDPOINTS.SITE_IDENTITY}/${langCode}`;
 
     this.http.get<SiteData>(url).pipe(
       tap((data: SiteData) => {

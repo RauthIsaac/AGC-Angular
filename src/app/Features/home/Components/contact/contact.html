@@ -91,7 +91,8 @@
           </svg>
         </div>
         <div>
-          <h3>Working Hours</h3>
+          <h3 *ngIf="!isRTL()">Working Hours</h3>
+          <h3 *ngIf="isRTL()">ساعات العمل</h3>
           <p>{{getContactInfoWorkingHours()}}</p>
         </div>
       </div>

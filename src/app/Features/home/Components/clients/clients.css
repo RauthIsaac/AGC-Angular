@@ -89,7 +89,7 @@ p {
 /* Carousel controls */
 .carousel-control-prev,
 .carousel-control-next {
-    width: clamp(5%, 10vw, 8%);
+    width: 5%;
     opacity: 0.7;
     transition: all 0.3s ease;
     margin: 0 clamp(-15px, -2vw, -10px);
