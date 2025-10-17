@@ -5,19 +5,19 @@
   <title>Azb Gulf Company</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/png" sizes="32x32 64x64 128x128" href="Logo.png">
+  <link rel="icon" type="image/x-icon" href="Logo.ico">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- Content Security Policy -->
   <meta http-equiv="Content-Security-Policy" 
-        content="
-          default-src 'self';
-          connect-src 'self' https://localhost:7162 https://azbgulfcompany.runasp.net https://*.runasp.net ws: wss:;
-          script-src 'self' 'unsafe-inline' 'unsafe-eval';
-          style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-          font-src 'self' https://fonts.gstatic.com;
-          img-src 'self' data: https:;
-        ">
+          content="
+            default-src 'self';
+            connect-src 'self' https://localhost:7162 https://azbgulfcompany.runasp.net https://*.runasp.net https://api.azbgulf.com ws: wss:;
+            script-src 'self' 'unsafe-inline' 'unsafe-eval';
+            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+            font-src 'self' https://fonts.gstatic.com;
+            img-src 'self' data: https:;
+          ">
 </head>
 <body>
   <app-root></app-root>

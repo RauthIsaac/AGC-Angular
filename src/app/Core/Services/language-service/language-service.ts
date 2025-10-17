@@ -72,7 +72,7 @@ export class LanguageService {
    */
   public setLanguage(languageCode: string): void {
     if (!this.isLanguageSupported(languageCode)) {
-      console.error(`Language '${languageCode}' is not supported`);
+      // console.error(`Language '${languageCode}' is not supported`);
       return;
     }
     
@@ -96,16 +96,16 @@ export class LanguageService {
   private loadSiteDataByLangCode(langCode: number): void {
     this.isLoadingSubject.next(true);
         
-    const url = `${API_ENDPOINTS.SITE_IDENTITY.GET}/${langCode}`;
+    const url = `${API_ENDPOINTS.SITE_IDENTITY}/${langCode}`;
 
     this.http.get<SiteData>(url).pipe(
       tap((data: SiteData) => {
         this.currentSiteDataSubject.next(data);
-        console.log('Site Data with Language Code', langCode, 'loaded:', data);
+        // console.log('Site Data with Language Code', langCode, 'loaded:', data);
         this.isLoadingSubject.next(false);
       }),
       catchError((error: any) => {
-        console.error('Error loading site data:', error);
+        // console.error('Error loading site data:', error);
         this.isLoadingSubject.next(true);
         return of(null);
       })

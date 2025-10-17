@@ -19,4 +19,4 @@ bootstrapApplication(App, {
     provideHttpClient(),
     provideZoneChangeDetection({ eventCoalescing: true })
   ]
-}).catch(err => console.error(err));
+});

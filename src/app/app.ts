@@ -1,5 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { Footer } from "./Shared/footer/footer";
 import { Header } from './Shared/header/header';
 import { NavigationService } from './Shared/services/NavigationService/navigation-service';
@@ -8,7 +9,7 @@ import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer],
+  imports: [RouterOutlet, Header, Footer, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -19,6 +20,7 @@ export class App implements OnInit, OnDestroy {
   private router = inject(Router);
 
   activeSection: string = 'home';
+  isAdminRoute: boolean = false;
   private subscription: Subscription = new Subscription();
 
   constructor() {}
@@ -36,6 +38,9 @@ export class App implements OnInit, OnDestroy {
       this.router.events.pipe(
         filter(event => event instanceof NavigationEnd)
       ).subscribe((event: NavigationEnd) => {
+        // Check if current route is admin
+        this.isAdminRoute = event.url.startsWith('/admin');
+        
         // Handle URL fragments when navigation ends
         setTimeout(() => {
           this.navigationService.handleUrlFragment();
@@ -47,6 +52,9 @@ export class App implements OnInit, OnDestroy {
     setTimeout(() => {
       this.navigationService.handleUrlFragment();
     }, 100);
+
+    // Set initial admin route state
+    this.isAdminRoute = this.router.url.startsWith('/admin');
   }
 
   ngOnDestroy() {

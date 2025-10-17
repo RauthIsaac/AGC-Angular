@@ -2,8 +2,8 @@
   <img [src]="getNewsImage()" class="card-img-top" [alt]="news.title">
   <div class="card-body" [class.text-end]="isRTL()">
     <p>
-        <i class="bi bi-calendar2" [class.mx-2]="!isRTL()" [class.ms-2]="isRTL()"></i> 
-        <span class="news-date">{{ getFormattedDate() }}</span>
+        <i class="bi bi-calendar2" [class.mx-2]="!isRTL()" [class.me-2]="isRTL()"></i> 
+        <span class="news-date">{{ getNewsDate() | date:'longDate' }}</span>
     </p>
     <h5 class="card-title">{{ news.title }}</h5>
     <p class="subtitle">{{ news.subTitle }}</p>

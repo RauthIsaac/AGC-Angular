@@ -113,7 +113,7 @@ export class Contact implements OnInit {
         this.submissionError = this.isRTL()
           ? 'فشل في إرسال الرسالة. يرجى المحاولة لاحقًا.'
           : 'Failed to send message. Please try again later.';
-        console.error('Submission error:', error);
+        // console.error('Submission error:', error);
       }
     });
   }

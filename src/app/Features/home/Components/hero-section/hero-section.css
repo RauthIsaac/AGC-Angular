@@ -91,6 +91,43 @@ body{
     transition: all 0.3s ease;
 }
 
+@media (max-width: 1024px) {
+    .hero-section {
+        height: auto;
+        min-height: 80vh;
+        padding: 20px 15px;
+        justify-content: center;
+    }
+
+    .hero-content {
+        margin: 0;
+        padding: 0 10px;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(1.8rem, 8vw, 3rem);
+        line-height: 1.2;
+        margin-top: 5rem;
+    }
+
+    .hero-content p {
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        margin: 10px 0 15px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 300px;
+        padding: 12px 20px;
+    }
+}
+
 /* Media query for smaller screens (mobile devices) */
 @media (max-width: 768px) {
     .hero-section {

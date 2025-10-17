@@ -10,7 +10,36 @@
     <p class="subtitle text-muted">{{ getAboutSubtitle() }}</p>
 
     <div class="about-container row justify-content-center align-content-center d-flex">
-        <div class="col-lg-6 col-md-12 col-sm-12 mb-2">
+        <div class="col-lg-6 col-md-12 col-sm-12 mb-2 my-2 d-flex flex-column align-items-center justify-content-center">
+            <div class="about-image-wrapper mb-3">
+                <img [src]="getAboutImageUrl()" alt="Company Image" class="about-company-image"/>
+            </div>
+            <div class="row w-100">
+                <div class="col-6">
+                    <div class="about-card-status">
+                        <h4>{{ getAboutStatsYearsExperience() }}</h4>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="about-card-status">
+                        <h4>{{ getAboutStatsSpecialists() }}</h4>
+                    </div>
+                </div> 
+                <div class="col-6">
+                    <div class="about-card-status">
+                        <h4>{{ getAboutStatsSpecializedProducts() }}</h4>
+                    </div>           
+                </div>
+                <div class="col-6">
+                    <div class="about-card-status">
+                        <h4>{{ getAboutStatsTechnicalSupport() }}</h4>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+                <div class="col-lg-6 col-md-12 col-sm-12 mb-2">
             <div class="text-section">
                 <p>{{ getAboutDescription() }}</p>
             </div>
@@ -42,35 +71,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 col-md-12 col-sm-12 mb-2 my-2 d-flex flex-column align-items-center justify-content-center">
-            <div class="about-image-wrapper mb-3">
-                <img [src]="getAboutImageUrl()" alt="Company Image" class="about-company-image"/>
-            </div>
-            <div class="row w-100">
-                <div class="col-6">
-                    <div class="about-card-status">
-                        <h4>{{ getAboutStatsYearsExperience() }}</h4>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="about-card-status">
-                        <h4>{{ getAboutStatsSpecialists() }}</h4>
-                    </div>
-                </div> 
-                <div class="col-6">
-                    <div class="about-card-status">
-                        <h4>{{ getAboutStatsSpecializedProducts() }}</h4>
-                    </div>           
-                </div>
-                <div class="col-6">
-                    <div class="about-card-status">
-                        <h4>{{ getAboutStatsTechnicalSupport() }}</h4>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-        
     </div>
 
     

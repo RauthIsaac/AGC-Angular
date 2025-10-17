@@ -73,7 +73,7 @@ svg{
     text-align: center;
     box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
-    margin: 2rem auto;
+    margin: 3rem auto;
     width: 70%;
     cursor: pointer;
 }
@@ -101,3 +101,284 @@ svg{
     transition: background-color 0.3s ease;
 }
 
+
+
+/* Media query for screens up to 1024px (tablets and smaller laptops) */
+@media (max-width: 1024px) {
+    body {
+        padding: clamp(1rem, 4vw, 2rem) clamp(1rem, 4vw, 3rem);
+    }
+
+    h1 {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        margin-bottom: clamp(6px, 1vw, 8px);
+    }
+
+    p.subtitle {
+        font-size: clamp(0.85em, 1.8vw, 0.95em);
+        max-width: 85%;
+        margin-bottom: clamp(0.8rem, 2vw, 1.5rem);
+    }
+
+    .sector-card {
+        padding: clamp(12px, 2.5vw, 20px);
+        margin: 0 clamp(0.2rem, 0.8vw, 0.4rem) clamp(0.4rem, 0.8vw, 1rem);
+    }
+
+    .sector-card h3 {
+        font-size: clamp(0.95em, 1.8vw, 1.1em);
+        margin-bottom: clamp(6px, 0.8vw, 8px);
+    }
+
+    .sector-card p {
+        font-size: clamp(0.78em, 1.6vw, 0.85em);
+        line-height: 1.4;
+    }
+
+    .svg-div {
+        padding: clamp(6px, 1.2vw, 8px);
+        margin-bottom: clamp(10px, 1.5vw, 15px);
+    }
+
+    svg {
+        width: clamp(1.3rem, 2.5vw, 1.8rem);
+        height: clamp(1.3rem, 2.5vw, 1.8rem);
+    }
+
+    .join-contact {
+        padding: clamp(12px, 2.5vw, 20px);
+        width: clamp(70%, 80%, 85%);
+        margin: 2rem auto;
+    }
+
+    .join-contact h2 {
+        font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+        margin-bottom: clamp(6px, 0.8vw, 8px);
+    }
+
+    .join-contact p {
+        font-size: clamp(0.85em, 1.8vw, 0.95em);
+        margin-bottom: clamp(8px, 1.5vw, 15px);
+    }
+
+    .join-contact .btn {
+        padding: clamp(6px, 1.2vw, 8px) clamp(15px, 2.5vw, 25px);
+        font-size: clamp(0.85em, 1.6vw, 0.95em);
+    }
+}
+
+/* Media query for screens up to 768px (tablets and larger mobiles) */
+@media (max-width: 768px) {
+    body {
+        padding: clamp(0.5rem, 3vw, 1rem) clamp(0.5rem, 3vw, 2rem);
+    }
+
+    h1 {
+        font-size: clamp(1.5rem, 3.5vw, 2rem);
+        margin-bottom: clamp(5px, 0.8vw, 6px);
+        letter-spacing: 0.5px;
+    }
+
+    p.subtitle {
+        font-size: clamp(0.8em, 1.6vw, 0.9em);
+        max-width: 90%;
+        margin-bottom: clamp(0.6rem, 1.5vw, 1rem);
+    }
+
+    .sector-card {
+        padding: clamp(10px, 2vw, 15px);
+        margin: 0 clamp(0.15rem, 0.6vw, 0.3rem) clamp(0.3rem, 0.6vw, 0.8rem);
+    }
+
+    .sector-card h3 {
+        font-size: clamp(0.9em, 1.6vw, 1.05em);
+        margin-bottom: clamp(5px, 0.6vw, 6px);
+    }
+
+    .sector-card p {
+        font-size: clamp(0.75em, 1.4vw, 0.82em);
+        line-height: 1.3;
+    }
+
+    .svg-div {
+        padding: clamp(5px, 1vw, 6px);
+        margin-bottom: clamp(8px, 1.2vw, 12px);
+    }
+
+    svg {
+        width: clamp(1.2rem, 2vw, 1.6rem);
+        height: clamp(1.2rem, 2vw, 1.6rem);
+    }
+
+    .join-contact {
+        padding: clamp(10px, 2vw, 15px);
+        width: clamp(80%, 85%, 90%);
+        margin: clamp(0.6rem, 1.2vw, 1rem) auto;
+    }
+
+    .join-contact h2 {
+        font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+        margin-bottom: clamp(5px, 0.6vw, 6px);
+    }
+
+    .join-contact p {
+        font-size: clamp(0.8em, 1.6vw, 0.9em);
+        margin-bottom: clamp(6px, 1.2vw, 12px);
+    }
+
+    .join-contact .btn {
+        padding: clamp(5px, 1vw, 6px) clamp(12px, 2vw, 20px);
+        font-size: clamp(0.8em, 1.4vw, 0.9em);
+    }
+}
+
+
+@media (max-width: 540px) {
+    body {
+        padding: 2rem;
+    }
+
+    h1 {
+        font-size: clamp(1.5rem, 3.5vw, 2rem);
+        margin-bottom: clamp(5px, 0.8vw, 6px);
+        letter-spacing: 0.5px;
+    }
+
+    p.subtitle {
+        font-size: clamp(0.8em, 1.6vw, 0.9em);
+        max-width: 90%;
+        margin-bottom: clamp(0.6rem, 1.5vw, 1rem);
+    }
+
+    .sector-card {
+        padding: clamp(10px, 2vw, 15px);
+        margin: 1rem auto;
+        width: 70%; 
+        height: 15vh;
+    }
+
+    .sector-card h3 {
+        font-size: clamp(0.9em, 1.6vw, 1.05em);
+        margin-bottom: clamp(5px, 0.6vw, 6px);
+    }
+
+    .sector-card p {
+        font-size: clamp(0.75em, 1.4vw, 0.82em);
+        line-height: 1.3;
+    }
+
+    .svg-div {
+        padding: clamp(5px, 1vw, 6px);
+        margin-bottom: clamp(8px, 1.2vw, 12px);
+    }
+
+    svg {
+        width: clamp(1.2rem, 2vw, 1.6rem);
+        height: clamp(1.2rem, 2vw, 1.6rem);
+    }
+
+    .join-contact {
+        padding: clamp(10px, 2vw, 15px);
+        width: clamp(80%, 85%, 90%);
+        margin: 2rem auto;
+    }
+
+    .join-contact h2 {
+        font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+        margin-bottom: clamp(5px, 0.6vw, 6px);
+    }
+
+    .join-contact p {
+        font-size: clamp(0.8em, 1.6vw, 0.9em);
+        margin-bottom: clamp(6px, 1.2vw, 12px);
+    }
+
+    .join-contact .btn {
+        padding: clamp(5px, 1vw, 6px) clamp(12px, 2vw, 20px);
+        font-size: clamp(0.8em, 1.4vw, 0.9em);
+    }
+}
+
+
+/* Media query for screens up to 480px (mobile portrait) */
+@media (max-width: 480px) {
+    body {
+        padding: clamp(0.3rem, 2vw, 0.5rem) clamp(0.3rem, 2vw, 1rem);
+        margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+    }
+
+    h1 {
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        margin-bottom: clamp(4px, 0.6vw, 5px);
+        letter-spacing: 0.3px;
+    }
+
+    p.subtitle {
+        font-size: clamp(0.75em, 1.4vw, 0.85em);
+        max-width: 95%;
+        margin-bottom: clamp(0.5rem, 1.2vw, 0.8rem);
+    }
+
+    .sector-card {
+        padding: 1rem;
+        margin: 0.5rem auto;
+        height: fit-content;
+    }
+
+    .sector-card h3 {
+        font-size: clamp(0.85em, 1.4vw, 1em);
+        margin-bottom: clamp(4px, 0.5vw, 5px);
+    }
+
+    .sector-card p {
+        font-size: clamp(0.7em, 1.2vw, 0.8em);
+        line-height: 1.2;
+    }
+
+    .svg-div {
+        padding: clamp(4px, 0.8vw, 5px);
+        margin-bottom: clamp(6px, 1vw, 10px);
+    }
+
+    svg {
+        width: clamp(1rem, 1.5vw, 1.3rem);
+        height: clamp(1rem, 1.5vw, 1.3rem);
+    }
+
+    .join-contact {
+        padding: clamp(8px, 1.5vw, 12px);
+        width: clamp(85%, 90%, 95%);
+        margin: clamp(0.5rem, 1vw, 0.8rem) auto;
+    }
+
+    .join-contact h2 {
+        font-size: clamp(1rem, 2vw, 1.4rem);
+        margin-bottom: clamp(4px, 0.5vw, 5px);
+    }
+
+    .join-contact p {
+        font-size: clamp(0.75em, 1.4vw, 0.85em);
+        margin-bottom: clamp(5px, 1vw, 8px);
+    }
+
+    .join-contact .btn {
+        padding: clamp(4px, 0.8vw, 5px) clamp(10px, 1.5vw, 15px);
+        font-size: clamp(0.75em, 1.2vw, 0.85em);
+    }
+}
+
+/* Additional responsive improvements for very small screens */
+@media (max-width: 360px) {
+    .sector-container {
+        max-width: 280px;
+        gap: clamp(0.4rem, 0.8vw, 0.6rem);
+    }
+
+    .sector-card {
+        padding: clamp(6px, 1.2vw, 10px);
+    }
+
+    .join-contact {
+        width: 98%;
+    }
+}

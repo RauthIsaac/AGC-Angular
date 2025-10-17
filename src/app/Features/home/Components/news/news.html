@@ -12,8 +12,7 @@
                                 class="col-md-5"
                                 *ngFor="let news of newsGroup" 
                                 [news]="news" 
-                                [lang]="getCurrentLanguage()" 
-                                (click)="onNewsClick(news)">
+                                [lang]="getCurrentLanguage()">
                             </app-news-card>
                         </div>
                     </div>

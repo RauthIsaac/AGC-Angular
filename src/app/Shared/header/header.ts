@@ -1,5 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 import { NavigationService } from '../services/NavigationService/navigation-service';
 import { LanguageService } from '../../Core/Services/language-service/language-service';
 import { API_URL } from '../../Constants/api-endpoints';
@@ -8,7 +9,7 @@ import { Loading } from "../loading/loading";
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, Loading],
+  imports: [CommonModule, RouterModule, Loading],
   templateUrl: './header.html',
   styleUrls: ['./header.css']
 })
@@ -16,6 +17,7 @@ export class Header {
   // Inject services using modern Angular inject function
   private navigationService = inject(NavigationService);
   private languageService = inject(LanguageService);
+  private router = inject(Router);
 
   // Keep only the activeSection input as it's navigation-specific
   @Input() activeSection: string = 'home';
@@ -33,7 +35,19 @@ export class Header {
   }
 
   isActive(section: string): boolean {
+    // If we're on login page, only login should be active
+    if (this.isOnLoginPage()) {
+      return false;
+    }
     return this.navigationService.isActive(section);
+  }
+
+  isLoginActive(): boolean {
+    return this.isOnLoginPage();
+  }
+
+  isOnLoginPage(): boolean {
+    return this.router.url === '/login';
   }
   //#endregion
 
@@ -219,6 +233,11 @@ export class Header {
   /*------------- Get Contact based on language -------------*/
   getContact(): string {
     return this.languageService.getText('header_navigation_contact', 'header_navigation_contact');
+  }
+
+  /*------------- Get Login based on language -------------*/
+  getLogin(): string {
+    return this.languageService.isRTL() ? 'تسجيل الدخول' : 'Login';
   }
 
   //#endregion

@@ -140,6 +140,14 @@
                                {{ getContact() }}
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isLoginActive()"
+                               routerLink="/login"
+                               style="cursor: pointer;">
+                               {{ getLogin() }}
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
@@ -194,6 +202,15 @@
                                (click)="navigateToSection('contact'); closeNavbar()" 
                                style="cursor: pointer;">
                                {{ getContact() }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [class.active]="isLoginActive()"
+                               routerLink="/login"
+                               (click)="closeNavbar()"
+                               style="cursor: pointer;">
+                               {{ getLogin() }}
                             </a>
                         </li>
                     </ul>

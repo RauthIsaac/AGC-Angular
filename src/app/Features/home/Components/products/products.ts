@@ -25,7 +25,7 @@ export class Products implements OnInit, OnDestroy {
     // Subscribe to site data changes
     this.subscription.add(
       this.languageService.currentSiteData$.subscribe(siteData => {
-        console.log("Site Data changed in Products component:", siteData);
+        // console.log("Site Data changed in Products component:", siteData);
         this.getProductsList(siteData);
       })
     );
@@ -36,14 +36,14 @@ export class Products implements OnInit, OnDestroy {
   }
 
    private getProductsList(siteData: any) {
-    console.log('Raw siteData:', siteData); 
+    // console.log('Raw siteData:', siteData); 
 
     if (siteData && siteData.products) {
       this.productsList = Array.isArray(siteData.products) ? siteData.products : [];
-      console.log('Final Products List:', this.productsList);
+      // console.log('Final Products List:', this.productsList);
     } else {
       this.productsList = [];
-      console.log('No products data available.');
+      // console.log('No products data available.');
     }
   }
 

@@ -1,0 +1,1531 @@
+<div class="admin-dashboard" [class.rtl]="isRTL()" [class.sidebar-open]="sidebarOpen">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.open]="sidebarOpen">
+    <div class="sidebar-header">
+      <div class="logo">
+        <h2>{{ getDashboardTitle() }}</h2>
+      </div>
+      <button class="close-sidebar" (click)="toggleSidebar()">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li [class.active]="activeTab === 'overview'">
+          <a (click)="setActiveTab('overview')" style="cursor: pointer;">
+            <i class="bi bi-speedometer2"></i>
+            <span>{{ getOverviewTitle() }}</span>
+          </a>
+        </li>
+        <li [class.active]="activeTab === 'site-identity'">
+          <a (click)="setActiveTab('site-identity')" style="cursor: pointer;">
+            <i class="bi bi-building"></i>
+            <span>{{ getSiteIdentityTitle() }}</span>
+          </a>
+        </li>
+        <li [class.active]="activeTab === 'products'">
+          <a (click)="setActiveTab('products')" style="cursor: pointer;">
+            <i class="bi bi-box"></i>
+            <span>{{ getProductsTitle() }}</span>
+          </a>
+        </li>
+        <li [class.active]="activeTab === 'news'">
+          <a (click)="setActiveTab('news')" style="cursor: pointer;">
+            <i class="bi bi-newspaper"></i>
+            <span>{{ getNewsTitle() }}</span>
+          </a>
+        </li>
+        <li [class.active]="activeTab === 'messages'">
+          <a (click)="setActiveTab('messages')" style="cursor: pointer;">
+            <i class="bi bi-envelope"></i>
+            <span>{{ getMessagesTitle() }}</span>
+            <span class="badge" *ngIf="getUnreadMessagesCount() > 0">
+              {{ getUnreadMessagesCount() }}
+            </span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="content-header">
+      <button class="menu-toggle" (click)="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
+      
+      <div class="header-actions">
+        <!-- Language Toggle -->
+        <button class="language-toggle" (click)="toggleLanguage()" [title]="getCurrentLanguageText()">
+          <span class="language-icon">{{ getCurrentLanguageIcon() }}</span>
+          <span class="language-text">{{ getCurrentLanguageText() }}</span>
+        </button>
+        
+        <!-- Logout Button -->
+        <button class="logout-btn" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>{{ getLogoutText() }}</span>
+        </button>
+        
+        <div class="admin-info">
+          <span class="admin-name">AGC Admin</span>
+          <i class="bi bi-person-circle"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- Overview Tab -->
+      <div *ngIf="activeTab === 'overview'" class="tab-content">
+        <h1>{{ getOverviewTitle() }}</h1>
+        
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-box"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ stats.totalProducts }}</h3>
+              <p>{{ getProductsTitle() }}</p>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-newspaper"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ stats.totalNews }}</h3>
+              <p>{{ getNewsTitle() }}</p>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-envelope"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ stats.totalMessages }}</h3>
+              <p>{{ getMessagesTitle() }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Messages -->
+        <div class="recent-section">
+          <div class="section-header">
+            <h2>{{ isRTL() ? 'الرسائل الأخيرة' : 'Recent Messages' }}</h2>
+            <button 
+              *ngIf="!isLoadingMessages && recentMessages.length > 0"
+              class="btn btn-primary btn-sm view-messages-btn" 
+              (click)="setActiveTab('messages')">
+              {{ isRTL() ? 'عرض الرسائل' : 'View Messages' }}
+            </button>
+          </div>
+          
+          <div *ngIf="isLoadingMessages" class="loading-messages">
+            <p>{{ isRTL() ? 'جاري تحميل الرسائل...' : 'Loading messages...' }}</p>
+          </div>
+          
+          <div *ngIf="!isLoadingMessages" class="messages-list">
+            <div *ngIf="recentMessages.length === 0" class="no-messages">
+              <p>{{ isRTL() ? 'لا توجد رسائل' : 'No messages found' }}</p>
+            </div>
+            
+            <div *ngFor="let message of getLatestMessages()" class="message-item">
+              <div class="message-info">
+                <h4>{{ message.fullName }}</h4>
+                <p>{{ message.message }}</p>
+                <div class="message-details">
+                  <small>
+                    <a [href]="'mailto:' + message.email" class="email-link">{{ message.email }}</a>
+                    <span *ngIf="message.phoneNumber"> • {{ message.phoneNumber }}</span>
+                  </small>
+                </div>
+              </div>
+              <!-- Removed individual message actions -->
+            </div>
+            
+            <div *ngIf="recentMessages.length > 2" class="view-all-messages">
+              <button 
+                class="btn btn-outline-primary" 
+                (click)="setActiveTab('messages')">
+                {{ isRTL() ? 'عرض جميع الرسائل' : 'View All Messages' }} ({{ recentMessages.length }})
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent News -->
+        <div class="recent-section" style="margin-top: 2rem;">
+          <div class="section-header">
+            <h2>{{ isRTL() ? 'الأخبار الحديثة' : 'Recent News' }}</h2>
+            <button 
+              class="btn btn-primary btn-sm view-news-btn" 
+              (click)="setActiveTab('news')">
+              {{ isRTL() ? 'عرض الأخبار' : 'View News' }}
+            </button>
+          </div>
+          
+          <div *ngIf="isLoadingNews" class="loading-messages">
+            <p>{{ isRTL() ? 'جاري تحميل الأخبار...' : 'Loading news...' }}</p>
+          </div>
+          
+          <div *ngIf="!isLoadingNews" class="news-list">
+            <div *ngIf="allNews.length === 0" class="no-messages">
+              <p>{{ isRTL() ? 'لا توجد أخبار' : 'No news found' }}</p>
+            </div>
+            
+            <div *ngFor="let news of getLatestNews()" class="news-item-overview">
+              <div class="news-image-small" *ngIf="news.newsImgUrl">
+                <img [src]="getNewsImageUrl(news.newsImgUrl, news.id)" [alt]="news.title" />
+              </div>
+              <div class="news-info">
+                <h4>{{ news.title }}</h4>
+                <p class="news-subtitle-small">{{ truncateText(news.subTitle, 80) }}</p>
+                <div class="news-details">
+                  <small>{{ formatDate(news.createdAt) }} • {{ news.langCode === 0 ? 'EN' : 'AR' }}</small>
+                </div>
+              </div>
+            </div>
+            
+            <div *ngIf="allNews.length > 3" class="view-all-messages">
+              <button 
+                class="btn btn-outline-primary" 
+                (click)="setActiveTab('news')">
+                {{ isRTL() ? 'عرض جميع الأخبار' : 'View All News' }} ({{ allNews.length }})
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Site Identity Tab -->
+      <div *ngIf="activeTab === 'site-identity'" class="tab-content">
+        <div class="tab-header">
+          <h1>{{ getSiteIdentityTitle() }}</h1>
+          <div class="header-actions">
+            <!-- Language Selection Buttons -->
+            <div class="language-selector" *ngIf="!isLoadingSiteData">
+              <span class="selector-label">{{ isRTL() ? 'تحرير اللغة:' : 'Edit Language:' }}</span>
+              <div class="language-buttons">
+                <button 
+                  class="btn language-btn"
+                  [class.btn-primary]="selectedEditLanguage === 0"
+                  [class.btn-outline-primary]="selectedEditLanguage !== 0"
+                  (click)="switchEditLanguage(0)"
+                  [disabled]="isLoadingSiteData || isSavingSiteData">
+                  <i class="bi bi-flag-fill"></i>
+                  {{ getEditLanguageText(0) }}
+                  <span class="data-indicator" [class.has-data]="hasDataForLanguage(0)">
+                    {{ hasDataForLanguage(0) ? '●' : '○' }}
+                  </span>
+                </button>
+                <button 
+                  class="btn language-btn"
+                  [class.btn-primary]="selectedEditLanguage === 1"
+                  [class.btn-outline-primary]="selectedEditLanguage !== 1"
+                  (click)="switchEditLanguage(1)"
+                  [disabled]="isLoadingSiteData || isSavingSiteData">
+                  <i class="bi bi-flag-fill"></i>
+                  {{ getEditLanguageText(1) }}
+                  <span class="data-indicator" [class.has-data]="hasDataForLanguage(1)">
+                    {{ hasDataForLanguage(1) ? '●' : '○' }}
+                  </span>
+                </button>
+              </div>
+            </div>
+            
+            <button 
+              *ngIf="siteDataForm && !isLoadingSiteData" 
+              class="btn btn-secondary" 
+              (click)="resetSiteDataForm()"
+              [disabled]="isSavingSiteData">
+              <i class="bi bi-arrow-clockwise"></i>
+              {{ isRTL() ? 'إعادة تعيين' : 'Reset' }}
+            </button>
+            <button 
+              *ngIf="siteDataForm && !isLoadingSiteData" 
+              class="btn btn-primary" 
+              (click)="updateSiteData()"
+              [disabled]="isSavingSiteData">
+              <i class="bi bi-check-circle"></i>
+              {{ isSavingSiteData ? (isRTL() ? 'جاري الحفظ...' : 'Saving...') : (isRTL() ? 'حفظ التغييرات' : 'Save Changes') }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="isLoadingSiteData" class="loading-container">
+          <div class="loading-spinner"></div>
+          <p>{{ isRTL() ? 'جاري تحميل بيانات الموقع...' : 'Loading site data...' }}</p>
+        </div>
+
+        <!-- Site Identity Form -->
+        <form *ngIf="!isLoadingSiteData && siteDataForm" class="site-identity-form">
+          
+          <!-- Current Language Indicator -->
+          <div class="current-language-indicator">
+            <i class="bi bi-info-circle"></i>
+            <span>
+              {{ isRTL() ? 'تحرير البيانات للغة:' : 'Editing data for language:' }}
+              <strong>{{ getEditLanguageText(selectedEditLanguage) }}</strong>
+            </span>
+          </div>
+          
+          <!-- Company Information Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-building"></i>
+              {{ isRTL() ? 'معلومات الشركة' : 'Company Information' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="companyName">{{ isRTL() ? 'اسم الشركة' : 'Company Name' }}</label>
+                <input 
+                  type="text" 
+                  id="companyName" 
+                  [(ngModel)]="siteDataForm.companyName" 
+                  name="companyName"
+                  class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <!-- Header Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-layout-text-window-reverse"></i>
+              {{ isRTL() ? 'معلومات الرأس' : 'Header Information' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="header_phone">{{ isRTL() ? 'رقم الهاتف' : 'Phone Number' }}</label>
+                <input 
+                  type="tel" 
+                  id="header_phone" 
+                  [(ngModel)]="siteDataForm.header_phone" 
+                  name="header_phone"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="header_email">{{ isRTL() ? 'البريد الإلكتروني' : 'Email' }}</label>
+                <input 
+                  type="email" 
+                  id="header_email" 
+                  [(ngModel)]="siteDataForm.header_email" 
+                  name="header_email"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="header_distributed">{{ isRTL() ? 'نص التوزيع' : 'Distribution Text' }}</label>
+                <input 
+                  type="text" 
+                  id="header_distributed" 
+                  [(ngModel)]="siteDataForm.header_distributed" 
+                  name="header_distributed"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="header_companyName">{{ isRTL() ? 'اسم الشركة في الرأس' : 'Header Company Name' }}</label>
+                <input 
+                  type="text" 
+                  id="header_companyName" 
+                  [(ngModel)]="siteDataForm.header_companyName" 
+                  name="header_companyName"
+                  class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-compass"></i>
+              {{ isRTL() ? 'التنقل' : 'Navigation' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="header_navigation_home">{{ isRTL() ? 'الرئيسية' : 'Home' }}</label>
+                <input 
+                  type="text" 
+                  id="header_navigation_home" 
+                  [(ngModel)]="siteDataForm.header_navigation_home" 
+                  name="header_navigation_home"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="header_navigation_about">{{ isRTL() ? 'من نحن' : 'About' }}</label>
+                <input 
+                  type="text" 
+                  id="header_navigation_about" 
+                  [(ngModel)]="siteDataForm.header_navigation_about" 
+                  name="header_navigation_about"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="header_navigation_products">{{ isRTL() ? 'المنتجات' : 'Products' }}</label>
+                <input 
+                  type="text" 
+                  id="header_navigation_products" 
+                  [(ngModel)]="siteDataForm.header_navigation_products" 
+                  name="header_navigation_products"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="header_navigation_clients">{{ isRTL() ? 'العملاء' : 'Clients' }}</label>
+                <input 
+                  type="text" 
+                  id="header_navigation_clients" 
+                  [(ngModel)]="siteDataForm.header_navigation_clients" 
+                  name="header_navigation_clients"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="header_navigation_news">{{ isRTL() ? 'الأخبار' : 'News' }}</label>
+                <input 
+                  type="text" 
+                  id="header_navigation_news" 
+                  [(ngModel)]="siteDataForm.header_navigation_news" 
+                  name="header_navigation_news"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="header_navigation_contact">{{ isRTL() ? 'اتصل بنا' : 'Contact' }}</label>
+                <input 
+                  type="text" 
+                  id="header_navigation_contact" 
+                  [(ngModel)]="siteDataForm.header_navigation_contact" 
+                  name="header_navigation_contact"
+                  class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-star"></i>
+              {{ isRTL() ? 'القسم الرئيسي' : 'Hero Section' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label for="hero_mainTitle">{{ isRTL() ? 'العنوان الرئيسي' : 'Main Title' }}</label>
+                <input 
+                  type="text" 
+                  id="hero_mainTitle" 
+                  [(ngModel)]="siteDataForm.hero_mainTitle" 
+                  name="hero_mainTitle"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="hero_subtitle">{{ isRTL() ? 'العنوان الفرعي' : 'Subtitle' }}</label>
+                <textarea 
+                  id="hero_subtitle" 
+                  [(ngModel)]="siteDataForm.hero_subtitle" 
+                  name="hero_subtitle"
+                  class="form-control"
+                  rows="3"></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="hero_arabicBadge">{{ isRTL() ? 'شارة عربية' : 'Arabic Badge' }}</label>
+                <input 
+                  type="text" 
+                  id="hero_arabicBadge" 
+                  [(ngModel)]="siteDataForm.hero_arabicBadge" 
+                  name="hero_arabicBadge"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="hero_productFilter_label">{{ isRTL() ? 'تسمية فلتر المنتجات' : 'Product Filter Label' }}</label>
+                <input 
+                  type="text" 
+                  id="hero_productFilter_label" 
+                  [(ngModel)]="siteDataForm.hero_productFilter_label" 
+                  name="hero_productFilter_label"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="hero_mission">{{ isRTL() ? 'المهمة' : 'Mission' }}</label>
+                <textarea 
+                  id="hero_mission" 
+                  [(ngModel)]="siteDataForm.hero_mission" 
+                  name="hero_mission"
+                  class="form-control"
+                  rows="4"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- About Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-info-circle"></i>
+              {{ isRTL() ? 'من نحن' : 'About Section' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label for="about_title">{{ isRTL() ? 'عنوان القسم' : 'About Title' }}</label>
+                <input 
+                  type="text" 
+                  id="about_title" 
+                  [(ngModel)]="siteDataForm.about_title" 
+                  name="about_title"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="about_subtitle">{{ isRTL() ? 'العنوان الفرعي' : 'About Subtitle' }}</label>
+                <input 
+                  type="text" 
+                  id="about_subtitle" 
+                  [(ngModel)]="siteDataForm.about_subtitle" 
+                  name="about_subtitle"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="about_description">{{ isRTL() ? 'الوصف' : 'About Description' }}</label>
+                <textarea 
+                  id="about_description" 
+                  [(ngModel)]="siteDataForm.about_description" 
+                  name="about_description"
+                  class="form-control"
+                  rows="5"></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="about_ourMission">{{ isRTL() ? 'مهمتنا' : 'Our Mission' }}</label>
+                <input 
+                  type="text" 
+                  id="about_ourMission" 
+                  [(ngModel)]="siteDataForm.about_ourMission" 
+                  name="about_ourMission"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="about_ourVision">{{ isRTL() ? 'رؤيتنا' : 'Our Vision' }}</label>
+                <input 
+                  type="text" 
+                  id="about_ourVision" 
+                  [(ngModel)]="siteDataForm.about_ourVision" 
+                  name="about_ourVision"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="about_missionStatement">{{ isRTL() ? 'بيان المهمة' : 'Mission Statement' }}</label>
+                <textarea 
+                  id="about_missionStatement" 
+                  [(ngModel)]="siteDataForm.about_missionStatement" 
+                  name="about_missionStatement"
+                  class="form-control"
+                  rows="4"></textarea>
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="about_visionStatement">{{ isRTL() ? 'بيان الرؤية' : 'Vision Statement' }}</label>
+                <textarea 
+                  id="about_visionStatement" 
+                  [(ngModel)]="siteDataForm.about_visionStatement" 
+                  name="about_visionStatement"
+                  class="form-control"
+                  rows="4"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- About Statistics -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-graph-up"></i>
+              {{ isRTL() ? 'إحصائيات الشركة' : 'Company Statistics' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="about_stats_yearsExperience">{{ isRTL() ? 'سنوات الخبرة' : 'Years Experience' }}</label>
+                <input 
+                  type="text" 
+                  id="about_stats_yearsExperience" 
+                  [(ngModel)]="siteDataForm.about_stats_yearsExperience" 
+                  name="about_stats_yearsExperience"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="about_stats_specialists">{{ isRTL() ? 'المختصون' : 'Specialists' }}</label>
+                <input 
+                  type="text" 
+                  id="about_stats_specialists" 
+                  [(ngModel)]="siteDataForm.about_stats_specialists" 
+                  name="about_stats_specialists"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="about_stats_specializedProducts">{{ isRTL() ? 'المنتجات المختصة' : 'Specialized Products' }}</label>
+                <input 
+                  type="text" 
+                  id="about_stats_specializedProducts" 
+                  [(ngModel)]="siteDataForm.about_stats_specializedProducts" 
+                  name="about_stats_specializedProducts"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="about_stats_technicalSupport">{{ isRTL() ? 'الدعم الفني' : 'Technical Support' }}</label>
+                <input 
+                  type="text" 
+                  id="about_stats_technicalSupport" 
+                  [(ngModel)]="siteDataForm.about_stats_technicalSupport" 
+                  name="about_stats_technicalSupport"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="about_stats_authorizedCompany">{{ isRTL() ? 'شركة معتمدة' : 'Authorized Company' }}</label>
+                <input 
+                  type="text" 
+                  id="about_stats_authorizedCompany" 
+                  [(ngModel)]="siteDataForm.about_stats_authorizedCompany" 
+                  name="about_stats_authorizedCompany"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="about_stats_authorizedDistributor">{{ isRTL() ? 'موزع معتمد' : 'Authorized Distributor' }}</label>
+                <input 
+                  type="text" 
+                  id="about_stats_authorizedDistributor" 
+                  [(ngModel)]="siteDataForm.about_stats_authorizedDistributor" 
+                  name="about_stats_authorizedDistributor"
+                  class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <!-- CEO Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-person-badge"></i>
+              {{ isRTL() ? 'قسم الرئيس التنفيذي' : 'CEO Section' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="ceO_Name">{{ isRTL() ? 'اسم الرئيس التنفيذي' : 'CEO Name' }}</label>
+                <input 
+                  type="text" 
+                  id="ceO_Name" 
+                  [(ngModel)]="siteDataForm.ceO_Name" 
+                  name="ceO_Name"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="ceO_JobTitle">{{ isRTL() ? 'المنصب' : 'Job Title' }}</label>
+                <input 
+                  type="text" 
+                  id="ceO_JobTitle" 
+                  [(ngModel)]="siteDataForm.ceO_JobTitle" 
+                  name="ceO_JobTitle"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="ceoMessage_title">{{ isRTL() ? 'عنوان رسالة الرئيس التنفيذي' : 'CEO Message Title' }}</label>
+                <input 
+                  type="text" 
+                  id="ceoMessage_title" 
+                  [(ngModel)]="siteDataForm.ceoMessage_title" 
+                  name="ceoMessage_title"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="ceO_IntroMessage">{{ isRTL() ? 'الرسالة التعريفية' : 'Intro Message' }}</label>
+                <textarea 
+                  id="ceO_IntroMessage" 
+                  [(ngModel)]="siteDataForm.ceO_IntroMessage" 
+                  name="ceO_IntroMessage"
+                  class="form-control preserve-formatting"
+                  rows="4"></textarea>
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="ceoMessage_message">{{ isRTL() ? 'رسالة الرئيس التنفيذي' : 'CEO Message' }}</label>
+                <small class="form-text text-muted mb-2">
+                  {{ isRTL() ? 'سيتم الحفاظ على التنسيق (فقرات جديدة، مسافات، نقاط)' : 'Formatting will be preserved (line breaks, spaces, bullet points)' }}
+                </small>
+                <textarea 
+                  id="ceoMessage_message" 
+                  [(ngModel)]="siteDataForm.ceoMessage_message" 
+                  name="ceoMessage_message"
+                  class="form-control preserve-formatting"
+                  rows="10"
+                  placeholder="{{ isRTL() ? 'أدخل رسالة الرئيس التنفيذي مع الحفاظ على التنسيق' : 'Enter CEO message with formatting preserved' }}"></textarea>
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="ceO_EndMessage">{{ isRTL() ? 'الرسالة الختامية' : 'End Message' }}</label>
+                <textarea 
+                  id="ceO_EndMessage" 
+                  [(ngModel)]="siteDataForm.ceO_EndMessage" 
+                  name="ceO_EndMessage"
+                  class="form-control preserve-formatting"
+                  rows="4"></textarea>
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="ceoMessage_ceoQualifications">{{ isRTL() ? 'مؤهلات الرئيس التنفيذي' : 'CEO Qualifications' }}</label>
+                <textarea 
+                  id="ceoMessage_ceoQualifications" 
+                  [(ngModel)]="siteDataForm.ceoMessage_ceoQualifications" 
+                  name="ceoMessage_ceoQualifications"
+                  class="form-control"
+                  rows="4"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- News Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-newspaper"></i>
+              {{ isRTL() ? 'قسم الأخبار' : 'News Section' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="news_title">{{ isRTL() ? 'عنوان قسم الأخبار' : 'News Section Title' }}</label>
+                <input 
+                  type="text" 
+                  id="news_title" 
+                  [(ngModel)]="siteDataForm.news_title" 
+                  name="news_title"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="news_button">{{ isRTL() ? 'نص زر الأخبار' : 'News Button Text' }}</label>
+                <input 
+                  type="text" 
+                  id="news_button" 
+                  [(ngModel)]="siteDataForm.news_button" 
+                  name="news_button"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="news_description">{{ isRTL() ? 'وصف قسم الأخبار' : 'News Section Description' }}</label>
+                <textarea 
+                  id="news_description" 
+                  [(ngModel)]="siteDataForm.news_description" 
+                  name="news_description"
+                  class="form-control"
+                  rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Products Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-box"></i>
+              {{ isRTL() ? 'قسم المنتجات' : 'Products Section' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="products_title">{{ isRTL() ? 'عنوان قسم المنتجات' : 'Products Section Title' }}</label>
+                <input 
+                  type="text" 
+                  id="products_title" 
+                  [(ngModel)]="siteDataForm.products_title" 
+                  name="products_title"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="products_button">{{ isRTL() ? 'نص زر المنتجات' : 'Products Button Text' }}</label>
+                <input 
+                  type="text" 
+                  id="products_button" 
+                  [(ngModel)]="siteDataForm.products_button" 
+                  name="products_button"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="products_description">{{ isRTL() ? 'وصف قسم المنتجات' : 'Products Section Description' }}</label>
+                <textarea 
+                  id="products_description" 
+                  [(ngModel)]="siteDataForm.products_description" 
+                  name="products_description"
+                  class="form-control"
+                  rows="3"></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="product_applications">{{ isRTL() ? 'التطبيقات' : 'Applications' }}</label>
+                <input 
+                  type="text" 
+                  id="product_applications" 
+                  [(ngModel)]="siteDataForm.product_applications" 
+                  name="product_applications"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="product_keyBenefits">{{ isRTL() ? 'الفوائد الرئيسية' : 'Key Benefits' }}</label>
+                <input 
+                  type="text" 
+                  id="product_keyBenefits" 
+                  [(ngModel)]="siteDataForm.product_keyBenefits" 
+                  name="product_keyBenefits"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="product_why_choose">{{ isRTL() ? 'لماذا تختارنا' : 'Why Choose Us' }}</label>
+                <input 
+                  type="text" 
+                  id="product_why_choose" 
+                  [(ngModel)]="siteDataForm.product_why_choose" 
+                  name="product_why_choose"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="product_applications_statement">{{ isRTL() ? 'بيان التطبيقات' : 'Applications Statement' }}</label>
+                <textarea 
+                  id="product_applications_statement" 
+                  [(ngModel)]="siteDataForm.product_applications_statement" 
+                  name="product_applications_statement"
+                  class="form-control"
+                  rows="3"></textarea>
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="product_keyBenefits_statement">{{ isRTL() ? 'بيان الفوائد الرئيسية' : 'Key Benefits Statement' }}</label>
+                <textarea 
+                  id="product_keyBenefits_statement" 
+                  [(ngModel)]="siteDataForm.product_keyBenefits_statement" 
+                  name="product_keyBenefits_statement"
+                  class="form-control"
+                  rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Values Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-gem"></i>
+              {{ isRTL() ? 'القيم والمبادئ' : 'Values & Principles' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="values_title">{{ isRTL() ? 'عنوان القيم' : 'Values Title' }}</label>
+                <input 
+                  type="text" 
+                  id="values_title" 
+                  [(ngModel)]="siteDataForm.values_title" 
+                  name="values_title"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="values_subtitle">{{ isRTL() ? 'العنوان الفرعي للقيم' : 'Values Subtitle' }}</label>
+                <input 
+                  type="text" 
+                  id="values_subtitle" 
+                  [(ngModel)]="siteDataForm.values_subtitle" 
+                  name="values_subtitle"
+                  class="form-control">
+              </div>
+            </div>
+            
+            <!-- Values Principles Grid -->
+            <div class="values-grid">
+              <div *ngFor="let i of [1,2,3,4,5,6,7,8,9]" class="value-item">
+                <h4>{{ isRTL() ? 'المبدأ' : 'Principle' }} {{i}}</h4>
+                <div class="form-group">
+                  <label for="values_principles_title_{{i}}">{{ isRTL() ? 'العنوان' : 'Title' }}</label>
+                  <input 
+                    type="text" 
+                    id="values_principles_title_{{i}}" 
+                    [ngModel]="getDynamicProperty('values_principles_title_' + i)"
+                    (ngModelChange)="setDynamicProperty('values_principles_title_' + i, $event)"
+                    [name]="'values_principles_title_' + i"
+                    class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="values_principles_description_{{i}}">{{ isRTL() ? 'الوصف' : 'Description' }}</label>
+                  <textarea 
+                    id="values_principles_description_{{i}}" 
+                    [ngModel]="getDynamicProperty('values_principles_description_' + i)"
+                    (ngModelChange)="setDynamicProperty('values_principles_description_' + i, $event)"
+                    [name]="'values_principles_description_' + i"
+                    class="form-control"
+                    rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clients Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-people"></i>
+              {{ isRTL() ? 'قسم العملاء' : 'Clients Section' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="clients_title">{{ isRTL() ? 'عنوان قسم العملاء' : 'Clients Section Title' }}</label>
+                <input 
+                  type="text" 
+                  id="clients_title" 
+                  [(ngModel)]="siteDataForm.clients_title" 
+                  name="clients_title"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="clients_sectorsTitle">{{ isRTL() ? 'عنوان القطاعات' : 'Sectors Title' }}</label>
+                <input 
+                  type="text" 
+                  id="clients_sectorsTitle" 
+                  [(ngModel)]="siteDataForm.clients_sectorsTitle" 
+                  name="clients_sectorsTitle"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="clients_description">{{ isRTL() ? 'وصف قسم العملاء' : 'Clients Description' }}</label>
+                <textarea 
+                  id="clients_description" 
+                  [(ngModel)]="siteDataForm.clients_description" 
+                  name="clients_description"
+                  class="form-control"
+                  rows="3"></textarea>
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="clients_message">{{ isRTL() ? 'رسالة العملاء' : 'Clients Message' }}</label>
+                <textarea 
+                  id="clients_message" 
+                  [(ngModel)]="siteDataForm.clients_message" 
+                  name="clients_message"
+                  class="form-control"
+                  rows="3"></textarea>
+              </div>
+            </div>
+            
+            <!-- Client Sectors -->
+            <div class="sectors-grid">
+              <div *ngFor="let i of [1,2,3,4,5,6]" class="sector-item">
+                <h4>{{ isRTL() ? 'القطاع' : 'Sector' }} {{i}}</h4>
+                <div class="form-group">
+                  <label for="clients_sectors_name_{{i}}">{{ isRTL() ? 'اسم القطاع' : 'Sector Name' }}</label>
+                  <input 
+                    type="text" 
+                    id="clients_sectors_name_{{i}}" 
+                    [ngModel]="getDynamicProperty('clients_sectors_name_' + i)"
+                    (ngModelChange)="setDynamicProperty('clients_sectors_name_' + i, $event)"
+                    [name]="'clients_sectors_name_' + i"
+                    class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="clients_sectors_description_{{i}}">{{ isRTL() ? 'وصف القطاع' : 'Sector Description' }}</label>
+                  <textarea 
+                    id="clients_sectors_description_{{i}}" 
+                    [ngModel]="getDynamicProperty('clients_sectors_description_' + i)"
+                    (ngModelChange)="setDynamicProperty('clients_sectors_description_' + i, $event)"
+                    [name]="'clients_sectors_description_' + i"
+                    class="form-control"
+                    rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Client Family -->
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="clientFamily_title">{{ isRTL() ? 'عنوان عائلة العملاء' : 'Client Family Title' }}</label>
+                <input 
+                  type="text" 
+                  id="clientFamily_title" 
+                  [(ngModel)]="siteDataForm.clientFamily_title" 
+                  name="clientFamily_title"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="clientFamily_button">{{ isRTL() ? 'نص زر عائلة العملاء' : 'Client Family Button' }}</label>
+                <input 
+                  type="text" 
+                  id="clientFamily_button" 
+                  [(ngModel)]="siteDataForm.clientFamily_button" 
+                  name="clientFamily_button"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="clientFamily_description">{{ isRTL() ? 'وصف عائلة العملاء' : 'Client Family Description' }}</label>
+                <textarea 
+                  id="clientFamily_description" 
+                  [(ngModel)]="siteDataForm.clientFamily_description" 
+                  name="clientFamily_description"
+                  class="form-control"
+                  rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-envelope"></i>
+              {{ isRTL() ? 'قسم التواصل' : 'Contact Section' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="contact_title">{{ isRTL() ? 'عنوان قسم التواصل' : 'Contact Title' }}</label>
+                <input 
+                  type="text" 
+                  id="contact_title" 
+                  [(ngModel)]="siteDataForm.contact_title" 
+                  name="contact_title"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact_form_sendTitle">{{ isRTL() ? 'عنوان إرسال الرسالة' : 'Send Message Title' }}</label>
+                <input 
+                  type="text" 
+                  id="contact_form_sendTitle" 
+                  [(ngModel)]="siteDataForm.contact_form_sendTitle" 
+                  name="contact_form_sendTitle"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="contact_description">{{ isRTL() ? 'وصف قسم التواصل' : 'Contact Description' }}</label>
+                <textarea 
+                  id="contact_description" 
+                  [(ngModel)]="siteDataForm.contact_description" 
+                  name="contact_description"
+                  class="form-control"
+                  rows="3"></textarea>
+              </div>
+            </div>
+            
+            <!-- Contact Form Fields -->
+            <h4>{{ isRTL() ? 'حقول النموذج' : 'Form Fields' }}</h4>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="contact_form_fields_name">{{ isRTL() ? 'حقل الاسم' : 'Name Field' }}</label>
+                <input 
+                  type="text" 
+                  id="contact_form_fields_name" 
+                  [(ngModel)]="siteDataForm.contact_form_fields_name" 
+                  name="contact_form_fields_name"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact_form_fields_email">{{ isRTL() ? 'حقل البريد الإلكتروني' : 'Email Field' }}</label>
+                <input 
+                  type="text" 
+                  id="contact_form_fields_email" 
+                  [(ngModel)]="siteDataForm.contact_form_fields_email" 
+                  name="contact_form_fields_email"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact_form_fields_phone">{{ isRTL() ? 'حقل الهاتف' : 'Phone Field' }}</label>
+                <input 
+                  type="text" 
+                  id="contact_form_fields_phone" 
+                  [(ngModel)]="siteDataForm.contact_form_fields_phone" 
+                  name="contact_form_fields_phone"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact_form_fields_subject">{{ isRTL() ? 'حقل الموضوع' : 'Subject Field' }}</label>
+                <input 
+                  type="text" 
+                  id="contact_form_fields_subject" 
+                  [(ngModel)]="siteDataForm.contact_form_fields_subject" 
+                  name="contact_form_fields_subject"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact_form_fields_message">{{ isRTL() ? 'حقل الرسالة' : 'Message Field' }}</label>
+                <input 
+                  type="text" 
+                  id="contact_form_fields_message" 
+                  [(ngModel)]="siteDataForm.contact_form_fields_message" 
+                  name="contact_form_fields_message"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact_form_button">{{ isRTL() ? 'نص زر الإرسال' : 'Submit Button Text' }}</label>
+                <input 
+                  type="text" 
+                  id="contact_form_button" 
+                  [(ngModel)]="siteDataForm.contact_form_button" 
+                  name="contact_form_button"
+                  class="form-control">
+              </div>
+            </div>
+            
+            <!-- Contact Info -->
+            <h4>{{ isRTL() ? 'معلومات التواصل' : 'Contact Information' }}</h4>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="contact_info_phone">{{ isRTL() ? 'رقم الهاتف' : 'Phone Number' }}</label>
+                <input 
+                  type="tel" 
+                  id="contact_info_phone" 
+                  [(ngModel)]="siteDataForm.contact_info_phone" 
+                  name="contact_info_phone"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact_info_email">{{ isRTL() ? 'البريد الإلكتروني' : 'Email Address' }}</label>
+                <input 
+                  type="email" 
+                  id="contact_info_email" 
+                  [(ngModel)]="siteDataForm.contact_info_email" 
+                  name="contact_info_email"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact_title_address">{{ isRTL() ? 'عنوان العنوان' : 'Address Title' }}</label>
+                <input 
+                  type="text" 
+                  id="contact_title_address" 
+                  [(ngModel)]="siteDataForm.contact_title_address" 
+                  name="contact_title_address"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact_info_workingHours">{{ isRTL() ? 'ساعات العمل' : 'Working Hours' }}</label>
+                <input 
+                  type="text" 
+                  id="contact_info_workingHours" 
+                  [(ngModel)]="siteDataForm.contact_info_workingHours" 
+                  name="contact_info_workingHours"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact_info_Location">{{ isRTL() ? 'رابط الموقع' : 'Location Link' }}</label>
+                <input 
+                  type="url" 
+                  id="contact_info_Location" 
+                  [(ngModel)]="siteDataForm.contact_info_Location" 
+                  name="contact_info_Location"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="contact_info_locationMap">{{ isRTL() ? 'عنوان الخريطة' : 'Map Title' }}</label>
+                <input 
+                  type="text" 
+                  id="contact_info_locationMap" 
+                  [(ngModel)]="siteDataForm.contact_info_locationMap" 
+                  name="contact_info_locationMap"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="contact_info_address">{{ isRTL() ? 'العنوان الكامل' : 'Full Address' }}</label>
+                <textarea 
+                  id="contact_info_address" 
+                  [(ngModel)]="siteDataForm.contact_info_address" 
+                  name="contact_info_address"
+                  class="form-control"
+                  rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-layout-sidebar-inset-reverse"></i>
+              {{ isRTL() ? 'تذييل الصفحة' : 'Footer Section' }}
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="footer_quickLinks">{{ isRTL() ? 'الروابط السريعة' : 'Quick Links' }}</label>
+                <input 
+                  type="text" 
+                  id="footer_quickLinks" 
+                  [(ngModel)]="siteDataForm.footer_quickLinks" 
+                  name="footer_quickLinks"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="footer_contactInfo">{{ isRTL() ? 'معلومات التواصل' : 'Contact Info' }}</label>
+                <input 
+                  type="text" 
+                  id="footer_contactInfo" 
+                  [(ngModel)]="siteDataForm.footer_contactInfo" 
+                  name="footer_contactInfo"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="footer_socialMedia">{{ isRTL() ? 'وسائل التواصل الاجتماعي' : 'Social Media' }}</label>
+                <input 
+                  type="text" 
+                  id="footer_socialMedia" 
+                  [(ngModel)]="siteDataForm.footer_socialMedia" 
+                  name="footer_socialMedia"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="footer_companyDescription">{{ isRTL() ? 'وصف الشركة في التذييل' : 'Footer Company Description' }}</label>
+                <textarea 
+                  id="footer_companyDescription" 
+                  [(ngModel)]="siteDataForm.footer_companyDescription" 
+                  name="footer_companyDescription"
+                  class="form-control"
+                  rows="4"></textarea>
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="footer_copyright">{{ isRTL() ? 'نص حقوق الطبع والنشر' : 'Copyright Text' }}</label>
+                <input 
+                  type="text" 
+                  id="footer_copyright" 
+                  [(ngModel)]="siteDataForm.footer_copyright" 
+                  name="footer_copyright"
+                  class="form-control">
+              </div>
+            </div>
+            
+            <!-- Footer Contact Info -->
+            <h4>{{ isRTL() ? 'معلومات التواصل في التذييل' : 'Footer Contact Information' }}</h4>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="footer_contactInfoList_phone">{{ isRTL() ? 'رقم الهاتف' : 'Phone Number' }}</label>
+                <input 
+                  type="tel" 
+                  id="footer_contactInfoList_phone" 
+                  [(ngModel)]="siteDataForm.footer_contactInfoList_phone" 
+                  name="footer_contactInfoList_phone"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="footer_contactInfoList_email">{{ isRTL() ? 'البريد الإلكتروني' : 'Email Address' }}</label>
+                <input 
+                  type="email" 
+                  id="footer_contactInfoList_email" 
+                  [(ngModel)]="siteDataForm.footer_contactInfoList_email" 
+                  name="footer_contactInfoList_email"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="footer_contactInfoList_address">{{ isRTL() ? 'العنوان' : 'Address' }}</label>
+                <textarea 
+                  id="footer_contactInfoList_address" 
+                  [(ngModel)]="siteDataForm.footer_contactInfoList_address" 
+                  name="footer_contactInfoList_address"
+                  class="form-control"
+                  rows="2"></textarea>
+              </div>
+            </div>
+            
+            <!-- Social Media Links -->
+            <h4>{{ isRTL() ? 'روابط وسائل التواصل الاجتماعي' : 'Social Media Links' }}</h4>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="footer_socialMedia_facebookUrl">{{ isRTL() ? 'رابط فيسبوك' : 'Facebook URL' }}</label>
+                <input 
+                  type="url" 
+                  id="footer_socialMedia_facebookUrl" 
+                  [(ngModel)]="siteDataForm.footer_socialMedia_facebookUrl" 
+                  name="footer_socialMedia_facebookUrl"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="footer_socialMedia_tiktokUrl">{{ isRTL() ? 'رابط تيك توك' : 'TikTok URL' }}</label>
+                <input 
+                  type="url" 
+                  id="footer_socialMedia_tiktokUrl" 
+                  [(ngModel)]="siteDataForm.footer_socialMedia_tiktokUrl" 
+                  name="footer_socialMedia_tiktokUrl"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="footer_socialMedia_linkedinUrl">{{ isRTL() ? 'رابط لينكد إن' : 'LinkedIn URL' }}</label>
+                <input 
+                  type="url" 
+                  id="footer_socialMedia_linkedinUrl" 
+                  [(ngModel)]="siteDataForm.footer_socialMedia_linkedinUrl" 
+                  name="footer_socialMedia_linkedinUrl"
+                  class="form-control">
+              </div>
+              
+              <div class="form-group">
+                <label for="footer_socialMedia_instagramUrl">{{ isRTL() ? 'رابط إنستجرام' : 'Instagram URL' }}</label>
+                <input 
+                  type="url" 
+                  id="footer_socialMedia_instagramUrl" 
+                  [(ngModel)]="siteDataForm.footer_socialMedia_instagramUrl" 
+                  name="footer_socialMedia_instagramUrl"
+                  class="form-control">
+              </div>
+            </div>
+          </div>
+          <!-- I'll add them in the next part to keep the response manageable -->
+          
+        </form>
+
+        <!-- No Data State -->
+        <div *ngIf="!isLoadingSiteData && !siteDataForm" class="no-data-container">
+          <i class="bi bi-exclamation-triangle"></i>
+          <p>{{ isRTL() ? 'لا توجد بيانات متاحة للغة' : 'No data available for language' }} <strong>{{ getEditLanguageText(selectedEditLanguage) }}</strong></p>
+          <div class="no-data-actions">
+            <button class="btn btn-primary" (click)="loadSiteData()">
+              <i class="bi bi-arrow-clockwise"></i>
+              {{ isRTL() ? 'إعادة المحاولة' : 'Retry' }}
+            </button>
+            <button class="btn btn-outline-primary" (click)="switchEditLanguage(selectedEditLanguage === 0 ? 1 : 0)">
+              <i class="bi bi-translate"></i>
+              {{ isRTL() ? 'تبديل إلى' : 'Switch to' }} {{ getEditLanguageText(selectedEditLanguage === 0 ? 1 : 0) }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Tab -->
+      <div *ngIf="activeTab === 'products'" class="tab-content">
+        <h1>{{ getProductsTitle() }}</h1>
+        <div class="content-placeholder">
+          <p>{{ isRTL() ? 'إدارة المنتجات - قريباً' : 'Products Management - Coming Soon' }}</p>
+        </div>
+      </div>
+
+      <!-- News Tab -->
+      <div *ngIf="activeTab === 'news'" class="tab-content">
+        <div class="tab-header">
+          <h1>{{ getNewsTitle() }}</h1>
+          <button class="btn btn-primary" (click)="openAddNewsForm()">
+            <i class="bi bi-plus"></i>
+            {{ isRTL() ? 'إضافة خبر جديد' : 'Add New News' }}
+          </button>
+        </div>
+        
+        <div *ngIf="isLoadingNews" class="loading-messages">
+          <p>{{ isRTL() ? 'جاري تحميل الأخبار...' : 'Loading news...' }}</p>
+        </div>
+        
+        <div *ngIf="!isLoadingNews" class="news-management">
+          <div *ngIf="allNews.length === 0" class="no-messages">
+            <p>{{ isRTL() ? 'لا توجد أخبار' : 'No news found' }}</p>
+          </div>
+          
+          <div *ngIf="allNews.length > 0" class="messages-table">
+            <div class="table-header">
+              <h3>{{ isRTL() ? 'جميع الأخبار' : 'All News' }} ({{ allNews.length }})</h3>
+            </div>
+            
+            <div class="table-content">
+              <div *ngFor="let news of allNews" class="message-card news-card">
+                <div class="news-image" *ngIf="news.newsImgUrl">
+                  <img [src]="getNewsImageUrl(news.newsImgUrl, news.id)" [alt]="news.title" 
+                       (error)="onImageError($event, news)" />
+                  <div class="image-overlay" *ngIf="imageErrors.has(news.id)">
+                    <button class="btn btn-sm btn-outline-light" (click)="retryImageLoad(news)">
+                      <i class="bi bi-arrow-clockwise"></i>
+                      {{ isRTL() ? 'إعادة تحميل' : 'Retry' }}
+                    </button>
+                  </div>
+                </div>
+                <div class="news-content">
+                  <div class="news-header">
+                    <h4>{{ news.title }}</h4>
+                    <span class="news-date">{{ formatDate(news.createdAt) }}</span>
+                  </div>
+                  <p class="news-subtitle">{{ news.subTitle }}</p>
+                  <p class="news-description">{{ truncateText(news.description, 150) }}</p>
+                  <div class="news-meta">
+                    <span class="news-lang">{{ news.langCode === 0 ? 'EN' : 'AR' }}</span>
+                  </div>
+                </div>
+                <div class="news-actions">
+                  <button class="btn btn-sm btn-outline-primary" (click)="openEditNewsForm(news)">
+                    <i class="bi bi-pencil"></i>
+                    {{ isRTL() ? 'تعديل' : 'Edit' }}
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteNews(news.id, news.langCode)">
+                    <i class="bi bi-trash"></i>
+                    {{ isRTL() ? 'حذف' : 'Delete' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- News Form Modal -->
+      <div *ngIf="showNewsForm" class="modal-overlay" (click)="closeNewsForm()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3>{{ editingNews ? (isRTL() ? 'تعديل الخبر' : 'Edit News') : (isRTL() ? 'إضافة خبر جديد' : 'Add New News') }}</h3>
+            <button class="close-btn" (click)="closeNewsForm()">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+          
+          <form class="news-form" (ngSubmit)="saveNews()">
+            <div class="form-group">
+              <label>{{ isRTL() ? 'العنوان' : 'Title' }}</label>
+              <input type="text" [(ngModel)]="newsForm.title" name="title" required class="form-control">
+            </div>
+            
+            <div class="form-group">
+              <label>{{ isRTL() ? 'العنوان الفرعي' : 'Subtitle' }}</label>
+              <input type="text" [(ngModel)]="newsForm.subTitle" name="subTitle" required class="form-control">
+            </div>
+            
+            <div class="form-group">
+              <label>{{ isRTL() ? 'صورة الخبر' : 'News Image' }}</label>
+              <input type="file" (change)="onFileSelected($event)" accept="image/*" class="form-control">
+              <small class="form-text text-muted">
+                {{ isRTL() ? 'اختر صورة بصيغة JPG, PNG, أو GIF (اختياري)' : 'Choose an image in JPG, PNG, or GIF format (optional)' }}
+              </small>
+              
+              <!-- Preview for newly selected image -->
+              <div *ngIf="selectedFilePreview" class="current-image">
+                <label>{{ isRTL() ? 'الصورة الجديدة:' : 'New Image Preview:' }}</label>
+                <img [src]="selectedFilePreview" [alt]="newsForm.title" style="max-width: 200px; max-height: 100px; object-fit: cover; border-radius: 4px;">
+              </div>
+              
+              <!-- Current image (only show if no new image selected) -->
+              <div *ngIf="editingNews && newsForm.newsImgUrl && !selectedFile" class="current-image">
+                <label>{{ isRTL() ? 'الصورة الحالية:' : 'Current Image:' }}</label>
+                <img [src]="getImageUrl(newsForm.newsImgUrl, true)" [alt]="newsForm.title" 
+                     (error)="onImageError($event)"
+                     style="max-width: 200px; max-height: 100px; object-fit: cover; border-radius: 4px;">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>{{ isRTL() ? 'اللغة' : 'Language' }}</label>
+              <select [(ngModel)]="newsForm.langCode" name="langCode" class="form-control">
+                <option [value]="0">English</option>
+                <option [value]="1">العربية</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>{{ isRTL() ? 'الوصف' : 'Description' }}</label>
+              <textarea [(ngModel)]="newsForm.description" name="description" required class="form-control" rows="6"></textarea>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" (click)="closeNewsForm()">
+                {{ isRTL() ? 'إلغاء' : 'Cancel' }}
+              </button>
+              <button type="submit" class="btn btn-primary">
+                {{ editingNews ? (isRTL() ? 'تحديث' : 'Update') : (isRTL() ? 'إضافة' : 'Add') }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Messages Tab -->
+      <div *ngIf="activeTab === 'messages'" class="tab-content">
+        <h1>{{ getMessagesTitle() }}</h1>
+        
+        <div *ngIf="isLoadingMessages" class="loading-messages">
+          <p>{{ isRTL() ? 'جاري تحميل الرسائل...' : 'Loading messages...' }}</p>
+        </div>
+        
+        <div *ngIf="!isLoadingMessages" class="messages-management">
+          <div *ngIf="recentMessages.length === 0" class="no-messages">
+            <p>{{ isRTL() ? 'لا توجد رسائل' : 'No messages found' }}</p>
+          </div>
+          
+          <div *ngIf="recentMessages.length > 0" class="messages-table">
+            <div class="table-header">
+              <h3>{{ isRTL() ? 'جميع الرسائل' : 'All Messages' }} ({{ recentMessages.length }})</h3>
+            </div>
+            
+            <div class="messages-grid">
+              <div *ngFor="let message of recentMessages; let i = index" class="message-card">
+                <div class="message-header">
+                  <h4>{{ message.fullName }}</h4>
+                  <div class="message-actions">
+                    <button 
+                      class="btn btn-sm btn-danger" 
+                      (click)="deleteMessage(message.id)"
+                      [title]="isRTL() ? 'حذف الرسالة' : 'Delete Message'">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="message-body">
+                  <p class="message-text">{{ message.message }}</p>
+                  
+                  <div class="message-contact">
+                    <div class="contact-item">
+                      <i class="bi bi-envelope"></i>
+                      <a [href]="'mailto:' + message.email" class="email-link">{{ message.email }}</a>
+                    </div>
+                    
+                    <div class="contact-item" *ngIf="message.phoneNumber">
+                      <i class="bi bi-telephone"></i>
+                      <a [href]="'tel:' + message.phoneNumber" class="phone-link">{{ message.phoneNumber }}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Overlay for mobile -->
+  <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="toggleSidebar()"></div>
+</div>

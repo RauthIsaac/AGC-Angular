@@ -34,10 +34,10 @@ html, body {
   box-sizing: border-box;
 }
 
-.app-root, .container, .row, [class*="col-"], .header-container, .footer-container {
+/* .app-root, .container, .row, [class*="col-"], .header-container, .footer-container {
   width: 100%;
   max-width: 100vw;
-}
+} */
 
 
 
