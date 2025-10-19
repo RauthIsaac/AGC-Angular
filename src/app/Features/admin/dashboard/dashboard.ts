@@ -27,7 +27,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   private siteIdentityService = inject(SiteIdentityService);
   private router = inject(Router);
 
-  sidebarOpen = true; // Open by default on desktop
+  sidebarOpen: boolean = true;  // Visible by default on all screens
   activeTab = 'overview';
   
   // Mock data - replace with real data from services
@@ -90,6 +90,10 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       }
   }
 
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
   loadMessages() {
    this.isLoadingMessages = true;
     this.messagesService.getAllMessages().subscribe({
@@ -112,17 +116,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleSidebar() {
-    // On large screens (desktop), keep sidebar open but move content
-    // On mobile, actually toggle sidebar visibility
-    if (window.innerWidth > 768) {
-      // On desktop: don't hide sidebar, just toggle a CSS class for content positioning
-      this.sidebarOpen = !this.sidebarOpen;
-    } else {
-      // On mobile: actually toggle sidebar visibility
-      this.sidebarOpen = !this.sidebarOpen;
-    }
-  }
+  
 
   setActiveTab(tab: string) {
     this.activeTab = tab;
@@ -628,4 +622,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       console.log('No siteDataForm available for setDynamicProperty');
     }
   }
+
+
 }
