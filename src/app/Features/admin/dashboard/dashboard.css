@@ -841,6 +841,7 @@
   }
 }
 
+
 /* News Management Styles */
 .tab-header {
   display: flex;
@@ -1476,6 +1477,7 @@ textarea.form-control {
 }
 
 @media (max-width: 480px) {
+
   .form-section {
     padding: 1rem;
   }
@@ -1488,4 +1490,32 @@ textarea.form-control {
   .section-title i {
     font-size: 1.25rem;
   }
+
+}
+
+
+
+/* ✅ Make main content full width when sidebar is closed */
+.admin-dashboard:not(.sidebar-open) .main-content {
+  margin: 0 0 0 -280px !important;
+  width: 100% !important;
+  transition: all 0.3s ease;
+}
+
+/* ✅ When sidebar is open (LTR) */
+.admin-dashboard.sidebar-open .main-content {
+  width: calc(100% - 280px);
+  transition: all 0.3s ease;
+}
+
+/* ✅ RTL Support */
+.admin-dashboard.rtl.sidebar-open .main-content {
+  width: calc(100% - 280px);
+  transition: all 0.3s ease;
+}
+
+.admin-dashboard.rtl:not(.sidebar-open) .main-content {
+  margin: 0 -280px 0 0 !important;
+  width: 100%;
+  transition: all 0.3s ease;
 }
