@@ -49,6 +49,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   selectedFile: File | null = null;
   selectedFilePreview: string | null = null; // For image preview
   newsForm: CreateNewsRequest = {
+    id: 1,
     langCode: 0,
     newsImgUrl: '',
     title: '',
@@ -350,13 +351,19 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.editingNews = null;
     this.selectedFile = null;
     this.selectedFilePreview = null;
+    // Get the next available ID (highest ID + 1)
+    const maxId = this.allNews.length > 0 ? Math.max(...this.allNews.map(n => n.id)) : 0;
+    const nextId = maxId + 1;
+    console.log('Setting new news ID to:', nextId);
     this.newsForm = {
+      id: nextId, // Auto-generate next ID
       langCode: 0,
       newsImgUrl: '',
       title: '',
       subTitle: '',
       description: ''
     };
+    console.log('News form after reset:', this.newsForm);
     this.showNewsForm = true;
   }
 
@@ -365,6 +372,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.selectedFile = null;
     this.selectedFilePreview = null;
     this.newsForm = {
+      id: news.id, 
       langCode: news.langCode,
       newsImgUrl: news.newsImgUrl,
       title: news.title,
@@ -389,7 +397,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     if (this.editingNews) {
       // Update existing news
       const updateRequest: UpdateNewsRequest = {
-        id: this.editingNews.id,
         ...this.newsForm
       };
       
@@ -418,11 +425,44 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       });
     } else {
       // Create new news
-      console.log('Create request:', this.newsForm);
+      // Convert ID to number to ensure it's not a string
       
-      this.newsService.createNews(this.newsForm, this.selectedFile || undefined).subscribe({
+      // Ensure ID is not zero or invalid
+      if (!this.newsForm.id || this.newsForm.id <= 0 || isNaN(this.newsForm.id)) {
+        alert(this.isRTL() ? 'يجب إدخال رقم صحيح للخبر' : 'Please enter a valid news ID');
+        return;
+      }
+      
+      // Check if ID already exists
+      const existingNews = this.allNews.find(news => news.id === this.newsForm.id);
+      if (existingNews) {
+        alert(this.isRTL() ? 'رقم الخبر موجود بالفعل، اختر رقم آخر' : 'News ID already exists, please choose another ID');
+        return;
+      }
+      
+      // Create request with converted ID
+      const createRequest: CreateNewsRequest = { ...this.newsForm };
+      
+      console.log('================== إضافة خبر جديد ==================');
+      console.log('📰 تفاصيل الخبر الجديد:');
+      console.log('🆔 ID:', createRequest.id);
+      console.log('🌐 Language Code:', createRequest.langCode, createRequest.langCode === 0 ? '(English)' : '(Arabic)');
+      console.log('📝 Title:', createRequest.title);
+      console.log('📄 Subtitle:', createRequest.subTitle);
+      console.log('📖 Description:', createRequest.description);
+      console.log('🖼️ Image URL:', createRequest.newsImgUrl);
+      console.log('📁 Selected File:', this.selectedFile ? this.selectedFile.name : 'No file selected');
+      console.log('📊 Complete Request Object:', createRequest);
+      console.log('==================================================');
+      
+      this.newsService.createNews(createRequest, this.selectedFile || undefined).subscribe({
         next: (newNews) => {
-          console.log('News created successfully:', newNews);
+          console.log('✅ ================== نجحت إضافة الخبر! ==================');
+          console.log('🎉 تم إنشاء الخبر بنجاح!');
+          console.log('📥 Response from server:', newNews);
+          console.log('🆔 ID المُعطى من السيرفر:', newNews?.id || 'No ID returned');
+          console.log('📊 تفاصيل الخبر المُحفوظ:', JSON.stringify(newNews, null, 2));
+          console.log('=======================================================');
           
           // Clear image cache for fresh loading
           this.clearImageCache();
@@ -432,7 +472,12 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
           this.closeNewsForm();
         },
         error: (error) => {
-          console.error('Error creating news:', error);
+          console.log('🚨 ❌ حدث خطأ في إضافة الخبر / News Creation Error:');
+          console.log('============================');
+          console.error('خطأ مفصل / Detailed Error:', error);
+          console.log('حالة الطلب / Request Status:', error.status);
+          console.log('رسالة الخطأ / Error Message:', error.message);
+          console.log('============================');
           alert(this.isRTL() ? 'حدث خطأ أثناء إنشاء الخبر' : 'Error creating news');
         }
       });

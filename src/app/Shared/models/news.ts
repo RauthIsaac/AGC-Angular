@@ -25,6 +25,7 @@ export interface NewsDto {
 }
 
 export interface CreateNewsRequest {
+  id: number; 
   langCode: number;
   newsImgUrl: string;
   title: string;

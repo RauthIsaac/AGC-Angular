@@ -41,6 +41,7 @@ export class NewsService {
     const formData = new FormData();
     
     // Add the DTO data
+    formData.append('id', newsDto.id.toString());
     formData.append('langCode', newsDto.langCode.toString());
     formData.append('title', newsDto.title);
     formData.append('subTitle', newsDto.subTitle);

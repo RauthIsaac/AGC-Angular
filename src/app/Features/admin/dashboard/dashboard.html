@@ -1608,18 +1608,55 @@
           
           <form class="news-form" (ngSubmit)="saveNews()">
             <div class="form-group">
-              <label>{{ isRTL() ? 'العنوان' : 'Title' }}</label>
-              <input type="text" [(ngModel)]="newsForm.title" name="title" required class="form-control">
+              <label for="news_id">{{ isRTL() ? 'رقم الخبر (ID)' : 'News ID' }}</label>
+              <input 
+                type="number" 
+                id="news_id"
+                [(ngModel)]="newsForm.id"
+                (ngModelChange)="newsForm.id = $event"
+                name="id" 
+                class="form-control"
+                [disabled]="!!editingNews"
+                required
+                min="1"
+                step="1"
+                placeholder="{{ isRTL() ? 'أدخل رقم الخبر' : 'Enter news ID' }}">
+              <small class="form-text text-muted">
+                {{ isRTL() ? 'رقم الخبر - مطلوب' : 'News ID - Required' }}
+                <span *ngIf="editingNews">{{ isRTL() ? ' - لا يمكن تعديل الرقم للأخبار الموجودة' : ' - Cannot modify ID for existing news' }}</span>
+              </small>
             </div>
             
             <div class="form-group">
-              <label>{{ isRTL() ? 'العنوان الفرعي' : 'Subtitle' }}</label>
-              <input type="text" [(ngModel)]="newsForm.subTitle" name="subTitle" required class="form-control">
+              <label for="news_title">{{ isRTL() ? 'العنوان' : 'Title' }}</label>
+              <input 
+                type="text" 
+                id="news_title"
+                [(ngModel)]="newsForm.title" 
+                name="title" 
+                required 
+                class="form-control">
             </div>
             
             <div class="form-group">
-              <label>{{ isRTL() ? 'صورة الخبر' : 'News Image' }}</label>
-              <input type="file" (change)="onFileSelected($event)" accept="image/*" class="form-control">
+              <label for="news_subtitle">{{ isRTL() ? 'العنوان الفرعي' : 'Subtitle' }}</label>
+              <input 
+                type="text" 
+                id="news_subtitle"
+                [(ngModel)]="newsForm.subTitle" 
+                name="subTitle" 
+                required 
+                class="form-control">
+            </div>
+            
+            <div class="form-group">
+              <label for="news_image">{{ isRTL() ? 'صورة الخبر' : 'News Image' }}</label>
+              <input 
+                type="file" 
+                id="news_image"
+                (change)="onFileSelected($event)" 
+                accept="image/*" 
+                class="form-control">
               <small class="form-text text-muted">
                 {{ isRTL() ? 'اختر صورة بصيغة JPG, PNG, أو GIF (اختياري)' : 'Choose an image in JPG, PNG, or GIF format (optional)' }}
               </small>
@@ -1640,16 +1677,26 @@
             </div>
             
             <div class="form-group">
-              <label>{{ isRTL() ? 'اللغة' : 'Language' }}</label>
-              <select [(ngModel)]="newsForm.langCode" name="langCode" class="form-control">
+              <label for="news_language">{{ isRTL() ? 'اللغة' : 'Language' }}</label>
+              <select 
+                id="news_language"
+                [(ngModel)]="newsForm.langCode" 
+                name="langCode" 
+                class="form-control">
                 <option [value]="0">English</option>
                 <option [value]="1">العربية</option>
               </select>
             </div>
             
             <div class="form-group">
-              <label>{{ isRTL() ? 'الوصف' : 'Description' }}</label>
-              <textarea [(ngModel)]="newsForm.description" name="description" required class="form-control" rows="6"></textarea>
+              <label for="news_description">{{ isRTL() ? 'الوصف' : 'Description' }}</label>
+              <textarea 
+                id="news_description"
+                [(ngModel)]="newsForm.description" 
+                name="description" 
+                required 
+                class="form-control" 
+                rows="6"></textarea>
             </div>
             
             <div class="form-actions">
