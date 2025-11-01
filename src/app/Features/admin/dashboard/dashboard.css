@@ -1399,51 +1399,6 @@ textarea.form-control {
   text-align: right;
 }
 
-/* Responsive Design for Form */
-@media (max-width: 768px) {
-  .form-section {
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .section-title {
-    font-size: 1.1rem;
-  }
-  
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .values-grid,
-  .sectors-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .value-item,
-  .sector-item {
-    padding: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-
-  .form-section {
-    padding: 1rem;
-  }
-  
-  .section-title {
-    font-size: 1rem;
-    gap: 0.5rem;
-  }
-  
-  .section-title i {
-    font-size: 1.25rem;
-  }
-
-}
-
-
 
 /* ✅ Make main content full width when sidebar is closed */
 .admin-dashboard:not(.sidebar-open) .main-content {
@@ -1469,8 +1424,6 @@ textarea.form-control {
   width: 100%;
   transition: all 0.3s ease;
 }
-
-
 
 
 @media (max-width: 1024px) {
