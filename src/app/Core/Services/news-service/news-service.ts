@@ -35,8 +35,8 @@ export class NewsService {
   }
 
   createNews(newsDto: CreateNewsRequest, imageFile?: File): Observable<NewsItem> {
-    console.log('Creating news with DTO:', newsDto);
-    console.log('Image file provided:', imageFile);
+    //console.log('Creating news with DTO:', newsDto);
+    //console.log('Image file provided:', imageFile);
     
     const formData = new FormData();
     
@@ -50,19 +50,19 @@ export class NewsService {
     
     // Add image file if provided
     if (imageFile) {
-      console.log('Adding image file to FormData:', imageFile.name, imageFile.size, imageFile.type);
+      //console.log('Adding image file to FormData:', imageFile.name, imageFile.size, imageFile.type);
       formData.append('image', imageFile, imageFile.name); // تم تغيير 'imageFile' إلى 'image'
     } else {
-      console.log('No image file provided for creation');
+      //console.log('No image file provided for creation');
     }
 
     // Debug FormData contents
-    console.log('FormData contents:');
+    //console.log('FormData contents:');
     for (const [key, value] of formData.entries()) {
       if (value instanceof File) {
-        console.log(`${key}: [File] ${value.name} (${value.size} bytes, ${value.type})`);
+        //console.log(`${key}: [File] ${value.name} (${value.size} bytes, ${value.type})`);
       } else {
-        console.log(`${key}: ${value}`);
+        //console.log(`${key}: ${value}`);
       }
     }
 
@@ -72,8 +72,8 @@ export class NewsService {
   }
 
   updateNews(newsDto: UpdateNewsRequest, imageFile?: File): Observable<NewsItem | null> {
-    console.log('Updating news with DTO:', newsDto);
-    console.log('Image file provided:', imageFile);
+    //console.log('Updating news with DTO:', newsDto);
+    //console.log('Image file provided:', imageFile);
     
     const formData = new FormData();
     
@@ -87,45 +87,45 @@ export class NewsService {
     
     // Add image file if provided
     if (imageFile) {
-      console.log('Adding image file to FormData:', imageFile.name, imageFile.size, imageFile.type);
+      //console.log('Adding image file to FormData:', imageFile.name, imageFile.size, imageFile.type);
       formData.append('image', imageFile, imageFile.name); // تم تغيير 'imageFile' إلى 'image'
     } else {
-      console.log('No image file provided for update');
+      //console.log('No image file provided for update');
     }
 
     // Debug FormData contents
-    console.log('FormData contents:');
+    //console.log('FormData contents:');
     for (const [key, value] of formData.entries()) {
       if (value instanceof File) {
-        console.log(`${key}: [File] ${value.name} (${value.size} bytes, ${value.type})`);
+        //console.log(`${key}: [File] ${value.name} (${value.size} bytes, ${value.type})`);
       } else {
-        console.log(`${key}: ${value}`);
+        //console.log(`${key}: ${value}`);
       }
     }
 
-    console.log('Update URL:', API_ENDPOINTS.NEWS.UPDATE);
+    //console.log('Update URL:', API_ENDPOINTS.NEWS.UPDATE);
     
     // Don't include ID in URL, it will be in the body
     return this.http.put<NewsItem>(API_ENDPOINTS.NEWS.UPDATE, formData, {
       headers: this.getAuthHeaders()
     }).pipe(
       tap((response: NewsItem | null) => {
-        console.log('Update API response:', response);
+        //console.log('Update API response:', response);
         if (response && response.newsImgUrl) {
-          console.log('New image URL from server:', response.newsImgUrl);
+          //console.log('New image URL from server:', response.newsImgUrl);
         } else {
-          console.log('API returned null response or no image URL');
+          //console.log('API returned null response or no image URL');
         }
       })
     );
   }
 
   deleteNews(id: number, langCode: number): Observable<any> {
-    console.log('Deleting news with ID:', id, 'LangCode:', langCode);
+    //console.log('Deleting news with ID:', id, 'LangCode:', langCode);
     
     // Use query parameters for delete
     const deleteUrl = `${API_ENDPOINTS.NEWS.DELETE}?id=${id}&langCode=${langCode}`;
-    console.log('Delete URL:', deleteUrl);
+    //console.log('Delete URL:', deleteUrl);
     
     return this.http.delete(deleteUrl, {
       headers: this.getAuthHeaders()

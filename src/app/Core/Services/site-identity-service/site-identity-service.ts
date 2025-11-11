@@ -28,19 +28,19 @@ export class SiteIdentityService {
    * @param siteData Updated site data
    */
   updateSiteData(siteData: SiteData): Observable<SiteData> {
-    console.log('=== MANUAL AUTH HEADER ===');
+    //console.log('=== MANUAL AUTH HEADER ===');
     const token = this.authService.getToken();
-    console.log('Token:', token ? 'EXISTS' : 'NULL');
+    //console.log('Token:', token ? 'EXISTS' : 'NULL');
     
     if (token) {
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       });
-      console.log('Sending PUT request with manual Authorization header');
+      //console.log('Sending PUT request with manual Authorization header');
       return this.http.put<SiteData>(`${API_ENDPOINTS.SITE_IDENTITY}`, siteData, { headers });
     } else {
-      console.log('No token - sending request without Authorization header');
+      //console.log('No token - sending request without Authorization header');
       return this.http.put<SiteData>(`${API_ENDPOINTS.SITE_IDENTITY}`, siteData);
     }
   }

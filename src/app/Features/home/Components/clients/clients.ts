@@ -1,7 +1,9 @@
 import { CommonModule, NgClass, isPlatformBrowser } from '@angular/common';
 import { Component, inject, OnInit, OnDestroy, PLATFORM_ID, HostListener } from '@angular/core';
 import { LanguageService } from '../../../../Core/Services/language-service/language-service';
-import { API_URL } from '../../../../Constants/api-endpoints';
+import { ClientImageService } from '../../../../Core/Services/client-image-service/client-image-service';
+import { ClientImage } from '../../../../Shared/models/client-image';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-clients',
@@ -12,9 +14,11 @@ import { API_URL } from '../../../../Constants/api-endpoints';
 export class Clients implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private languageService = inject(LanguageService);
+  private clientImageService = inject(ClientImageService);
 
-  // API_URL
-  API_URL = API_URL;
+  // Client images from API
+  clientImages: ClientImage[] = [];
+  isLoadingImages = true;
 
   // Current screen size state
   currentScreenSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'lg';
@@ -26,6 +30,44 @@ export class Clients implements OnInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       this.detectScreenSize();
     }
+    this.loadClientImages();
+  }
+
+  loadClientImages() {
+    this.isLoadingImages = true;
+    
+    // Try public access first
+    this.clientImageService.getPublicClientImages().subscribe({
+      next: (images) => {
+        this.clientImages = images || [];
+        this.isLoadingImages = false;
+      },
+      error: (publicError) => {
+        // If public access fails, try authenticated access
+        this.clientImageService.getAllClientImages().subscribe({
+          next: (images) => {
+            this.clientImages = images || [];
+            this.isLoadingImages = false;
+          },
+          error: (authError) => {
+            console.error('Error loading client images (both public and auth failed):', authError);
+            this.isLoadingImages = false;
+            
+            // Fallback to language service if both API methods fail
+            try {
+              const fallbackImages = this.languageService.getArrayData('client_Images');
+              this.clientImages = fallbackImages.map((item: any, index: number) => ({
+                id: index + 1,
+                image_Url: item.image_Url
+              }));
+            } catch (e) {
+              // If fallback also fails, set empty array
+              this.clientImages = [];
+            }
+          }
+        });
+      }
+    });
   }
 
   ngOnDestroy() {}
@@ -61,10 +103,10 @@ export class Clients implements OnInit, OnDestroy {
   }
 
   // Group clients based on current screen size
-  getGroupedClients(): string[][] {
-    const grouped: string[][] = [];
-    for (let i = 0; i < this.getClientsImages().length; i += this.imagesPerSlide) {
-      grouped.push(this.getClientsImages().slice(i, i + this.imagesPerSlide));
+  getGroupedClients(): ClientImage[][] {
+    const grouped: ClientImage[][] = [];
+    for (let i = 0; i < this.clientImages.length; i += this.imagesPerSlide) {
+      grouped.push(this.clientImages.slice(i, i + this.imagesPerSlide));
     }
     return grouped;
   }
@@ -106,10 +148,22 @@ export class Clients implements OnInit, OnDestroy {
     return this.languageService.getText('clients_message', 'clients_message');
   }
 
-  getClientsImages(): string[] {
-    return this.languageService
-            .getArrayData('client_Images')
-            .map((item: any) => item.image_Url);
+  // Get client image URL with proper server path
+  getClientImageUrl(imageUrl: string): string {
+    if (!imageUrl) return '';
+    
+    // If it's already a full URL, return as is
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    }
+    
+    // If it starts with /, it's a server path
+    if (imageUrl.startsWith('/')) {
+      return `${environment.apiUrl}${imageUrl}`;
+    }
+    
+    // Otherwise, assume it's a relative path
+    return `${environment.apiUrl}/${imageUrl}`;
   }
 
 

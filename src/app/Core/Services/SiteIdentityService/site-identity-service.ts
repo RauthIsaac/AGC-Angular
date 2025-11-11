@@ -28,7 +28,7 @@
 //     return this.http.get<SiteData>(`${this.API_URL}/${langCode}`).pipe(
 //       tap((data: SiteData) => {
 //         this.siteData.set(data);
-//         console.log('Site Data with Language Code', langCode, 'loaded:', data);
+//         //console.log('Site Data with Language Code', langCode, 'loaded:', data);
 //         this.isLoading.set(false);
 //       }),
 //       catchError((error: any) => {

@@ -101,7 +101,7 @@ export class LanguageService {
     this.http.get<SiteData>(url).pipe(
       tap((data: SiteData) => {
         this.currentSiteDataSubject.next(data);
-        // console.log('Site Data with Language Code', langCode, 'loaded:', data);
+        // //console.log('Site Data with Language Code', langCode, 'loaded:', data);
         this.isLoadingSubject.next(false);
       }),
       catchError((error: any) => {
@@ -127,7 +127,10 @@ export class LanguageService {
     const value = this.getNestedProperty(currentData, key);
     
     if (value === undefined || value === null) {
-      console.warn(`Property '${key}' not found in current site data`);
+      // Only log missing critical properties, skip common missing ones
+      if (!['no_news', 'loading_text', 'error_text'].includes(key)) {
+        console.warn(`Property '${key}' not found in current site data`);
+      }
       return fallback || key;
     }
     

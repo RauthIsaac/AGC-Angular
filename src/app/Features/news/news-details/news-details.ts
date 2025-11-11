@@ -28,7 +28,7 @@ export class NewsDetails implements OnInit, OnDestroy {
     this.subscription.add(
       this.route.paramMap.subscribe(params => {
         this.newsId = params.get('id');
-        // console.log('News ID from route:', this.newsId);
+        // //console.log('News ID from route:', this.newsId);
         if (this.newsId) {
           this.loadNewsDetails();
         } else {
@@ -40,7 +40,7 @@ export class NewsDetails implements OnInit, OnDestroy {
     // Subscribe to site data changes from LanguageService
     this.subscription.add(
       this.languageService.currentSiteData$.subscribe(data => {
-        // console.log('Site data updated in news details:', data);
+        // //console.log('Site data updated in news details:', data);
         if (this.newsId) {
           this.loadNewsDetails();
         }
@@ -63,7 +63,7 @@ export class NewsDetails implements OnInit, OnDestroy {
 
   private loadNewsDetails(): void {
     this.isLoading = true;
-    // console.log('Loading news details for ID:', this.newsId);
+    // //console.log('Loading news details for ID:', this.newsId);
 
     const siteData = this.languageService.getCurrentSiteData();
     
@@ -77,10 +77,10 @@ export class NewsDetails implements OnInit, OnDestroy {
       
       if (!this.newsItem) {
         // console.warn('No news item found for ID:', this.newsId);
-        // console.log('Available news IDs:', siteData.news.map((item: any) => item.id));
+        // //console.log('Available news IDs:', siteData.news.map((item: any) => item.id));
         this.router.navigate(['/news']);
       } else {
-        // console.log('News item loaded:', this.newsItem);
+        // //console.log('News item loaded:', this.newsItem);
       }
     } else {
       // console.warn('Site data or news array not available yet for ID:', this.newsId);

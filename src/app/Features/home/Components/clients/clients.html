@@ -5,7 +5,16 @@
     <span>{{ getClientsMessage() }}</span>
   </div>
   
-  <div id="clientsCarousel" 
+  <!-- Loading State -->
+  <div *ngIf="isLoadingImages" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading client images...</span>
+    </div>
+  </div>
+
+  <!-- Client Images Carousel -->
+  <div *ngIf="!isLoadingImages && clientImages.length > 0"
+       id="clientsCarousel" 
        class="carousel slide" 
        data-bs-ride="carousel" 
        [attr.data-bs-interval]="getCarouselInterval()">
@@ -20,10 +29,11 @@
                *ngFor="let client of clientGroup; let j = index"
                class="mb-3">
             <div class="client-wrapper">
-              <img [src]="API_URL + client" 
+              <img [src]="getClientImageUrl(client.image_Url)" 
                    [ngClass]="getImageClasses()" 
                    [alt]="'Client ' + (i * imagesPerSlide + j + 1)"
-                   loading="lazy">
+                   loading="lazy"
+                   (error)="$any($event.target).style.display='none'">
             </div>
           </div>
         </div>
@@ -32,7 +42,8 @@
     </div>
     
     <!-- Carousel Controls -->
-    <button class="carousel-control-prev" 
+    <button *ngIf="getGroupedClients().length > 1"
+            class="carousel-control-prev" 
             type="button" 
             data-bs-target="#clientsCarousel" 
             data-bs-slide="prev"
@@ -41,7 +52,8 @@
       <span class="visually-hidden">Previous</span>
     </button>
     
-    <button class="carousel-control-next" 
+    <button *ngIf="getGroupedClients().length > 1"
+            class="carousel-control-next" 
             type="button" 
             data-bs-target="#clientsCarousel" 
             data-bs-slide="next"
@@ -51,7 +63,8 @@
     </button>
     
     <!-- Carousel Indicators (optional) -->
-    <div class="carousel-indicators d-none d-md-flex">
+    <div *ngIf="getGroupedClients().length > 1" 
+         class="carousel-indicators d-none d-md-flex">
       <button *ngFor="let group of getGroupedClients(); let i = index"
               type="button"
               data-bs-target="#clientsCarousel"
@@ -61,6 +74,12 @@
       </button>
     </div>
     
+  </div>
+
+  <!-- No Images State -->
+  <div *ngIf="!isLoadingImages && clientImages.length === 0" 
+       class="text-center py-5">
+    <p class="text-muted">No client images available at the moment.</p>
   </div>
   
   

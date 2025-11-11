@@ -45,6 +45,12 @@
             </span>
           </a>
         </li>
+        <li [class.active]="activeTab === 'client-images'">
+          <a (click)="setActiveTab('client-images')" style="cursor: pointer;">
+            <i class="bi bi-images"></i>
+            <span>{{ getClientImagesTitle() }}</span>
+          </a>
+        </li>
       </ul>
     </nav>
   </aside>
@@ -1761,6 +1767,108 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Client Images Tab -->
+      <div *ngIf="activeTab === 'client-images'" class="tab-content">
+        <div class="tab-header">
+          <h1>{{ getClientImagesTitle() }}</h1>
+          <button class="btn btn-primary" (click)="openAddClientImageForm()">
+            <i class="bi bi-plus"></i>
+            {{ isRTL() ? 'إضافة صورة عميل' : 'Add Client Image' }}
+          </button>
+        </div>
+        
+        <div *ngIf="isLoadingClientImages" class="loading-messages">
+          <p>{{ isRTL() ? 'جاري تحميل صور العملاء...' : 'Loading client images...' }}</p>
+        </div>
+        
+        <div *ngIf="!isLoadingClientImages" class="client-images-management">
+          <div *ngIf="allClientImages.length === 0" class="no-messages">
+            <p>{{ isRTL() ? 'لا توجد صور عملاء' : 'No client images found' }}</p>
+          </div>
+          
+          <div *ngIf="allClientImages.length > 0" class="images-grid">
+            <div class="table-header">
+              <h3>{{ isRTL() ? 'جميع صور العملاء' : 'All Client Images' }} ({{ allClientImages.length }})</h3>
+            </div>
+            
+            <div class="client-images-container">
+              <div *ngFor="let image of allClientImages" class="client-image-card">
+                <div class="image-preview">
+                  <img [src]="getClientImageUrl(image.image_Url)" [alt]="'Client Image ' + image.id" 
+                       (error)="onClientImageError($event, image)" />
+                  <div class="image-overlay">
+                    <div class="image-actions">
+                      <button class="btn btn-sm btn-outline-light" (click)="openEditClientImageForm(image)">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" (click)="deleteClientImage(image.id)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="image-info">
+                  <h4>{{ isRTL() ? 'صورة عميل رقم' : 'Client Image' }} #{{ image.id }}</h4>
+                  <small>{{ isRTL() ? 'رابط الصورة:' : 'Image URL:' }} {{ image.image_Url }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Client Image Form Modal -->
+      <div *ngIf="showClientImageForm" class="modal-overlay" (click)="closeClientImageForm()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3>{{ editingClientImage ? (isRTL() ? 'تعديل صورة العميل' : 'Edit Client Image') : (isRTL() ? 'إضافة صورة عميل جديدة' : 'Add New Client Image') }}</h3>
+            <button class="close-btn" (click)="closeClientImageForm()">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+          
+          <form class="client-image-form" (ngSubmit)="saveClientImage()">
+            <div class="form-group">
+              <label for="client_image">{{ isRTL() ? 'صورة العميل' : 'Client Image' }}</label>
+              <input 
+                type="file" 
+                id="client_image"
+                (change)="onClientImageSelected($event)" 
+                accept="image/*" 
+                class="form-control"
+                required>
+              <small class="form-text text-muted">
+                {{ isRTL() ? 'اختر صورة بصيغة JPG, PNG, أو GIF' : 'Choose an image in JPG, PNG, or GIF format' }}
+              </small>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" (click)="closeClientImageForm()">
+                {{ isRTL() ? 'إلغاء' : 'Cancel' }}
+              </button>
+              <button type="submit" class="btn btn-primary">
+                {{ editingClientImage ? (isRTL() ? 'تحديث' : 'Update') : (isRTL() ? 'إضافة' : 'Add') }}
+              </button>
+            </div>
+              
+            <!-- Preview for newly selected image -->
+            <div *ngIf="selectedClientImagePreview" class="current-image">
+              <label>{{ isRTL() ? 'معاينة الصورة:' : 'Image Preview:' }}</label>
+              <img [src]="selectedClientImagePreview" [alt]="'Client Image Preview'" 
+                   style="max-width: 200px; max-height: 100px; object-fit: cover; border-radius: 4px;">
+            </div>
+            
+            <!-- Current image (only show if editing and no new image selected) -->
+            <div *ngIf="editingClientImage && clientImageForm.image_Url && !selectedClientImageFile" class="current-image">
+              <label>{{ isRTL() ? 'الصورة الحالية:' : 'Current Image:' }}</label>
+              <img [src]="getClientImageUrl(clientImageForm.image_Url)" [alt]="'Current Client Image'" 
+                   style="max-width: 200px; max-height: 100px; object-fit: cover; border-radius: 4px;">
+              <small class="d-block mt-1">{{ clientImageForm.image_Url }}</small>
+            </div>
+          </form>
         </div>
       </div>
     </div>
