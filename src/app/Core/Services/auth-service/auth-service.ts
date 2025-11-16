@@ -9,10 +9,14 @@ import { LoginRequest, AuthDTO } from '../../../Shared/models/auth';
   providedIn: 'root'
 })
 export class AuthService {
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasValidToken());
-  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  private isAuthenticatedSubject: BehaviorSubject<boolean>;
+  public isAuthenticated$: Observable<boolean>;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // Initialize the subject safely after the constructor
+    this.isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasValidToken());
+    this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  }
 
   login(loginData: LoginRequest): Observable<AuthDTO> {
     return this.http.post<AuthDTO>(`${API_ENDPOINTS.AUTH.LOGIN}`, loginData).pipe(
@@ -27,7 +31,9 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('authToken');
     localStorage.removeItem('tokenExpiry');
-    this.isAuthenticatedSubject.next(false);
+    if (this.isAuthenticatedSubject) {
+      this.isAuthenticatedSubject.next(false);
+    }
   }
 
   getToken(): string | null {
@@ -62,6 +68,8 @@ export class AuthService {
   private setAuthData(authData: AuthDTO): void {
     localStorage.setItem('authToken', authData.token);
     localStorage.setItem('tokenExpiry', authData.expireOn.toString());
-    this.isAuthenticatedSubject.next(true);
+    if (this.isAuthenticatedSubject) {
+      this.isAuthenticatedSubject.next(true);
+    }
   }
 }

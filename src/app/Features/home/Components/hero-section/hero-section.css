@@ -10,6 +10,10 @@ body{
     position: relative;
     height: 100vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -97,6 +101,7 @@ body{
         min-height: 80vh;
         padding: 20px 15px;
         justify-content: center;
+        background-attachment: scroll; /* تحسين الأداء على الموبايل */
     }
 
     .hero-content {
@@ -135,6 +140,8 @@ body{
         min-height: 80vh;
         padding: 20px 15px;
         justify-content: center;
+        background-attachment: scroll; /* منع التأثير الثابت على الموبايل */
+        background-position: center center !important;
     }
 
     .hero-content {
@@ -169,6 +176,8 @@ body{
 @media (max-width: 480px) {
     .hero-section {
         padding: 15px 10px;
+        background-attachment: scroll;
+        min-height: 100vh; /* تأكد من ملء الشاشة */
     }
 
     .hero-content h1 {

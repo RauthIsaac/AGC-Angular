@@ -11,6 +11,8 @@ import { NewsItem, NewsDto, CreateNewsRequest, UpdateNewsRequest } from '../../.
 import { SiteData } from '../../../Shared/models/site-data';
 import { ClientImage, ClientImageFormData, CreateClientImageRequest, UpdateClientImageRequest } from '../../../Shared/models/client-image';
 import { ClientImageService } from '../../../Core/Services/client-image-service/client-image-service';
+import { Product, CreateProductRequest, UpdateProductRequest, Language } from '../../../Shared/models/product';
+import { ProductService } from '../../../Core/Services/product-service/product-service';
 import { environment } from '../../../../environments/environment';
 import { API_ENDPOINTS } from '../../../Constants/api-endpoints';
 
@@ -28,6 +30,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   private newsService = inject(NewsService);
   private siteIdentityService = inject(SiteIdentityService);
   private clientImageService = inject(ClientImageService);
+  private productService = inject(ProductService);
   private router = inject(Router);
 
   sidebarOpen: boolean = true;  // Visible by default on all screens
@@ -80,6 +83,36 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     image_Url: ''
   };
 
+  // Products management
+  allProducts: Product[] = [];
+  isLoadingProducts = true;
+  showProductForm = false;
+  editingProduct: Product | null = null;
+  selectedProductFile: File | null = null;
+  selectedProductPreview: string | null = null;
+  productForm: CreateProductRequest = {
+    id: undefined,
+    langCode: Language.EN,
+    name: '',
+    title: '',
+    subTitle: '',
+    description: '',
+    benefit_Title_1: '',
+    benefit_Description_1: '',
+    benefit_Title_2: '',
+    benefit_Description_2: '',
+    benefit_Title_3: '',
+    benefit_Description_3: '',
+    benefit_Title_4: '',
+    benefit_Description_4: '',
+    applicationsList: '',
+    why_Choose_Statement: '',
+    why_Choose_List: ''
+  };
+
+  // Language enum for template
+  Language = Language;
+
   ngOnInit() {
     // Check if user is authenticated
     if (!this.authService.isAuthenticated()) {
@@ -99,6 +132,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       this.loadNews();
       this.loadSiteData();
       this.loadClientImages();
+      this.loadProducts();
     }
   }
 
@@ -733,6 +767,227 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   onClientImageError(event: any, image: ClientImage): void {
     // Set fallback image or hide the image
     event.target.style.display = 'none';
+  }
+
+  // Products Management Methods
+  loadProducts() {
+    this.isLoadingProducts = true;
+    this.productService.getProducts().subscribe({
+      next: (products) => {
+        this.allProducts = products;
+        this.stats.totalProducts = products.length;
+        this.isLoadingProducts = false;
+      },
+      error: (error) => {
+        console.error('Error loading products:', error);
+        console.error('Error details:', error.status, error.message, error.error);
+        this.allProducts = []; // Set to empty array on error
+        this.stats.totalProducts = 0;
+        this.isLoadingProducts = false;
+        
+        // Show user-friendly error message
+        if (error.status === 500) {
+          alert(this.isRTL() ? 'خطأ في الخادم. يرجى المحاولة لاحقاً' : 'Server error. Please try again later');
+        } else if (error.status === 0) {
+          alert(this.isRTL() ? 'لا يمكن الاتصال بالخادم' : 'Cannot connect to server');
+        }
+      }
+    });
+  }
+
+  openAddProductForm() {
+    this.editingProduct = null;
+    this.selectedProductFile = null;
+    this.selectedProductPreview = null;
+    
+    this.productForm = {
+      id: undefined,
+      langCode: Language.EN,
+      name: '',
+      title: '',
+      subTitle: '',
+      description: '',
+      benefit_Title_1: '',
+      benefit_Description_1: '',
+      benefit_Title_2: '',
+      benefit_Description_2: '',
+      benefit_Title_3: '',
+      benefit_Description_3: '',
+      benefit_Title_4: '',
+      benefit_Description_4: '',
+      applicationsList: '',
+      why_Choose_Statement: '',
+      why_Choose_List: ''
+    };
+    this.showProductForm = true;
+  }
+
+  openEditProductForm(product: Product) {
+    this.editingProduct = product;
+    this.selectedProductFile = null;
+    this.selectedProductPreview = null;
+    
+    this.productForm = {
+      langCode: product.langCode,
+      name: product.name,
+      title: product.title,
+      subTitle: product.subTitle || '',
+      description: product.description,
+      benefit_Title_1: product.benefit_Title_1 || '',
+      benefit_Description_1: product.benefit_Description_1 || '',
+      benefit_Title_2: product.benefit_Title_2 || '',
+      benefit_Description_2: product.benefit_Description_2 || '',
+      benefit_Title_3: product.benefit_Title_3 || '',
+      benefit_Description_3: product.benefit_Description_3 || '',
+      benefit_Title_4: product.benefit_Title_4 || '',
+      benefit_Description_4: product.benefit_Description_4 || '',
+      applicationsList: product.applicationsList || '',
+      why_Choose_Statement: product.why_Choose_Statement || '',
+      why_Choose_List: product.why_Choose_List || ''
+    };
+    this.showProductForm = true;
+  }
+
+  closeProductForm() {
+    this.showProductForm = false;
+    this.editingProduct = null;
+    this.selectedProductFile = null;
+    this.selectedProductPreview = null;
+  }
+
+  onProductImageSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedProductFile = file;
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.selectedProductPreview = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  submitProduct() {
+    if (this.editingProduct) {
+      // Update existing product
+      const updateRequest: UpdateProductRequest = {
+        ...this.productForm,
+        id: this.editingProduct.id,
+        imageUrl: this.editingProduct.imageUrl,
+        imageFile: this.selectedProductFile || undefined
+      };
+
+      this.productService.updateProduct(updateRequest).subscribe({
+        next: (response) => {
+          alert(this.isRTL() ? 'تم تحديث المنتج بنجاح' : 'Product updated successfully');
+          this.loadProducts();
+          this.closeProductForm();
+        },
+        error: (error) => {
+          console.error('Error updating product:', error);
+          alert(this.isRTL() ? 'حدث خطأ أثناء تحديث المنتج' : 'Error updating product');
+        }
+      });
+    } else {
+      // Create new product
+      const createRequest: CreateProductRequest = {
+        ...this.productForm,
+        imageFile: this.selectedProductFile || undefined
+      };
+
+      // Check if user specified ID and product with same ID+Language exists
+      if (this.productForm.id) {
+        const existingProduct = this.allProducts.find(p => p.id === this.productForm.id && p.langCode === this.productForm.langCode);
+        if (existingProduct) {
+          alert(this.isRTL() ? 
+            `المنتج برقم ${this.productForm.id} باللغة المحددة موجود بالفعل` : 
+            `Product with ID ${this.productForm.id} in selected language already exists`
+          );
+          return;
+        }
+
+        // Show warning about ID assignment
+        const confirmMessage = this.isRTL() ? 
+          `ملاحظة: الرقم ${this.productForm.id} سيتم تجاهله حالياً. سيتم تعيين رقم تلقائي من قاعدة البيانات. هل تريد المتابعة؟` :
+          `Note: ID ${this.productForm.id} will be ignored for now. Database will auto-assign an ID. Continue?`;
+        
+        if (!confirm(confirmMessage)) {
+          return;
+        }
+      }
+
+      this.productService.createProduct(createRequest).subscribe({
+        next: (response) => {
+          const successMessage = this.isRTL() ? 'تم إضافة المنتج بنجاح' : 'Product added successfully';
+          if (response && response.id) {
+            const actualIdMessage = this.isRTL() ? 
+              ` برقم ${response.id}` :
+              ` with ID ${response.id}`;
+            alert(successMessage + actualIdMessage);
+          } else {
+            alert(successMessage);
+          }
+          this.loadProducts();
+          this.closeProductForm();
+        },
+        error: (error) => {
+          console.error('Error creating product:', error);
+          alert(this.isRTL() ? 'حدث خطأ أثناء إضافة المنتج' : 'Error adding product');
+        }
+      });
+    }
+  }
+
+  deleteProduct(product: Product) {
+    if (confirm(this.isRTL() ? 'هل أنت متأكد من حذف هذا المنتج؟' : 'Are you sure you want to delete this product?')) {
+      console.log('Attempting to delete product with ID:', product.id, 'LangCode:', product.langCode);
+      this.productService.deleteProduct(product.id, product.langCode).subscribe({
+        next: (response) => {
+          alert(this.isRTL() ? 'تم حذف المنتج بنجاح' : 'Product deleted successfully');
+          this.loadProducts();
+        },
+        error: (error) => {
+          console.error('Error deleting product:', error);
+          
+          if (error.status === 401) {
+            alert(this.isRTL() ? 'انتهت صلاحية جلسة العمل. يرجى تسجيل الدخول مرة أخرى' : 'Session expired. Please login again');
+            this.router.navigate(['/login']);
+          } else if (error.status === 404) {
+            alert(this.isRTL() ? 'المنتج غير موجود' : 'Product not found');
+            this.loadProducts(); // Refresh the list
+          } else if (error.status === 500) {
+            alert(this.isRTL() ? 'خطأ في الخادم' : 'Server error');
+          } else {
+            alert(this.isRTL() ? 'حدث خطأ أثناء حذف المنتج' : 'Error deleting product');
+          }
+        }
+      });
+    }
+  }
+
+  getProductImageUrl(imageUrl?: string): string {
+    return this.productService.getProductImageUrl(imageUrl);
+  }
+
+  // Helper method to get products with same ID but different languages
+  getProductLanguagesById(id: number): string {
+    const products = this.allProducts.filter(p => p.id === id);
+    if (products.length === 0) return '';
+    
+    const languages = products.map(p => p.langCode === Language.AR ? 'عربي' : 'English');
+    return this.isRTL() ? 
+      `اللغات الموجودة: ${languages.join(', ')}` :
+      `Available languages: ${languages.join(', ')}`;
+  }
+
+  onProductImageError(event: any): void {
+    event.target.src = this.productService.getProductImageUrl();
+  }
+
+  getLanguageLabel(langCode: Language): string {
+    return langCode === Language.AR ? 'عربي' : 'English';
   }
 
 

@@ -263,7 +263,7 @@
                   <button 
                     *ngIf="siteDataForm && !isLoadingSiteData" 
                     class="btn btn-primary" 
-                    (click)="updateSiteData()"
+                    (click)="saveSiteData()"
                     [disabled]="isSavingSiteData">
                     <i class="bi bi-check-circle"></i>
                     <span class="d-none d-md-inline">{{ isSavingSiteData ? (isRTL() ? 'جاري الحفظ...' : 'Saving...') : (isRTL() ? 'حفظ التغييرات' : 'Save Changes') }}</span>
@@ -1533,9 +1533,63 @@
 
       <!-- Products Tab -->
       <div *ngIf="activeTab === 'products'" class="tab-content">
-        <h1>{{ getProductsTitle() }}</h1>
-        <div class="content-placeholder">
-          <p>{{ isRTL() ? 'إدارة المنتجات - قريباً' : 'Products Management - Coming Soon' }}</p>
+        <div class="tab-header">
+          <h1>{{ getProductsTitle() }}</h1>
+          <button class="btn btn-primary" (click)="openAddProductForm()">
+            <i class="bi bi-plus"></i>
+            {{ isRTL() ? 'إضافة منتج جديد' : 'Add New Product' }}
+          </button>
+        </div>
+        
+        <div *ngIf="isLoadingProducts" class="loading-messages">
+          <p>{{ isRTL() ? 'جاري تحميل المنتجات...' : 'Loading products...' }}</p>
+        </div>
+        
+        <div *ngIf="!isLoadingProducts" class="products-management">
+          <div *ngIf="allProducts.length === 0" class="no-messages">
+            <p>{{ isRTL() ? 'لا توجد منتجات' : 'No products found' }}</p>
+          </div>
+          
+          <div *ngIf="allProducts.length > 0" class="products-table">
+            <div class="table-header">
+              <h3>{{ isRTL() ? 'جميع المنتجات' : 'All Products' }} ({{ allProducts.length }})</h3>
+            </div>
+            
+            <div class="table-content">
+              <div *ngFor="let product of allProducts" class="message-card product-card">
+                <div class="product-image" *ngIf="product.imageUrl">
+                  <img [src]="getProductImageUrl(product.imageUrl)" [alt]="product.title" 
+                       (error)="onProductImageError($event)" />
+                </div>
+                <div class="product-content">
+                  <div class="product-header">
+                    <h4>{{ product.title }}</h4>
+                    <span class="product-lang">{{ getLanguageLabel(product.langCode) }}</span>
+                  </div>
+                  <h5 class="product-name">{{ product.name }}</h5>
+                  <p class="product-subtitle" *ngIf="product.subTitle">{{ product.subTitle }}</p>
+                  <p class="product-description">{{ truncateText(product.description, 150) }}</p>
+                  <div class="product-benefits" *ngIf="product.benefit_Title_1 || product.benefit_Title_2">
+                    <strong>{{ isRTL() ? 'الفوائد:' : 'Benefits:' }}</strong>
+                    <ul>
+                      <li *ngIf="product.benefit_Title_1">{{ product.benefit_Title_1 }}</li>
+                      <li *ngIf="product.benefit_Title_2">{{ product.benefit_Title_2 }}</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="product-actions">
+                  <button class="btn btn-sm btn-outline-primary" (click)="openEditProductForm(product)">
+                    <i class="bi bi-pencil"></i>
+                    {{ isRTL() ? 'تعديل' : 'Edit' }}
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(product)">
+                    <i class="bi bi-trash"></i>
+                    {{ isRTL() ? 'حذف' : 'Delete' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1817,6 +1871,195 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Product Form Modal -->
+      <div *ngIf="showProductForm" class="modal-overlay" (click)="closeProductForm()">
+        <div class="modal-content product-modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3>{{ editingProduct ? (isRTL() ? 'تعديل المنتج' : 'Edit Product') : (isRTL() ? 'إضافة منتج جديد' : 'Add New Product') }}</h3>
+            <button class="close-btn" (click)="closeProductForm()">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+          
+          <form class="product-form" (ngSubmit)="submitProduct()">
+            <div class="form-grid">
+              <!-- Basic Information -->
+              <div class="form-section">
+                <h4 class="section-title">
+                  <i class="bi bi-info-circle"></i>
+                  {{ isRTL() ? 'المعلومات الأساسية' : 'Basic Information' }}
+                </h4>
+                
+                <div class="form-group">
+                  <label for="product_langCode">{{ isRTL() ? 'اللغة' : 'Language' }}</label>
+                  <select id="product_langCode" [(ngModel)]="productForm.langCode" name="langCode" class="form-control" required>
+                    <option [value]="Language.EN">English</option>
+                    <option [value]="Language.AR">عربي</option>
+                  </select>
+                </div>
+                
+                <!-- Show ID field only when adding new product -->
+                <div class="form-group" style=" padding: 10px; margin: 10px 0;">
+                  <label for="product_id" style="color: black; font-weight: bold;">
+                    {{ isRTL() ? 'رقم المنتج (ID)' : 'Product ID' }} 
+                    <span *ngIf="editingProduct" class="text-warning">({{ isRTL() ? 'للعرض فقط' : 'Display only' }})</span>
+                    <small class="text-muted d-block">
+                      {{ isRTL() ? 'مؤقتاً: سيتم تجاهل الرقم المدخل وتعيين رقم تلقائي' : 'Temporarily: Entered ID will be ignored and auto-assigned' }}
+                    </small>
+                    <small class="text-warning d-block">
+                      <i class="bi bi-exclamation-triangle"></i>
+                      {{ isRTL() ? 'يتطلب تحديث الخادم لدعم الأرقام المخصصة' : 'Server update required to support custom IDs' }}
+                    </small>
+                  </label>
+                  <input 
+                    type="number" 
+                    id="product_id" 
+                    [(ngModel)]="productForm.id" 
+                    name="id" 
+                    class="form-control" 
+                    style="border: 3px solid brown;"
+                    min="1"
+                    [readonly]="editingProduct !== null"
+                    placeholder="{{ isRTL() ? 'اتركه فارغاً للرقم التلقائي' : 'Leave empty for auto-assign' }}"
+                  >
+                  
+                  <!-- Show existing languages for this ID -->
+                  <div *ngIf="productForm.id && productForm.id > 0" class="mt-2">
+                    <small class="text-info" >
+                      {{ getProductLanguagesById(productForm.id) }}
+                    </small>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="product_name">{{ isRTL() ? 'اسم المنتج' : 'Product Name' }} *</label>
+                  <input type="text" id="product_name" [(ngModel)]="productForm.name" name="name" required class="form-control">
+                </div>
+                
+                <div class="form-group">
+                  <label for="product_title">{{ isRTL() ? 'العنوان' : 'Title' }} *</label>
+                  <input type="text" id="product_title" [(ngModel)]="productForm.title" name="title" required class="form-control">
+                </div>
+                
+                <div class="form-group">
+                  <label for="product_subtitle">{{ isRTL() ? 'العنوان الفرعي' : 'Subtitle' }}</label>
+                  <input type="text" id="product_subtitle" [(ngModel)]="productForm.subTitle" name="subTitle" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                  <label for="product_description">{{ isRTL() ? 'الوصف' : 'Description' }} *</label>
+                  <textarea id="product_description" [(ngModel)]="productForm.description" name="description" required class="form-control" rows="4"></textarea>
+                </div>
+              </div>
+              
+              <!-- Benefits Section -->
+              <div class="form-section">
+                <h4 class="section-title">
+                  <i class="bi bi-check-circle"></i>
+                  {{ isRTL() ? 'الفوائد' : 'Benefits' }}
+                </h4>
+                
+                <div class="benefits-grid">
+                  <div class="benefit-group">
+                    <label for="benefit_title_1">{{ isRTL() ? 'عنوان الفائدة الأولى' : 'Benefit Title 1' }}</label>
+                    <input type="text" id="benefit_title_1" [(ngModel)]="productForm.benefit_Title_1" name="benefit_Title_1" class="form-control">
+                    <label for="benefit_desc_1">{{ isRTL() ? 'وصف الفائدة الأولى' : 'Benefit Description 1' }}</label>
+                    <textarea id="benefit_desc_1" [(ngModel)]="productForm.benefit_Description_1" name="benefit_Description_1" class="form-control" rows="2"></textarea>
+                  </div>
+                  
+                  <div class="benefit-group">
+                    <label for="benefit_title_2">{{ isRTL() ? 'عنوان الفائدة الثانية' : 'Benefit Title 2' }}</label>
+                    <input type="text" id="benefit_title_2" [(ngModel)]="productForm.benefit_Title_2" name="benefit_Title_2" class="form-control">
+                    <label for="benefit_desc_2">{{ isRTL() ? 'وصف الفائدة الثانية' : 'Benefit Description 2' }}</label>
+                    <textarea id="benefit_desc_2" [(ngModel)]="productForm.benefit_Description_2" name="benefit_Description_2" class="form-control" rows="2"></textarea>
+                  </div>
+                  
+                  <div class="benefit-group">
+                    <label for="benefit_title_3">{{ isRTL() ? 'عنوان الفائدة الثالثة' : 'Benefit Title 3' }}</label>
+                    <input type="text" id="benefit_title_3" [(ngModel)]="productForm.benefit_Title_3" name="benefit_Title_3" class="form-control">
+                    <label for="benefit_desc_3">{{ isRTL() ? 'وصف الفائدة الثالثة' : 'Benefit Description 3' }}</label>
+                    <textarea id="benefit_desc_3" [(ngModel)]="productForm.benefit_Description_3" name="benefit_Description_3" class="form-control" rows="2"></textarea>
+                  </div>
+                  
+                  <div class="benefit-group">
+                    <label for="benefit_title_4">{{ isRTL() ? 'عنوان الفائدة الرابعة' : 'Benefit Title 4' }}</label>
+                    <input type="text" id="benefit_title_4" [(ngModel)]="productForm.benefit_Title_4" name="benefit_Title_4" class="form-control">
+                    <label for="benefit_desc_4">{{ isRTL() ? 'وصف الفائدة الرابعة' : 'Benefit Description 4' }}</label>
+                    <textarea id="benefit_desc_4" [(ngModel)]="productForm.benefit_Description_4" name="benefit_Description_4" class="form-control" rows="2"></textarea>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Additional Information -->
+              <div class="form-section">
+                <h4 class="section-title">
+                  <i class="bi bi-plus-circle"></i>
+                  {{ isRTL() ? 'معلومات إضافية' : 'Additional Information' }}
+                </h4>
+                
+                <div class="form-group">
+                  <label for="applications_list">{{ isRTL() ? 'قائمة التطبيقات' : 'Applications List' }}</label>
+                  <textarea id="applications_list" [(ngModel)]="productForm.applicationsList" name="applicationsList" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label for="why_choose_statement">{{ isRTL() ? 'لماذا تختارنا - البيان' : 'Why Choose Us - Statement' }}</label>
+                  <textarea id="why_choose_statement" [(ngModel)]="productForm.why_Choose_Statement" name="why_Choose_Statement" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label for="why_choose_list">{{ isRTL() ? 'لماذا تختارنا - القائمة' : 'Why Choose Us - List' }}</label>
+                  <textarea id="why_choose_list" [(ngModel)]="productForm.why_Choose_List" name="why_Choose_List" class="form-control" rows="3"></textarea>
+                </div>
+              </div>
+              
+              <!-- Image Upload -->
+              <div class="form-section">
+                <h4 class="section-title">
+                  <i class="bi bi-image"></i>
+                  {{ isRTL() ? 'صورة المنتج' : 'Product Image' }}
+                </h4>
+                
+                <div class="image-upload-section">
+                  <div class="current-image" *ngIf="editingProduct?.imageUrl && !selectedProductPreview">
+                    <label>{{ isRTL() ? 'الصورة الحالية' : 'Current Image' }}</label>
+                    <img [src]="getProductImageUrl(editingProduct?.imageUrl)" [alt]="editingProduct?.title || ''" class="image-preview" />
+                  </div>
+                  
+                  <div class="new-image" *ngIf="selectedProductPreview">
+                    <label>{{ isRTL() ? 'الصورة الجديدة' : 'New Image' }}</label>
+                    <img [src]="selectedProductPreview" alt="Preview" class="image-preview" />
+                  </div>
+                  
+                  <div class="file-input-group">
+                    <label for="product_image" class="file-input-label">
+                      <i class="bi bi-cloud-upload"></i>
+                      {{ isRTL() ? 'اختر صورة المنتج' : 'Choose Product Image' }}
+                    </label>
+                    <input 
+                      type="file" 
+                      id="product_image" 
+                      (change)="onProductImageSelected($event)" 
+                      accept="image/*"
+                      class="file-input">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" (click)="closeProductForm()">
+                {{ isRTL() ? 'إلغاء' : 'Cancel' }}
+              </button>
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save"></i>
+                {{ editingProduct ? (isRTL() ? 'تحديث المنتج' : 'Update Product') : (isRTL() ? 'إضافة المنتج' : 'Add Product') }}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
 
